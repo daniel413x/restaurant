@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC } from 'react';
 
 export interface IRouterRoute {
   path: string;
@@ -45,27 +45,19 @@ export interface ITestimonial {
   id: number;
 }
 
-export interface IFoodItemAbbreviated { // FoodItemSupport or FoodItemAuxiliary might be a better label
-  id?: number;
-  name?: string;
-  ingredients?: string[];
-  price?: number;
-  discount?: number;
-  image?: string;
-  handleDeleteModal?: MouseEventHandler<HTMLButtonElement>;
-}
-
 export interface IFoodItem {
   id?: number;
   image?: string;
   name?: string;
-  time: number[];
+  time?: number[];
   serves?: number;
-  price: number;
+  price?: number;
   discount?: number;
   ingredients?: string[];
   bootstrapWidth?: number;
+  quantity?: number;
   // calories?
+  instructions?: string;
 }
 
 export interface IFoodCategory {
@@ -79,7 +71,7 @@ export interface IModalProps {
 }
 
 export interface IModalDeletedFoodItem extends IModalProps {
-  foodItem: IFoodItemAbbreviated;
+  foodItem: IFoodItem;
 }
 
 export interface INotification {
@@ -90,7 +82,7 @@ export interface INotification {
   id: number;
 }
 
-export interface IBasket {
+export interface ICart {
   id: number;
-  foodItems: IFoodItem[] | IFoodItemAbbreviated[];
+  foodItems: IFoodItem[];
 }

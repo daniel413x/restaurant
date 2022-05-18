@@ -85,6 +85,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 1,
       },
       {
         name: 'Parsley Tabbuleh',
@@ -94,6 +95,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 2,
       },
       {
         name: 'Hummus',
@@ -103,6 +105,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 3,
       },
       {
         name: 'Hummus Platter',
@@ -112,6 +115,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 4,
       },
       {
         name: 'Fresh Mozzarella Platter',
@@ -121,6 +125,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 5,
       },
     ],
   },
@@ -230,6 +235,17 @@ export const categoriesPlaceholders = [
 
 export const cartPlaceholders = [
   {
+    name: 'Grape Leaves',
+    ingredients: ['rice', 'nuts', 'spices', 'olive oil', 'lemon juice'],
+    price: 6.99,
+    image: foodImage,
+    time: [10, 15],
+    serves: 1,
+    discount: 0.1,
+    id: 1,
+    quantity: 3,
+  },
+  {
     name: 'Parsley Tabbuleh',
     ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
     price: 6.99,
@@ -237,6 +253,8 @@ export const cartPlaceholders = [
     time: [10, 15],
     serves: 1,
     discount: 0.1,
+    id: 2,
+    quantity: 1,
   },
   {
     name: 'Hummus',
@@ -246,15 +264,8 @@ export const cartPlaceholders = [
     time: [10, 15],
     serves: 1,
     discount: 0.1,
-  },
-  {
-    name: 'Hummus Platter',
-    ingredients: ['hummus', 'crackers', 'celery', 'carrots', 'tomatoes'],
-    price: 6.99,
-    image: foodImage,
-    time: [10, 15],
-    serves: 1,
-    discount: 0.1,
+    id: 3,
+    quantity: 2,
   },
 ];
 

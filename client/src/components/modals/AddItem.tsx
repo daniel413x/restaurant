@@ -11,14 +11,12 @@ import {
   shortNotification,
   green,
 } from '../../utils/consts';
-import { IModalProps, IFoodItemAbbreviated } from '../../types/types';
-import FoodItemAbbreviated from '../FoodItemAbbreviated';
+import { IModalProps, IFoodItem } from '../../types/types';
+import FoodItemAuxiliary from '../FoodItemAuxiliary';
 import Context from '../../context/context';
 
 interface AddItemProps extends IModalProps {
-  onHide: () => void;
-  show: boolean;
-  foodItem: IFoodItemAbbreviated;
+  foodItem: IFoodItem;
 }
 
 function AddItem({
@@ -26,16 +24,21 @@ function AddItem({
   show,
   foodItem,
 }: AddItemProps) {
-  const { notifications } = useContext(Context);
-  const [input, setInput] = useState<string>('');
-  const action = (e: FormEvent<HTMLFormElement>) => {
+  const { cart, notifications } = useContext(Context);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [instructions, setInstructions] = useState<string>('');
+  const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    cart.addItem(foodItem, quantity, instructions);
     notifications.message(
       `Added to cart ${foodItem.name}`,
       green,
       shortNotification,
       foodItem.image,
     );
+    setInstructions('');
+    setTimeout(() => setQuantity(1), 500);
+    onHide();
   };
   return (
     <Modal
@@ -43,22 +46,24 @@ function AddItem({
       onHide={onHide}
       size="lg"
       centered
+      className="add-item"
     >
-      <Form onSubmit={action}>
+      <Form onSubmit={submit}>
         <Modal.Body>
           <h2>
             Add to cart?
           </h2>
-          <FoodItemAbbreviated
-            name={foodItem.name}
-            ingredients={foodItem.ingredients}
-            price={foodItem.price}
+          <FoodItemAuxiliary
+            foodItem={foodItem}
+            quantity={quantity}
+            increment={() => setQuantity(quantity + 1)}
+            decrement={() => setQuantity(quantity - 1)}
           />
           Instructions:
           <Form.Control
             as="textarea"
-            value={input}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+            value={instructions}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setInstructions(e.target.value)}
           />
         </Modal.Body>
         <Modal.Footer>

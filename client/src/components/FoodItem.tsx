@@ -5,6 +5,25 @@ import {
 import { standardizePriceFormat } from '../utils/functions';
 import { IFoodItem } from '../types/types';
 
+function Time({ time }: { time: number[] | undefined }) {
+  if (!time) {
+    return null;
+  }
+  const [timeMin, timeMax] = time;
+  return (
+    <span>
+      Time:
+      {' '}
+      {timeMin}
+      -
+      {timeMax}
+      {' '}
+      Minutes |
+      {' '}
+    </span>
+  );
+}
+
 function FoodItem({
   image,
   name,
@@ -16,9 +35,8 @@ function FoodItem({
   bootstrapWidth,
 }: IFoodItem) {
   const hideIngredients = ingredients[0] === '';
-  const [timeMin, timeMax] = time;
-  const undiscountedPrice = standardizePriceFormat(price);
-  const discountedPrice = discount ? standardizePriceFormat(price, discount) : null;
+  const undiscountedPrice = standardizePriceFormat(price!);
+  const discountedPrice = discount ? standardizePriceFormat(price!, discount) : null;
   return (
     <Col className="food-item" md={bootstrapWidth}>
       <Image className="food-image" src={image} />
@@ -30,15 +48,12 @@ function FoodItem({
           {ingredients?.join(' • ')}
         </span>
         <span className="info">
-          Time:
-          {' '}
-          {timeMin}
-          -
-          {timeMax}
-          {' '}
-          Minutes | Serves:
-          {' '}
-          {serves}
+          <Time time={time} />
+          <span>
+            Serves:
+            {' '}
+            {serves}
+          </span>
         </span>
         <div className="price-row">
           <span className="current-price">

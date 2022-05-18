@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Context from '../../context/context';
 import SmartInput from '../SmartInput';
 import {
-  IFoodItemAbbreviated,
+  IFoodItem,
 } from '../../types/types';
 import {
   shortNotification,
@@ -19,7 +19,7 @@ import {
 interface CheckoutProps {
   onHide: () => void;
   show: boolean;
-  checkoutItems: IFoodItemAbbreviated[];
+  checkoutItems: IFoodItem[];
 }
 
 function Checkout({
@@ -29,7 +29,7 @@ function Checkout({
 }: CheckoutProps) {
   const { notifications } = useContext(Context);
   const navigate = useNavigate();
-  // const { basket /* user */ } = useContext(Context);
+  // const { cart /* user */ } = useContext(Context);
   const [email, setEmail] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');

@@ -6,21 +6,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBasketShopping,
 } from '@fortawesome/free-solid-svg-icons';
-import { IFoodItemAbbreviated } from '../types/types';
+import { IFoodItem } from '../types/types';
 import List from '../components/List';
-import FoodItemAbbreviated from '../components/FoodItemAbbreviated';
+import FoodItemAuxiliary from '../components/FoodItemAuxiliary';
 import { cartPlaceholders, basketPlaceholder } from '../utils/consts';
 import RemoveFromCart from '../components/modals/RemoveFromCart';
 import Checkout from '../components/modals/Checkout';
 import Context from '../context/context';
 
 function Cart() {
-  const { notifications } = useContext(Context);
-  console.log(notifications);
+  const { cart } = useContext(Context);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(true);
-  const [deletedItem, setDeletedItem] = useState<IFoodItemAbbreviated>({});
-  const handleDeleteModal = (item: IFoodItemAbbreviated) => {
+  const [deletedItem, setDeletedItem] = useState<IFoodItem>({});
+  const handleDeleteModal = (item: IFoodItem) => {
     setDeletedItem(item);
     setShowDeleteModal(true);
   };
@@ -47,15 +46,14 @@ function Cart() {
         </Col>
         <List
           items={cartPlaceholders}
-          renderList={(foodItem: IFoodItemAbbreviated) => (
+          renderList={(foodItem: IFoodItem) => (
             <li>
-              <FoodItemAbbreviated
-                name={foodItem.name}
-                ingredients={foodItem.ingredients}
-                price={foodItem.price}
-                discount={foodItem.discount}
+              <FoodItemAuxiliary
+                foodItem={foodItem}
                 handleDeleteModal={() => handleDeleteModal(foodItem)}
-                deleteButton
+                quantity={foodItem.quantity!}
+                increment={() => cart.changeItemQuantity(foodItem.id!, 1)}
+                decrement={() => cart.changeItemQuantity(foodItem.id!, 1)}
               />
             </li>
           )}

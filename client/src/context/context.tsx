@@ -1,20 +1,20 @@
 import { createContext } from 'react';
 import NotificationStore from '../store/NotificationStore';
 import UserStore from '../store/UserStore';
-import BasketStore from '../store/BasketStore';
+import CartStore from '../store/CartStore';
 import CategoriesStore from '../store/CategoriesStore';
 
 interface ContextProps {
   notifications: NotificationStore;
   user: UserStore;
-  basket: BasketStore;
+  cart: CartStore;
   categories: CategoriesStore;
 }
 
 const Context = createContext<ContextProps>({
   notifications: new NotificationStore(),
   user: new UserStore(),
-  basket: new BasketStore(),
+  cart: new CartStore(),
   categories: new CategoriesStore(),
 });
 

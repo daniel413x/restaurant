@@ -1,12 +1,12 @@
 import NotificationStore from './NotificationStore';
 import UserStore from './UserStore';
-import BasketStore from './BasketStore';
+import CartStore from './CartStore';
 import CategoriesStore from './CategoriesStore';
 
 const store = {
   notifications: new NotificationStore(),
   user: new UserStore(),
-  basket: new BasketStore(),
+  cart: new CartStore(),
   categories: new CategoriesStore(),
 };
 

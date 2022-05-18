@@ -894,6 +894,24 @@ input[type="submit"] {
   margin-top: 2rem;
 }
 
+.food-item-li:hover {
+  color: var(--primary-red);
+  cursor: pointer;
+}
+
+.food-item-li button {
+  all: inherit;
+}
+
+.food-item-li button.btn {
+  color: #fff;
+  margin: 0;
+}
+
+.food-item-li button:focus {
+  outline: 2px double rgb(255, 0, 0);
+}
+
 #menu {
   color: var(--primary-red);
   font-family: 'Quicksand', sans-serif;
@@ -1027,7 +1045,7 @@ input[type="submit"] {
   text-align: center;
 }
 
-.food-item-abbreviated {
+.food-item-auxiliary {
   display: flex;
   flex-direction: row;
   font-size: 1.25rem;
@@ -1036,20 +1054,20 @@ input[type="submit"] {
 }
 
 @media (max-width: 575px) {
-  .food-item-abbreviated {
+  .food-item-auxiliary {
     flex-direction: column;
   }
 }
 
-.food-item-abbreviated .name {
+.food-item-auxiliary .name {
   text-decoration: underline;
 }
 
-.food-item-abbreviated .ingredients {
+.food-item-auxiliary .ingredients {
   font-size: 1.25rem;
 }
 
-.food-item-abbreviated .price-quantity {
+.price-buttons {
   font-family: 'Quicksand', sans-serif;
   width: max-content;
   display: flex;
@@ -1058,76 +1076,58 @@ input[type="submit"] {
 }
 
 @media (max-width: 575px) {
-  .food-item-abbreviated .price-quantity {
+  .price-buttons {
     align-items: flex-start;
   }
 }
 
-.food-item-abbreviated .quantity-input input {
+.price-buttons .quantity-input input {
   width: 3rem;
   pointer-events: none;
 }
 
-.food-item-abbreviated .quantity-input {
+.price-buttons .quantity-input {
   display: flex;
   flex-direction: row-reverse;
 }
 
 @media (max-width: 575px) {
-  .food-item-abbreviated .quantity-input {
+  .price-buttons .quantity-input {
     display: flex;
     flex-direction: row;
   }
 }
 
-.food-item-abbreviated .buttons {
+.price-buttons .buttons {
   display: flex;
 }
 
 @media (max-width: 575px) {
-  .food-item-abbreviated .buttons {
+  .price-buttons .buttons {
     display: flex;
     flex-direction: row-reverse;
   }
 }
 
-.food-item-abbreviated .buttons button {
+.price-buttons .buttons button {
   margin-left: 10px;
   padding: 18px;
   position: relative;
 }
 
 @media (max-width: 575px) {
-  .food-item-abbreviated .buttons button {
+  .price-buttons .buttons button {
     margin-right: 10px;
     margin-left: 0px;
   }
 }
 
-.food-item-abbreviated .buttons .fa-caret-up, .food-item-abbreviated .buttons .fa-caret-down, .food-item-abbreviated .buttons .fa-ban {
+.price-buttons .buttons .fa-caret-up, .price-buttons .buttons .fa-caret-down, .price-buttons .buttons .fa-ban {
   margin: auto;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%)
-}
-
-.food-item-li:hover {
-  color: var(--primary-red);
-  cursor: pointer;
-}
-
-.food-item-li button {
-  all: inherit;
-}
-
-.food-item-li button.btn {
-  color: #fff;
-  margin: 0;
-}
-
-.food-item-li button:focus {
-  outline: 2px double rgb(255, 0, 0);
 }
 
 .fade.modal-backdrop {

@@ -11,7 +11,7 @@ import FoodCategory from '../components/FoodCategory';
 import FoodItem from '../components/FoodItem';
 import FoodItemLi from '../components/FoodItemLi';
 import AddItem from '../components/modals/AddItem';
-import { IFoodItem, IFoodCategory, IFoodItemAbbreviated } from '../types/types';
+import { IFoodItem, IFoodCategory } from '../types/types';
 import { makeId } from '../utils/functions';
 import { categoriesPlaceholders } from '../utils/consts';
 
@@ -28,8 +28,8 @@ function Menu() {
   const { categories } = useContext(Context);
   const { keyPressed } = useKeyPress('Enter');
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [addedItem, setAddedItem] = useState<IFoodItemAbbreviated>({});
-  const handleModal = (item: IFoodItemAbbreviated) => {
+  const [addedItem, setAddedItem] = useState<IFoodItem>({});
+  const handleModal = (item: IFoodItem) => {
     setAddedItem(item);
     setShowModal(true);
   };
