@@ -3,6 +3,7 @@ import {
   Container, Navbar, Nav, Image, NavDropdown, Button,
 } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import Logo from '../assets/logo2.png';
 import {
   FRONT_PAGE_ROUTE,
@@ -12,10 +13,12 @@ import {
   CART_ROUTE,
   ACCOUNT_ROUTE,
 } from '../utils/consts';
+import { countItems } from '../utils/functions';
 import Context from '../context/context';
 
 function Navigation() {
-  const { user } = useContext(Context);
+  const { user, cart } = useContext(Context);
+  const cartCount = countItems(cart.cart.foodItems);
   return (
     <Navbar id="navbar" expand="lg">
       <Container>
@@ -33,6 +36,8 @@ function Navigation() {
             </NavLink>
             <NavLink className="nav-link" to={CART_ROUTE} title="Cart">
               Cart
+              {' '}
+              {cartCount ? `(${cartCount})` : null}
             </NavLink>
             {!user.user.isAuth && (
               <NavLink className="nav-link" to={LOGIN_ROUTE} title="Login">
@@ -70,4 +75,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default observer(Navigation);

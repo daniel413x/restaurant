@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Col, Image, Button,
 } from 'react-bootstrap';
-import { standardizePriceFormat } from '../utils/functions';
+import { calcItemPrice } from '../utils/functions';
 import { IFoodItem } from '../types/types';
 
 function Time({ time }: { time: number[] | undefined }) {
@@ -35,8 +35,8 @@ function FoodItem({
   bootstrapWidth,
 }: IFoodItem) {
   const hideIngredients = ingredients[0] === '';
-  const undiscountedPrice = standardizePriceFormat(price!);
-  const discountedPrice = discount ? standardizePriceFormat(price!, discount) : null;
+  const undiscountedPrice = calcItemPrice(price!);
+  const discountedPrice = discount ? calcItemPrice(price!, discount) : null;
   return (
     <Col className="food-item" md={bootstrapWidth}>
       <Image className="food-image" src={image} />
@@ -57,11 +57,13 @@ function FoodItem({
         </span>
         <div className="price-row">
           <span className="current-price">
+            $
             {discount ? discountedPrice : undiscountedPrice}
             {' '}
           </span>
           {discount ? (
             <span className="previous-price">
+              $
               {undiscountedPrice}
             </span>
           ) : null}

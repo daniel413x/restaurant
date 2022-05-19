@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-bootstrap';
-import { standardizePriceFormat } from '../utils/functions';
+import { calcItemPrice } from '../utils/functions';
 import { IFoodItem } from '../types/types';
 
 interface QuantityButtonsProps {
@@ -21,7 +21,7 @@ function QuantityButtons({
   decrement,
 }: QuantityButtonsProps) {
   const { price, discount } = foodItem;
-  const formattedPrice = standardizePriceFormat(price! * quantity, discount);
+  const formattedPrice = calcItemPrice(price! * quantity, discount);
   return (
     <div className="price-buttons">
       <div className="quantity-input">
@@ -36,7 +36,8 @@ function QuantityButtons({
         </div>
       </div>
       <div className="price">
-        {`${formattedPrice}`}
+        $
+        {formattedPrice}
       </div>
       <div className="buttons">
         {handleDeleteModal && (

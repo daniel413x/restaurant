@@ -4,6 +4,7 @@ import React, {
 import {
   Container, Col, Row,
 } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
 import useKeyPress from '../hooks/useKeyPress';
 import List from '../components/List';
@@ -28,7 +29,7 @@ function Menu() {
   const { categories } = useContext(Context);
   const { keyPressed } = useKeyPress('Enter');
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [addedItem, setAddedItem] = useState<IFoodItem>({});
+  const [addedItem, setAddedItem] = useState<IFoodItem | {}>({});
   const handleModal = (item: IFoodItem) => {
     setAddedItem(item);
     setShowModal(true);
@@ -87,4 +88,4 @@ function Menu() {
   );
 }
 
-export default Menu;
+export default observer(Menu);

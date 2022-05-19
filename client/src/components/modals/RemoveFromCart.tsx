@@ -13,20 +13,21 @@ import {
 import Context from '../../context/context';
 
 interface RemoveFromCartProps extends IModalProps {
-  onHide: () => void;
-  show: boolean;
-  itemName?: string;
+  itemName: string | undefined;
+  itemId: number | undefined;
 }
 
 function RemoveFromCart({
   onHide,
   show,
   itemName,
+  itemId,
 }: RemoveFromCartProps) {
-  const { notifications } = useContext(Context);
+  const { notifications, cart } = useContext(Context);
   const action = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // axios, delete from context, etc
+    cart.changeItemQuantity(itemId!, 0);
     notifications.message(
       'Item removed from cart',
       green,
@@ -57,9 +58,5 @@ function RemoveFromCart({
     </Modal>
   );
 }
-
-RemoveFromCart.defaultProps = {
-  itemName: 'deletedItem',
-};
 
 export default RemoveFromCart;

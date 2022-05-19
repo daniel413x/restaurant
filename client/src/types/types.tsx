@@ -85,4 +85,5 @@ export interface INotification {
 export interface ICart {
   id: number;
   foodItems: IFoodItem[];
+  // total: number;
 }

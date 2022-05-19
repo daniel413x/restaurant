@@ -6,18 +6,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBasketShopping,
 } from '@fortawesome/free-solid-svg-icons';
+import { observer } from 'mobx-react-lite';
 import { IFoodItem } from '../types/types';
 import List from '../components/List';
 import FoodItemAuxiliary from '../components/FoodItemAuxiliary';
-import { cartPlaceholders, basketPlaceholder } from '../utils/consts';
+import { basketPlaceholder } from '../utils/consts';
+import { countItems } from '../utils/functions';
 import RemoveFromCart from '../components/modals/RemoveFromCart';
 import Checkout from '../components/modals/Checkout';
 import Context from '../context/context';
 
 function Cart() {
   const { cart } = useContext(Context);
+  const cartCount = countItems(cart.cart.foodItems);
+  const thereAreItems = cartCount > 0;
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(true);
+  const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(false);
   const [deletedItem, setDeletedItem] = useState<IFoodItem>({});
   const handleDeleteModal = (item: IFoodItem) => {
     setDeletedItem(item);
@@ -29,6 +33,7 @@ function Cart() {
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
         itemName={deletedItem.name}
+        itemId={deletedItem.id}
       />
       <Checkout
         show={showCheckoutModal}
@@ -42,10 +47,10 @@ function Cart() {
           <FontAwesomeIcon icon={faBasketShopping} />
         </h2>
         <Col className="items" md={3}>
-          3 Items in your cart:
+          {cartCount ? `${cartCount} item${cartCount > 1 ? 's' : ''} in your cart:` : 'No items in your cart'}
         </Col>
         <List
-          items={cartPlaceholders}
+          items={cart.cart.foodItems}
           renderList={(foodItem: IFoodItem) => (
             <li>
               <FoodItemAuxiliary
@@ -53,30 +58,33 @@ function Cart() {
                 handleDeleteModal={() => handleDeleteModal(foodItem)}
                 quantity={foodItem.quantity!}
                 increment={() => cart.changeItemQuantity(foodItem.id!, 1)}
-                decrement={() => cart.changeItemQuantity(foodItem.id!, 1)}
+                decrement={() => cart.changeItemQuantity(foodItem.id!, -1)}
               />
             </li>
           )}
         />
-        <div className="checkout-total">
-          <Col className="divider" />
-          <Col md="auto" className="total">
-            <div className="label">
-              Total
-            </div>
-            <div className="figure">
-              $20.54
-            </div>
-          </Col>
-          <Col md="auto">
-            <Button onClick={() => setShowCheckoutModal(true)}>
-              Checkout
-            </Button>
-          </Col>
-        </div>
+        {thereAreItems && (
+          <div className="checkout-total">
+            <Col className="divider" />
+            <Col md="auto" className="total">
+              <div className="label">
+                Total
+              </div>
+              <div className="figure">
+                $
+                {cart.total}
+              </div>
+            </Col>
+            <Col md="auto">
+              <Button onClick={() => setShowCheckoutModal(true)}>
+                Checkout
+              </Button>
+            </Col>
+          </div>
+        )}
       </Col>
     </Container>
   );
 }
 
-export default Cart;
+export default observer(Cart);
