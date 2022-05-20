@@ -3,17 +3,29 @@ import {
   IUser, ICostumerAddress,
 } from '../types/types';
 
-export default class UserStore {
-  user: IUser;
+export default class UserStore implements IUser {
+  isAuth?: boolean;
+
+  id: number;
+
+  avatar: string;
+
+  name: string;
+
+  email: string;
+
+  addresses: ICostumerAddress[];
+
+  defaultAddress?: ICostumerAddress | null;
 
   constructor() {
-    this.user = {
-      isAuth: true,
-      name: 'Guest',
-      id: -1,
-      email: '',
-      avatar: '',
-      defaultAddress: {
+    this.isAuth = true;
+    this.id = -1;
+    this.name = 'Guest';
+    this.avatar = '';
+    this.email = '';
+    this.addresses = [
+      {
         id: 3,
         firstName: 'guest',
         lastName: 'guest',
@@ -23,65 +35,76 @@ export default class UserStore {
         zip: '20008',
         state: 'DC',
       },
-      addresses: [
-        {
-          id: 3,
-          firstName: 'guest',
-          lastName: 'guest',
-          addressLineOne: '123 fake street',
-          addressLineTwo: '#503',
-          city: 'washington',
-          zip: '20008',
-          state: 'DC',
-        },
-        {
-          id: 4,
-          firstName: 'guest',
-          lastName: 'guest',
-          addressLineOne: '12364 fake street',
-          addressLineTwo: '#503',
-          city: 'washington',
-          zip: '20008',
-          state: 'DC',
-        },
-      ],
+      {
+        id: 4,
+        firstName: 'guest',
+        lastName: 'guest',
+        addressLineOne: '12364 fake street',
+        addressLineTwo: '#503',
+        city: 'washington',
+        zip: '20008',
+        state: 'DC',
+      },
+    ];
+    this.defaultAddress = {
+      id: 3,
+      firstName: 'guest',
+      lastName: 'guest',
+      addressLineOne: '123 fake street',
+      addressLineTwo: '#503',
+      city: 'washington',
+      zip: '20008',
+      state: 'DC',
     };
     makeAutoObservable(this);
   }
 
   setIsAuth(bool: boolean) {
-    this.user.isAuth = bool;
+    this.isAuth = bool;
   }
 
   setUser(obj: IUser) {
-    this.user = obj;
+    const {
+      isAuth,
+      id,
+      name,
+      avatar,
+      email,
+      addresses,
+      defaultAddress,
+    } = obj;
+    this.isAuth = isAuth;
+    this.id = id;
+    this.name = name;
+    this.avatar = avatar;
+    this.email = email;
+    this.addresses = addresses;
+    this.defaultAddress = defaultAddress;
   }
 
   unsetUser() {
-    this.user = {
-      isAuth: false,
-      name: 'Guest',
-      id: -1,
-      email: '',
-      avatar: '',
-      defaultAddress: null,
-      addresses: [],
-    };
+    this.isAuth = true;
+    this.id = -1;
+    this.name = 'Guest';
+    this.avatar = '';
+    this.email = '';
+    this.addresses = [];
+    this.defaultAddress = null;
   }
 
   setAddresses(arr: ICostumerAddress[]) {
-    this.user.addresses = arr;
+    this.addresses = arr;
   }
 
   removeAddress(id: number) {
-    this.user.addresses = this.user.addresses?.filter((address) => address.id !== id);
+    this.addresses = this.addresses?.filter((address) => address.id !== id);
   }
 
   setDefaultAddress(obj: ICostumerAddress | null) {
-    this.user.defaultAddress = obj;
+    this.defaultAddress = obj;
   }
 
   setEmail(str: string) {
-    this.user.email = str;
+    this.email = str;
   }
 }

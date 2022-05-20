@@ -18,7 +18,7 @@ import Context from '../context/context';
 
 function Cart() {
   const { cart } = useContext(Context);
-  const cartCount = countItems(cart.cart.foodItems);
+  const cartCount = countItems(cart.foodItems);
   const thereAreItems = cartCount > 0;
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(false);
@@ -50,7 +50,7 @@ function Cart() {
           {cartCount ? `${cartCount} item${cartCount > 1 ? 's' : ''} in your cart:` : 'No items in your cart'}
         </Col>
         <List
-          items={cart.cart.foodItems}
+          items={cart.foodItems}
           renderList={(foodItem: IFoodItem) => (
             <li>
               <FoodItemAuxiliary

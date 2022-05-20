@@ -4,23 +4,26 @@ import {
 } from '../types/types';
 import { calcItemPrice } from '../utils/functions';
 
-export default class CartStore {
-  cart: ICart;
+export default class CartStore implements ICart {
+  id: number;
+
+  userId: number;
+
+  foodItems: IFoodItem[];
 
   constructor() {
-    this.cart = {
-      foodItems: [],
-      id: -1,
-    };
+    this.id = -1;
+    this.userId = -1;
+    this.foodItems = [];
     makeAutoObservable(this);
   }
 
   get total() {
     let total = 0;
-    if (this.cart.foodItems.length === 0) {
+    if (this.foodItems.length === 0) {
       return total;
     }
-    this.cart.foodItems.forEach((foodItem: IFoodItem) => {
+    this.foodItems.forEach((foodItem: IFoodItem) => {
       const { quantity, discount, price } = foodItem;
       const itemTotal = calcItemPrice(price! * quantity!, discount);
       total += Number(itemTotal) * 1000;
@@ -32,21 +35,23 @@ export default class CartStore {
     const addedItem = { ...obj };
     addedItem.quantity = quantity;
     addedItem.instructions = instructions;
-    this.cart.foodItems = [...this.cart.foodItems, addedItem];
+    this.foodItems = [...this.foodItems, addedItem];
   }
 
   changeItemQuantity(foodId: number, val: number) { // for /cart
-    const foodItemIndex = this.cart.foodItems.findIndex((foodItem: IFoodItem) => foodItem.id === foodId);
-    let { foodItems } = this.cart;
+    const foodItemIndex = this.foodItems.findIndex((foodItem: IFoodItem) => foodItem.id === foodId);
+    let { foodItems } = this;
     if (val === 0) {
       foodItems = foodItems.filter((foodItem: IFoodItem) => foodItem.id !== foodId);
     } else {
       foodItems[foodItemIndex].quantity! += val;
     }
-    this.cart.foodItems = foodItems;
+    this.foodItems = foodItems;
   }
 
   setCart(obj: ICart) {
-    this.cart = obj;
+    const { id, foodItems } = obj;
+    this.id = id;
+    this.foodItems = foodItems;
   }
 }

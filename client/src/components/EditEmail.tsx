@@ -38,7 +38,7 @@ function EditEmail() {
       <Col className="your-email">
         Your email
         <Form.Control
-          value={user.user.email}
+          value={user.email}
           readOnly
         />
       </Col>

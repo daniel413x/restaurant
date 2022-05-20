@@ -13,11 +13,11 @@ import {
 
 function ChooseDefaultAddress() {
   const { user, notifications } = useContext(Context);
-  const addresses = user.user.addresses!;
+  const addresses = user.addresses!;
   const [selectedDefaultAddress, setSelectedDefaultAddress] = useState<ICostumerAddress | null>(null);
   useEffect(() => {
-    if (user.user.defaultAddress) {
-      setSelectedDefaultAddress(user.user.defaultAddress!);
+    if (user.defaultAddress) {
+      setSelectedDefaultAddress(user.defaultAddress!);
     } else if (addresses.length > 0 && !selectedDefaultAddress) {
       setSelectedDefaultAddress(addresses[0]);
     }
@@ -41,7 +41,7 @@ function ChooseDefaultAddress() {
     if (selectedDefaultAddress) {
       user.removeAddress(selectedDefaultAddress.id);
     }
-    if (selectedDefaultAddress?.id === user.user.defaultAddress!.id) {
+    if (selectedDefaultAddress?.id === user.defaultAddress!.id) {
       user.setDefaultAddress(null);
     }
     if (addresses.length === 0) {
@@ -104,7 +104,7 @@ function ChooseDefaultAddress() {
         readOnly
       />
       <Col className="button-row">
-        <Button className={`${selectedDefaultAddress?.id === user.user.defaultAddress?.id && 'disabled-2'}`} onClick={setDefaultAddress}>
+        <Button className={`${selectedDefaultAddress?.id === user.defaultAddress?.id && 'disabled-2'}`} onClick={setDefaultAddress}>
           Set as default
         </Button>
         <Button onClick={deleteAddress}>

@@ -18,7 +18,7 @@ import Context from '../context/context';
 
 function Navigation() {
   const { user, cart } = useContext(Context);
-  const cartCount = countItems(cart.cart.foodItems);
+  const cartCount = countItems(cart.foodItems);
   return (
     <Navbar id="navbar" expand="lg">
       <Container>
@@ -39,18 +39,18 @@ function Navigation() {
               {' '}
               {cartCount ? `(${cartCount})` : null}
             </NavLink>
-            {!user.user.isAuth && (
+            {!user.isAuth && (
               <NavLink className="nav-link" to={LOGIN_ROUTE} title="Login">
                 Login
               </NavLink>
             )}
-            {!user.user.isAuth && (
+            {!user.isAuth && (
             <NavLink className="nav-link" to={REGISTRATION_ROUTE} title="Register">
               Register
             </NavLink>
             )}
-            {user.user.isAuth && (
-            <NavDropdown title={user.user.name}>
+            {user.isAuth && (
+            <NavDropdown title={user.name}>
               <NavDropdown.Item>
                 <NavLink className="nav-link" to={ACCOUNT_ROUTE} title="Account">
                   Account

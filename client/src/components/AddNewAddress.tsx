@@ -48,7 +48,7 @@ function AddNewAddress() {
     if (pressedSaveAsDefault) {
       user.setDefaultAddress(newAddress);
     }
-    return user.setAddresses([...user.user.addresses, newAddress]);
+    return user.setAddresses([...user.addresses, newAddress]);
   };
   return (
 

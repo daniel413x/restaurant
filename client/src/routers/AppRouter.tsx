@@ -18,7 +18,7 @@ function AppRouter({
   const { user } = useContext(Context);
   return (
     <Routes>
-      {user.user.isAuth && authedRoutes?.map(({ path, Component }) => (
+      {user.isAuth && authedRoutes?.map(({ path, Component }) => (
         <Route
           key={path}
           path={path}
