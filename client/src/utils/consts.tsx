@@ -2,11 +2,13 @@ import Admin from '../pages/Admin';
 import Cart from '../pages/Cart';
 import Menu from '../pages/Menu';
 import Auth from '../pages/Auth';
+import GuestOrder from '../pages/GuestOrder';
 import FrontPage from '../pages/FrontPage';
 import Account from '../pages/Account';
 import AccountDetails from '../pages/AccountDetails';
 import foodImage from '../assets/about-us-5.png';
 import categoryPlaceholder from '../assets/menu-appetizers.png';
+import { timestamp } from './functions';
 
 export const ADMIN_ROUTE = 'admin';
 export const LOGIN_ROUTE = 'login';
@@ -19,6 +21,7 @@ export const ACCOUNT_ROUTE = 'account/*';
 export const ACCOUNT_DETAILS_ROUTE = 'details';
 export const ACCOUNT_ORDERS_ROUTE = 'orders';
 export const ORDERS_ROUTE = 'orders';
+export const GUEST_ROUTE = 'guest';
 export const green = 'green';
 export const red = 'red';
 export const shortNotification = 4000;
@@ -54,6 +57,10 @@ export const indexPublicRoutes = [
   {
     path: MENU_ROUTE,
     Component: Menu,
+  },
+  {
+    path: `${GUEST_ROUTE}/${ORDERS_ROUTE}/:id`,
+    Component: GuestOrder,
   },
 ];
 
@@ -233,66 +240,41 @@ export const categoriesPlaceholders = [
   },
 ];
 
-export const cartPlaceholders = [
-  {
-    name: 'Grape Leaves',
-    ingredients: ['rice', 'nuts', 'spices', 'olive oil', 'lemon juice'],
-    price: 6.99,
-    image: foodImage,
-    time: [10, 15],
-    serves: 1,
-    discount: 0.1,
-    id: 1,
-    quantity: 3,
+export const placeholderOrder = {
+  id: 5,
+  userId: -1,
+  status: {
+    value: 0,
+    actionLog: [
+      {
+        timestamp: timestamp(),
+        message: 'Order received',
+      },
+    ],
   },
-  {
-    name: 'Parsley Tabbuleh',
-    ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
-    price: 6.99,
-    image: foodImage,
-    time: [10, 15],
-    serves: 1,
-    discount: 0.1,
-    id: 2,
-    quantity: 1,
-  },
-  {
-    name: 'Hummus',
-    ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
-    price: 4.99,
-    image: foodImage,
-    time: [10, 15],
-    serves: 1,
-    discount: 0.1,
-    id: 3,
-    quantity: 2,
-  },
-];
-
-export const basketPlaceholder = {
-  id: 0,
-  foodItems: cartPlaceholders,
+  foodItems: [
+    {
+      name: 'Parsley Tabbuleh',
+      ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
+      price: 6.99,
+      image: foodImage,
+      time: [10, 15],
+      serves: 1,
+      discount: 0.1,
+      id: 2,
+      quantity: 1,
+    },
+    {
+      name: 'Hummus',
+      ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
+      price: 4.99,
+      image: foodImage,
+      time: [10, 15],
+      serves: 1,
+      discount: 0.1,
+      id: 3,
+      quantity: 1,
+      instructions: 'no pickles',
+    },
+  ],
 };
-
-export const addressesPlaceholder = [
-  {
-    id: 2,
-    firstName: 'guest',
-    lastName: 'guest',
-    addressLineOne: '123 fake street',
-    addressLineTwo: '#503',
-    city: 'washington',
-    zip: '20008',
-    state: 'DC',
-  },
-  {
-    id: 3,
-    firstName: 'guest',
-    lastName: 'guest',
-    addressLineOne: '12364 fake atttt street nw ',
-    addressLineTwo: '#503',
-    city: 'washington',
-    zip: '20008',
-    state: 'DC',
-  },
-];

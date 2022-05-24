@@ -49,9 +49,20 @@ export default class CartStore implements ICart {
     this.foodItems = foodItems;
   }
 
+  clearItems() {
+    this.foodItems = [];
+  }
+
   setCart(obj: ICart) {
-    const { id, foodItems } = obj;
+    const { id, userId, foodItems } = obj;
     this.id = id;
+    this.userId = userId;
     this.foodItems = foodItems;
+  }
+
+  unsetCart() {
+    this.id = -1;
+    this.userId = -1;
+    this.foodItems = [];
   }
 }

@@ -13,8 +13,9 @@ import {
 import {
   shortNotification,
   red,
+  ACCOUNT_ROUTE,
 } from '../../utils/consts';
-// import { ACCOUNT_ROUTE } from '../../../utils/consts';
+import { timestamp } from '../../utils/functions';
 
 interface CheckoutProps {
   onHide: () => void;
@@ -23,11 +24,16 @@ interface CheckoutProps {
 }
 
 function Checkout({
-  checkoutItems,
   onHide,
   show,
+  checkoutItems,
 }: CheckoutProps) {
-  const { notifications } = useContext(Context);
+  const {
+    notifications,
+    cart,
+    user,
+    orders,
+  } = useContext(Context);
   const navigate = useNavigate();
   // const { cart /* user */ } = useContext(Context);
   const [email, setEmail] = useState<string>('');
@@ -45,7 +51,7 @@ function Checkout({
   const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [confirmation, setConfirmation] = useState<boolean>(false);
-  const [orderNumber, setOrderNumber] = useState<string>('');
+  const [orderNumber, setOrderNumber] = useState<number>(0);
   // const userId = user.id;
   const action = async () => {
     setPressedSubmit(true);
@@ -90,8 +96,24 @@ function Checkout({
         userId,
       );
       basket.setFoodItems([]); */
+      const order = {
+        id: Math.floor(Math.random() * 100),
+        userId: user.id,
+        foodItems: cart.foodItems,
+        status: {
+          value: 0,
+          actionLog: [
+            {
+              timestamp: timestamp(),
+              message: 'Order received',
+            },
+          ],
+        },
+      };
+      orders.addOrder(order);
+      cart.clearItems();
       setConfirmation(true);
-      return setOrderNumber('order.id');
+      return setOrderNumber(order.id);
     } catch (error: any) {
       return notifications.message(
         error.response.data.message,
@@ -100,6 +122,7 @@ function Checkout({
       );
     } finally {
       setLoading(false);
+      console.log(orders.all);
     }
   };
   return (
@@ -153,7 +176,8 @@ function Checkout({
                   </Col>
                   <Col>
                     <strong>
-                      $69.69
+                      $
+                      {cart.total}
                     </strong>
                   </Col>
                 </Row>
@@ -278,8 +302,8 @@ function Checkout({
             </Modal.Body>
           )}
         <Modal.Footer>
-          {!confirmation && <Button variant="outline-success" onClick={action}>Submit</Button>}
-          <Button variant={!confirmation ? 'outline-danger' : 'outline-success'} onClick={!confirmation ? onHide : () => navigate('ACCOUNT_ROUTE')}>Back</Button>
+          {confirmation ? <Button onClick={() => navigate(ACCOUNT_ROUTE)}>Track my order</Button>
+            : <Button variant="outline-success" onClick={action}>Submit</Button>}
         </Modal.Footer>
       </div>
     </Modal>

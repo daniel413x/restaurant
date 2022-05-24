@@ -2,10 +2,13 @@
 
 :root {
   --primary-red: #ab3550;
+  --primary-red-light: #dab9c1;
   --secondary-red: #ac2947;
   --tertiary-red: #43121d;
   --tertiary-red-border: #43121d18;
   --tertiary-red-light-text: #43121da1;
+  --primary-green: #35ab50;
+  /* background-color: rgb(105, 0, 0); */
   --navbar-height: 117px;
   --footer-height: 361px;
 }
@@ -122,6 +125,10 @@ input[type="submit"] {
   position: absolute;
 }
 
+textarea {
+  border: 1px solid #dacece;
+}
+
 .btn.btn-primary {
   background-color: var(--secondary-red);
   border: 2px solid var(--secondary-red);
@@ -177,7 +184,7 @@ input[type="submit"] {
 }
 
 .notification.green {
-  color: #35ab50;
+  color: var(--primary-green);
 }
 
 .notification.red {
@@ -1063,10 +1070,6 @@ input[type="submit"] {
   text-decoration: underline;
 }
 
-.food-item-auxiliary .ingredients {
-  font-size: 1.25rem;
-}
-
 .price-buttons {
   font-family: 'Quicksand', sans-serif;
   width: max-content;
@@ -1138,10 +1141,6 @@ input[type="submit"] {
   border: 4px solid rgb(231, 167, 167) !important;
   border-radius: 0px !important;
   color: var(--primary-red);
-}
-
-.modal-content textarea {
-  border: 1px solid #dacece;
 }
 
 .modal-content .btn-close {
@@ -1510,4 +1509,285 @@ input[type="submit"] {
 
 .image-upload .save-button {
   margin: 1rem auto;
+}
+
+#guest-order {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-red);
+}
+
+#guest-order h1 {
+  color: var(--primary-red);
+  margin: 1rem auto;
+}
+
+#guest-order .dividing-bar {
+  background-color: var(--primary-red);
+  height: 200px;
+  width: 100%;
+}
+
+#active-order {
+  border: 4px solid var(--primary-red);
+  border-radius: 0px;
+  width: 100%;
+  display: flex;
+}
+
+#active-order h2 {
+  width: 100%;
+  border-bottom: 4px solid var(--primary-red);
+  padding-left: 1.25rem;
+}
+
+#active-order .items h2 {
+  background-color: var(--primary-red);
+  color: #fff
+}
+
+#active-order .row {
+  margin: 0px;
+}
+
+#active-order .items {
+  border-bottom: 200px solid var(--primary-red);
+  border-right: 4px solid var(--primary-red);
+  padding: 0;
+}
+
+#active-order .items ul {
+  padding-top: .25rem;
+}
+
+#active-order .items textarea {
+  pointer-events: none;
+}
+
+#active-order .status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-bottom: 150px solid rgb(255, 255, 255);
+  padding: 0;
+}
+
+#active-order .status .label {
+  font-size: 2rem;
+  font-weight: 500;
+  border-bottom: 4px solid var(--primary-red);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: max-content;
+}
+
+#active-order .status .dynamic-status-subheading {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 0rem auto 2.5rem;
+}
+
+@media (max-width: 1200px) {
+  #active-order .status .info-row {
+    display: block;
+  }
+}
+
+#active-order .status .info-row .col-md-6 .inner-content {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+#active-order .status .info-row .estimated-time {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-top: 2.5rem;
+}
+
+#active-order .status .info-row .estimated-time .label {
+  border-bottom: 4px solid var(--primary-red);
+}
+
+#active-order .status .info-row .estimated-time .figure {
+  font-size: 1.25rem;
+}
+
+#active-order .status .info-row .order-log {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-top: 2.5rem;
+}
+
+#active-order .status .info-row .order-log .label {
+  border-bottom: 4px solid var(--primary-red);
+}
+
+#active-order .status .info-row .order-log ul {
+  padding: 0;
+  font-size: 1rem;
+  height: 5rem;
+  text-align: start;
+  list-style-type: none;
+}
+
+#active-order .status #order-progress .orb-wrapper {
+  position: relative;
+  width: max-content;
+  transition: all 0.5s ease-in-out; 
+}
+
+@media (max-width: 1200px) {
+  #active-order .status #order-progress {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+#active-order .status #order-progress .orb-wrapper .outer-orb {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 5px solid var(--primary-red-light);
+  z-index: 0;
+  position: relative;
+}
+
+#active-order .status #order-progress .orb-wrapper.in-progress .outer-orb {
+  animation: in-progress 2s infinite;
+}
+
+@keyframes in-progress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#active-order .status #order-progress .orb-wrapper.finished .outer-orb {
+  border: 5px solid var(--primary-red);
+}
+
+#active-order .status #order-progress .orb-wrapper .icon {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary-red-light);
+}
+
+#active-order .status #order-progress .orb-wrapper.finished .icon {
+  color: var(--primary-red);
+}
+
+#active-order .status #order-progress .orb-wrapper.in-progress .icon {
+  color: var(--primary-red);
+}
+
+#active-order .status #order-progress .orb-wrapper .inner-orb {
+  position: absolute;
+  content: 'aaaaa';
+  background-color: rgb(255, 255, 255);
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  color: #fff;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#active-order .status #order-progress .orb-wrapper .over-connector {
+  position: absolute;
+  content: 'aaaaa';
+  background-color: rgb(255, 255, 255);
+  width: 50px;
+  height: 20px;
+  color: #fff;
+  z-index: 1;
+  top: 50%;
+  left: 105%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 1200px) {
+  #active-order .status #order-progress .orb-wrapper .over-connector {
+    width: 20px;
+    height: 25px;
+    top: 105%;
+    left: 50%;
+  }
+}
+
+#active-order .status #order-progress .orb-wrapper .under-connector {
+  position: absolute;
+  content: 'aaaaa';
+  border: 5px solid var(--primary-red-light);
+  width: 75px;
+  height: 30px;
+  color: #fff;
+  z-index: 1;
+  top: 50%;
+  left: 105%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+@media (max-width: 1200px) {
+  #active-order .status #order-progress .orb-wrapper .under-connector {
+    width: 30px;
+    height: 75px;
+    top: 105%;
+    left: 50%;
+  }
+}
+
+#active-order .status #order-progress .orb-wrapper.finished .under-connector {
+  border: 5px solid var(--primary-red);
+}
+
+.food-item-order {
+  display: flex;
+  font-size: 1.25rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 575px) {
+  .food-item-order {
+    flex-direction: column;
+  }
+}
+
+.food-item-order img {
+  height: 100px;  
+}
+
+.food-item-order .info {
+  padding: 0rem .45rem;  
+}
+
+.food-item-order .info .name {
+  text-decoration: underline;
+}
+
+.food-item-order .info .ingredients {
+  font-size: .95rem;
+}
+
+.food-item-order .info textarea {
+  font-size: .95rem;
+  color: rgba(0, 0, 0, 0.5);
 }

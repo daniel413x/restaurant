@@ -10,7 +10,6 @@ import { observer } from 'mobx-react-lite';
 import { IFoodItem } from '../types/types';
 import List from '../components/List';
 import FoodItemAuxiliary from '../components/FoodItemAuxiliary';
-import { basketPlaceholder } from '../utils/consts';
 import { countItems } from '../utils/functions';
 import RemoveFromCart from '../components/modals/RemoveFromCart';
 import Checkout from '../components/modals/Checkout';
@@ -22,7 +21,7 @@ function Cart() {
   const thereAreItems = cartCount > 0;
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(false);
-  const [deletedItem, setDeletedItem] = useState<IFoodItem>({});
+  const [deletedItem, setDeletedItem] = useState<IFoodItem | null>(null);
   const handleDeleteModal = (item: IFoodItem) => {
     setDeletedItem(item);
     setShowDeleteModal(true);
@@ -32,13 +31,13 @@ function Cart() {
       <RemoveFromCart
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
-        itemName={deletedItem.name}
-        itemId={deletedItem.id}
+        itemName={deletedItem?.name}
+        itemId={deletedItem?.id}
       />
       <Checkout
         show={showCheckoutModal}
         onHide={() => setShowCheckoutModal(false)}
-        checkoutItems={basketPlaceholder.foodItems}
+        checkoutItems={cart.foodItems}
       />
       <Col>
         <h2>

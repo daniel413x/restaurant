@@ -21,3 +21,10 @@ export function countItems(arr: IFoodItem[]) {
   });
   return count;
 }
+
+export function timestamp() {
+  return new Date().toLocaleTimeString(navigator.language, {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}

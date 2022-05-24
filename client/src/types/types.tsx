@@ -87,3 +87,18 @@ export interface ICart {
   userId: number;
   foodItems: IFoodItem[];
 }
+
+export interface ITimestampedAction {
+  timestamp: string;
+  message: string;
+}
+
+export interface IOrder {
+  id: number;
+  userId: number;
+  foodItems: IFoodItem[];
+  status: {
+    value: number,
+    actionLog: ITimestampedAction[],
+  };
+}
