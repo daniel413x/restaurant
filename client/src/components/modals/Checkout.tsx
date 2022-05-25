@@ -122,7 +122,6 @@ function Checkout({
       );
     } finally {
       setLoading(false);
-      console.log(orders.all);
     }
   };
   return (

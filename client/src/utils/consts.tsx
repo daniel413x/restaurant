@@ -1,4 +1,5 @@
 import Admin from '../pages/Admin';
+import Orders from '../pages/Orders';
 import Cart from '../pages/Cart';
 import Menu from '../pages/Menu';
 import Auth from '../pages/Auth';
@@ -75,7 +76,7 @@ export const accountRoutes = [
   },
   {
     path: INDEX_ROUTE,
-    Component: Admin,
+    Component: Orders,
   },
 ];
 

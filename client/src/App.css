@@ -838,67 +838,80 @@ textarea {
   flex-direction: column;
   justify-content: center;
   position: relative;
-}
-
-#auth .box {
-  align-items: center;
   box-shadow: 0px 0px 2px 1.5px var(--primary-red);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 5rem auto;
   max-width: 450px;
-  padding-top: 5rem;
-  padding-bottom: 3rem;
-  width: 100%;
+  max-height: max-content;
+  margin: 5rem auto;
 }
 
 #auth h2 {
-  background-color: #fff;
-  color: var(--primary-red);
+  background-color: var(--primary-red);
+  color: #fff;
   font-weight: 400;
   position: absolute;
-  top: 55px;
+  top: -20px;
   padding-left: 10px;
   padding-right: 10px;
   text-align: center;
+  left: 70px;
 }
 
-#auth .toggle-default-address-form {
+#auth a {
+  margin-bottom: 2rem;
+}
+
+.auth-box {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 4rem;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+
+.auth-box .no-shift {
+  min-height: 40px;
+}
+
+@media (max-width: 445px) { 
+  .auth-box .no-shift {
+    min-height: 64px;
+  }
+}
+
+.auth-box .toggle-default-address-form {
   margin: auto auto 1rem;
 }
 
-#auth .toggle-default-address-form .label {
+.auth-box .toggle-default-address-form .label {
   color: var(--primary-red);
   font-weight: bold;
   display: flex;
 }
 
-#auth form {
+.auth-box form {
   align-items: center;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   width: 85%;
 }
 
-#auth form .smart-input {
+.auth-box form .smart-input {
   margin-bottom: 1rem;
   width: 100%;
 }
 
-#auth form .city-state-row {
+.auth-box form .city-state-row {
   display: grid;
   grid-template-columns: 49% 23% 28%;
 }
 
-#auth form input[value="state"] {
+.auth-box form input[value="state"] {
   padding: .75rem .25rem;
   border: 2px solid var(--primary-red);
   margin: 10px auto;
-}
-
-#auth a {
-  margin-top: 2rem;
 }
 
 .food-item-li:hover {
@@ -1524,13 +1537,12 @@ textarea {
   margin: 1rem auto;
 }
 
-#guest-order .dividing-bar {
-  background-color: var(--primary-red);
-  height: 200px;
-  width: 100%;
+#guest-order h3 {
+  color: var(--primary-red);
+  margin: 2rem 1rem;
 }
 
-#active-order {
+#active-order .main-row {
   border: 4px solid var(--primary-red);
   border-radius: 0px;
   width: 100%;
@@ -1556,6 +1568,14 @@ textarea {
   border-bottom: 200px solid var(--primary-red);
   border-right: 4px solid var(--primary-red);
   padding: 0;
+}
+
+@media (max-width: 767px) {
+  #active-order .items {
+    border-bottom: 200px solid var(--primary-red);
+    border-right: 0;
+    padding: 0;
+  }
 }
 
 #active-order .items ul {
@@ -1790,4 +1810,68 @@ textarea {
 .food-item-order .info textarea {
   font-size: .95rem;
   color: rgba(0, 0, 0, 0.5);
+}
+
+#suggest-registration {
+  background: url("./assets/suggest-register-2.png") no-repeat center center/cover;
+  height: auto;
+  overflow: hidden;
+  padding: 15px 0px;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  min-height: 1200px;
+  position: relative;
+  
+}
+
+@media (max-width: 991px) {
+  #suggest-registration {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+#suggest-registration::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(255,255,255,.25);
+  z-index: 0;
+}
+
+#suggest-registration h3 {
+  color: #fff;
+}
+
+#suggest-registration .col {
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  #suggest-registration {
+    padding: 45px 25px;
+  }
+}
+
+#suggest-registration .bullet-points {
+  background-color: rgb(255, 255, 255);
+  margin: 60px 10px;
+  padding: 7rem 2rem;
+  font-size: 1.55rem;
+  width: 100%;
+  max-width: 424px;
+  height: max-content;
+  font-family: 'Tajawal', sans-serif;
+}
+
+#suggest-registration .auth-box {
+  background-color: rgb(255, 255, 255);
+  padding: 7rem 2rem;
+  width: 100%;
+  max-width: 424px;
+  font-family: 'Tajawal', sans-serif;
 }

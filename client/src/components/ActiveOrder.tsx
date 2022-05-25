@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import Context from '../context/context';
 import List from './List';
 import FoodItemOrder from './FoodItemOrder';
@@ -43,65 +43,67 @@ function ActiveOrder() {
     });
   }, [orders.activeOrder?.status.value]);
   return (
-    <Row id="active-order">
-      <Col className="items" md={6}>
-        <h2>
-          Order #
-          {orders.activeOrder?.id}
-        </h2>
-        <List
-          items={orders.activeOrder?.foodItems!}
-          renderList={(foodItem: IFoodItem) => (
-            <FoodItemOrder
-              foodItem={foodItem}
-              key={foodItem.id}
-            />
-          )}
-        />
-      </Col>
-      <Col className="status" md={6}>
-        <h2>
-          The rest is on us!
-        </h2>
-        <span className="label">
-          Order status
-        </span>
-        <span className="dynamic-status-subheading">
-          {dynamicStatusSubheading}
-        </span>
-        <OrderProgress currentOrb={currentOrb} />
-        <Row className="info-row">
-          <Col className="order-log" md={6}>
-            <div className="inner-content">
-              <span className="label">
-                Order tracker
-              </span>
-              <ul>
-                {orders.activeOrder?.status!.actionLog.map((action: ITimestampedAction, index) => (
-                  <TimestampedAction
-                    message={action.message}
-                    timestamp={action.timestamp}
-                    currentOrb={currentOrb}
-                    index={index}
-                    key={action.message}
-                  />
-                ))}
-              </ul>
-            </div>
-          </Col>
-          <Col className="estimated-time" md={6}>
-            <div className="inner-content">
-              <span className="label">
-                Estimated time
-              </span>
-              <span className={`figure ${currentOrb === 3 && 'disabled-2'}`}>
-                {`${min} - ${max} minutes`}
-              </span>
-            </div>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
+    <Container id="active-order">
+      <Row className="main-row">
+        <Col className="items" md={6}>
+          <h2>
+            Order #
+            {orders.activeOrder?.id}
+          </h2>
+          <List
+            items={orders.activeOrder?.foodItems!}
+            renderList={(foodItem: IFoodItem) => (
+              <FoodItemOrder
+                foodItem={foodItem}
+                key={foodItem.id}
+              />
+            )}
+          />
+        </Col>
+        <Col className="status" md={6}>
+          <h2>
+            The rest is on us!
+          </h2>
+          <span className="label">
+            Order status
+          </span>
+          <span className="dynamic-status-subheading">
+            {dynamicStatusSubheading}
+          </span>
+          <OrderProgress currentOrb={currentOrb} />
+          <Row className="info-row">
+            <Col className="order-log" md={6}>
+              <div className="inner-content">
+                <span className="label">
+                  Order tracker
+                </span>
+                <ul>
+                  {orders.activeOrder?.status!.actionLog.map((action: ITimestampedAction, index) => (
+                    <TimestampedAction
+                      message={action.message}
+                      timestamp={action.timestamp}
+                      currentOrb={currentOrb}
+                      index={index}
+                      key={action.message}
+                    />
+                  ))}
+                </ul>
+              </div>
+            </Col>
+            <Col className="estimated-time" md={6}>
+              <div className="inner-content">
+                <span className="label">
+                  Estimated time
+                </span>
+                <span className={`figure ${currentOrb === 3 && 'disabled-2'}`}>
+                  {`${min} - ${max} minutes`}
+                </span>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

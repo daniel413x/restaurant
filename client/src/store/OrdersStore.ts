@@ -10,7 +10,6 @@ export default class OrdersStore {
 
   constructor() {
     this.orders = [];
-    // this.activeOrder = null;
     this.activeOrder = {
       foodItems: [],
       id: 5,
