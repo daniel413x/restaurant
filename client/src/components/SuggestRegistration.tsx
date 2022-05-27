@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import {
-  Col,
-} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import {
   ACCOUNT_ROUTE,
@@ -21,7 +18,7 @@ function SuggestRegistration() {
         show={showConfirmation}
         onHide={() => navigate(`/${ACCOUNT_ROUTE}`)}
       />
-      <Col className="bullet-points">
+      <div className="bullet-points">
         <ul>
           <li>
             Lorem ipsum dolor sit amet
@@ -46,13 +43,13 @@ function SuggestRegistration() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum amet leo.
         </p>
         */}
-      </Col>
-      <Col>
+      </div>
+      <div>
         <AuthBox
           onSuccess={onSuccess}
           showLogin={false}
         />
-      </Col>
+      </div>
     </div>
   );
 }

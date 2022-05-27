@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import {
   indexAuthedRoutes,
   indexPublicRoutes,
-  placeholderOrder,
+  testActiveOrder,
 } from './utils/consts';
 import Context from './context/context';
 import AppRouter from './routers/AppRouter';
@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 function App() {
   const { orders } = useContext(Context);
   useEffect(() => {
-    orders.setActiveOrder(placeholderOrder);
+    orders.setActiveOrder(testActiveOrder);
   }, []);
   return (
     <Router>

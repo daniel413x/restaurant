@@ -15,7 +15,7 @@ import {
   red,
   ACCOUNT_ROUTE,
 } from '../../utils/consts';
-import { timestamp } from '../../utils/functions';
+import { actionTimestamp, orderDate } from '../../utils/functions';
 
 interface CheckoutProps {
   onHide: () => void;
@@ -104,11 +104,13 @@ function Checkout({
           value: 0,
           actionLog: [
             {
-              timestamp: timestamp(),
+              timestamp: actionTimestamp(),
               message: 'Order received',
             },
           ],
         },
+        date: orderDate(),
+        total: cart.total,
       };
       orders.addOrder(order);
       cart.clearItems();

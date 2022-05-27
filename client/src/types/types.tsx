@@ -101,4 +101,6 @@ export interface IOrder {
     value: number,
     actionLog: ITimestampedAction[],
   };
+  date: string;
+  total: number;
 }

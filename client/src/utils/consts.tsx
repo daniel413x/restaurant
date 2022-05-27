@@ -9,7 +9,7 @@ import Account from '../pages/Account';
 import AccountDetails from '../pages/AccountDetails';
 import foodImage from '../assets/about-us-5.png';
 import categoryPlaceholder from '../assets/menu-appetizers.png';
-import { timestamp } from './functions';
+import { actionTimestamp, orderDate } from './functions';
 
 export const ADMIN_ROUTE = 'admin';
 export const LOGIN_ROUTE = 'login';
@@ -72,7 +72,7 @@ export const accountRoutes = [
   },
   {
     path: ACCOUNT_ORDERS_ROUTE,
-    Component: Auth,
+    Component: Orders,
   },
   {
     path: INDEX_ROUTE,
@@ -241,18 +241,19 @@ export const categoriesPlaceholders = [
   },
 ];
 
-export const placeholderOrder = {
+export const testActiveOrder = {
   id: 5,
   userId: -1,
   status: {
     value: 0,
     actionLog: [
       {
-        timestamp: timestamp(),
+        timestamp: actionTimestamp(),
         message: 'Order received',
       },
     ],
   },
+  date: orderDate(),
   foodItems: [
     {
       name: 'Parsley Tabbuleh',
@@ -278,4 +279,113 @@ export const placeholderOrder = {
       instructions: 'no pickles',
     },
   ],
+  total: 10.78,
 };
+
+export const testPreviousOrders = [
+  {
+    id: 6,
+    userId: -1,
+    status: {
+      value: 0,
+      actionLog: [],
+    },
+    date: orderDate(),
+    foodItems: [
+      {
+        name: 'Parsley Tabbuleh',
+        ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
+        price: 6.99,
+        image: foodImage,
+        time: [10, 15],
+        serves: 1,
+        discount: 0.1,
+        id: 2,
+        quantity: 1,
+      },
+      {
+        name: 'Hummus',
+        ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
+        price: 4.99,
+        image: foodImage,
+        time: [10, 15],
+        serves: 1,
+        discount: 0.1,
+        id: 3,
+        quantity: 1,
+        instructions: 'no pickles',
+      },
+    ],
+    total: 10.78,
+  },
+  {
+    id: 7,
+    userId: -1,
+    status: {
+      value: 0,
+      actionLog: [],
+    },
+    date: orderDate(),
+    foodItems: [
+      {
+        name: 'Parsley Tabbuleh',
+        ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
+        price: 6.99,
+        image: foodImage,
+        time: [10, 15],
+        serves: 1,
+        discount: 0.1,
+        id: 2,
+        quantity: 1,
+      },
+      {
+        name: 'Hummus',
+        ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
+        price: 4.99,
+        image: foodImage,
+        time: [10, 15],
+        serves: 1,
+        discount: 0.1,
+        id: 3,
+        quantity: 1,
+        instructions: 'no pickles',
+      },
+    ],
+    total: 10.78,
+  },
+  {
+    id: 8,
+    userId: -1,
+    status: {
+      value: 0,
+      actionLog: [],
+    },
+    date: orderDate(),
+    foodItems: [
+      {
+        name: 'Parsley Tabbuleh',
+        ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
+        price: 6.99,
+        image: foodImage,
+        time: [10, 15],
+        serves: 1,
+        discount: 0.1,
+        id: 2,
+        quantity: 1,
+      },
+      {
+        name: 'Hummus',
+        ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
+        price: 4.99,
+        image: foodImage,
+        time: [10, 15],
+        serves: 1,
+        discount: 0.1,
+        id: 3,
+        quantity: 1,
+        instructions: 'no pickles',
+      },
+    ],
+    total: 10.78,
+  },
+];

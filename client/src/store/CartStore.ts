@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import {
   ICart, IFoodItem,
 } from '../types/types';
-import { calcItemPrice } from '../utils/functions';
+import { calcTotal } from '../utils/functions';
 
 export default class CartStore implements ICart {
   id: number;
@@ -19,16 +19,7 @@ export default class CartStore implements ICart {
   }
 
   get total() {
-    let total = 0;
-    if (this.foodItems.length === 0) {
-      return total;
-    }
-    this.foodItems.forEach((foodItem: IFoodItem) => {
-      const { quantity, discount, price } = foodItem;
-      const itemTotal = calcItemPrice(price! * quantity!, discount);
-      total += Number(itemTotal) * 1000;
-    });
-    return total * 0.001;
+    return calcTotal(this.foodItems);
   }
 
   addItem(obj: IFoodItem, quantity: number, instructions: string) { // for AddItem.tsx

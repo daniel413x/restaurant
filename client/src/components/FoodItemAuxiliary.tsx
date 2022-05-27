@@ -17,7 +17,7 @@ function FoodItemAuxiliary({
   increment,
   decrement,
 }: FoodItemAuxiliaryProps) {
-  const { name, ingredients } = foodItem;
+  const { name, ingredients, instructions } = foodItem;
   return (
     <div className="food-item-auxiliary">
       <div>
@@ -27,6 +27,12 @@ function FoodItemAuxiliary({
         <div>
           {ingredients?.join(', ')}
         </div>
+        {instructions && (
+        <textarea
+          value={instructions}
+          readOnly
+        />
+        )}
       </div>
       <QuantityButtons
         foodItem={foodItem}

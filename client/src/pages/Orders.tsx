@@ -1,27 +1,28 @@
-import React from 'react';
-import ChooseAvatar from '../components/ChooseAvatar';
-import EditEmail from '../components/EditEmail';
-import EditPassword from '../components/EditPassword';
-import DeliveryAddresses from '../components/DeliveryAddresses';
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useEffect, useState } from 'react';
+import ActiveOrder from '../components/ActiveOrder';
+import PreviousOrders from '../components/PreviousOrders';
+import Context from '../context/context';
 
 function Orders() {
+  const { orders } = useContext(Context);
+  const [activeOrder, setActiveOrder] = useState(false);
+  useEffect(() => {
+    if (orders.activeOrder.id !== -1) {
+      setActiveOrder(true);
+    }
+  }, [orders.activeOrder]);
   return (
-    <div id="account-details">
-      <h4 className="section-label">
-        Personalize
-      </h4>
-      <ChooseAvatar />
-      <h4 className="section-label">
-        Email &amp; Password
-      </h4>
-      <EditEmail />
-      <EditPassword />
-      <h4 className="section-label">
-        Addresses &amp; Default Address
-      </h4>
-      <DeliveryAddresses />
+    <div id="orders">
+      {activeOrder && (
+        <h1>
+          You placed an order
+        </h1>
+      )}
+      <ActiveOrder />
+      <PreviousOrders />
     </div>
   );
 }
 
-export default Orders;
+export default observer(Orders);

@@ -14,6 +14,19 @@ export function calcItemPrice(price: number, discount?: number) {
   return returnedPrice.toFixed(2);
 }
 
+export function calcTotal(foodItems: IFoodItem[]) {
+  let total = 0;
+  if (foodItems.length === 0) {
+    return total;
+  }
+  foodItems.forEach((foodItem: IFoodItem) => {
+    const { quantity, discount, price } = foodItem;
+    const itemTotal = calcItemPrice(price! * quantity!, discount);
+    total += Number(itemTotal) * 1000;
+  });
+  return total * 0.001;
+}
+
 export function countItems(arr: IFoodItem[]) {
   let count = 0;
   arr.forEach((item) => {
@@ -22,9 +35,19 @@ export function countItems(arr: IFoodItem[]) {
   return count;
 }
 
-export function timestamp() {
+export function actionTimestamp() {
   return new Date().toLocaleTimeString(navigator.language, {
     hour: '2-digit',
     minute: '2-digit',
+  });
+}
+
+export function orderDate() {
+  return new Date().toLocaleTimeString(navigator.language, {
+    hour: '2-digit',
+    minute: '2-digit',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
   });
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
 import List from './List';
 import FoodItemOrder from './FoodItemOrder';
@@ -107,4 +108,4 @@ function ActiveOrder() {
   );
 }
 
-export default ActiveOrder;
+export default observer(ActiveOrder);
