@@ -39,13 +39,13 @@ function QuantityButtons({
         $
         {formattedPrice}
       </div>
-      <div className="buttons">
+      <div className="icon-buttons">
         {handleDeleteModal && (
         <Button onClick={handleDeleteModal}>
           <FontAwesomeIcon icon={faBan} />
         </Button>
         )}
-        <Button onClick={decrement} className={`${quantity <= 1 && 'disabled-2'}`}>
+        <Button className={`${quantity <= 1 && 'disabled-2'}`} onClick={decrement}>
           <FontAwesomeIcon icon={faCaretDown} />
         </Button>
         <Button onClick={increment}>

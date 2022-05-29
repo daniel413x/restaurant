@@ -4,10 +4,25 @@ import {
 } from 'react-bootstrap';
 import { IModalProps } from '../../types/types';
 
+interface ConfirmationProps extends IModalProps {
+  header?: string;
+  body?: string;
+  onConfirmFunc?: () => void;
+}
+
 function Confirmation({
   onHide,
   show,
-}: IModalProps) {
+  header,
+  body,
+  onConfirmFunc,
+}: ConfirmationProps) {
+  const onOk = () => {
+    if (onConfirmFunc) {
+      onConfirmFunc();
+    }
+    onHide();
+  };
   return (
     <Modal
       show={show}
@@ -18,15 +33,28 @@ function Confirmation({
     >
       <Modal.Body>
         <h2>
-          Registration successful!
+          {header}
         </h2>
-        Please click &quot;OK&quot; to navigate to the account page, where you can continue tracking your order.
+        {body}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide}>OK</Button>
+        <Button onClick={onOk}>
+          OK
+        </Button>
+        {onConfirmFunc && (
+          <Button onClick={onHide}>
+            Cancel
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   );
 }
+
+Confirmation.defaultProps = {
+  header: '',
+  body: '',
+  onConfirmFunc: false,
+};
 
 export default Confirmation;

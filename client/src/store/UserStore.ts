@@ -6,6 +6,8 @@ import {
 export default class UserStore implements IUser {
   isAuth?: boolean;
 
+  isAdmin?: boolean;
+
   id: number;
 
   avatar: string;
@@ -20,6 +22,7 @@ export default class UserStore implements IUser {
 
   constructor() {
     this.isAuth = true;
+    this.isAdmin = true;
     this.id = -1;
     this.name = 'Guest';
     this.avatar = '';

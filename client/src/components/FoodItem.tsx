@@ -24,17 +24,24 @@ function Time({ time }: { time: number[] | undefined }) {
   );
 }
 
+interface FoodItemProps {
+  foodItem: IFoodItem;
+  bootstrapWidth?: number | boolean;
+}
+
 function FoodItem({
-  image,
-  name,
-  time,
-  serves,
-  price,
-  discount,
-  ingredients = [''],
+  foodItem,
   bootstrapWidth,
-}: IFoodItem) {
-  const hideIngredients = ingredients[0] === '';
+}: FoodItemProps) {
+  const {
+    image,
+    name,
+    time,
+    serves,
+    price,
+    discount,
+    ingredients,
+  } = foodItem;
   const undiscountedPrice = calcItemPrice(price!);
   const discountedPrice = discount ? calcItemPrice(price!, discount) : null;
   return (
@@ -44,7 +51,7 @@ function FoodItem({
         <span className="name">
           {name}
         </span>
-        <span className={`ingredients ${hideIngredients ? 'none' : null}`}>
+        <span className="ingredients">
           {ingredients?.join(' • ')}
         </span>
         <span className="info">
@@ -77,8 +84,6 @@ function FoodItem({
 }
 
 FoodItem.defaultProps = {
-  discount: 0,
-  ingredients: [''],
   bootstrapWidth: false,
 };
 

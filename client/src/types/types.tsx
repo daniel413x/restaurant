@@ -25,6 +25,7 @@ export interface ICostumerAddress {
 
 export interface IUser {
   isAuth?: boolean;
+  isAdmin?: boolean;
   id: number;
   name: string;
   email: string;
@@ -63,6 +64,7 @@ export interface IFoodItem {
 export interface IFoodCategory {
   name: string;
   foodItems: IFoodItem[];
+  id: number;
 }
 
 export interface IModalProps {

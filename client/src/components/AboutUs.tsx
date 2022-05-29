@@ -8,10 +8,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import imageOne from '../assets/about-us-1.png';
 import imageTwo from '../assets/about-us-2.png';
-import imageFour from '../assets/about-us-4.png';
-import imageFive from '../assets/about-us-5.png';
-import imageSix from '../assets/about-us-6.png';
 import FoodItem from './FoodItem';
+import { demoFoodItems } from '../utils/consts';
+import { IFoodItem } from '../types/types';
 
 function ExploreOurFoods() {
   return (
@@ -20,33 +19,12 @@ function ExploreOurFoods() {
         Explore Our Foods
       </h2>
       <Row>
-        <FoodItem
-          image={imageFour}
-          name="Rainbow Vegetable Sandwich"
-          time={[15, 20]}
-          serves={1}
-          price={9.50}
-          discount={0.1}
-          bootstrapWidth={4}
-        />
-        <FoodItem
-          image={imageFive}
-          name="Vegetarian Burger"
-          time={[30, 45]}
-          serves={1}
-          price={9.20}
-          discount={0.1}
-          bootstrapWidth={4}
-        />
-        <FoodItem
-          image={imageSix}
-          name="Raspberry Stuffed French Toast"
-          time={[15, 20]}
-          serves={1}
-          price={13.20}
-          discount={0.1}
-          bootstrapWidth={4}
-        />
+        {demoFoodItems.map((foodItem: IFoodItem) => (
+          <FoodItem
+            foodItem={foodItem}
+            bootstrapWidth={4}
+          />
+        ))}
       </Row>
     </Container>
   );

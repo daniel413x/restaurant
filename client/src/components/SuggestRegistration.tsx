@@ -17,6 +17,8 @@ function SuggestRegistration() {
       <Confirmation
         show={showConfirmation}
         onHide={() => navigate(`/${ACCOUNT_ROUTE}`)}
+        header="Registration successful!"
+        body="Please click &quot;OK&quot; to navigate to the account page, where you can continue tracking your order."
       />
       <div className="bullet-points">
         <ul>
@@ -33,16 +35,6 @@ function SuggestRegistration() {
             Sed tempus
           </li>
         </ul>
-        {/*
-        <h2>
-          Sed tempus
-          <br />
-          d urna et pharetra.
-        </h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum amet leo.
-        </p>
-        */}
       </div>
       <div>
         <AuthBox

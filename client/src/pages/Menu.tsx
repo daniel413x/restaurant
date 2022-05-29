@@ -61,21 +61,14 @@ function Menu() {
             items={categoriesPlaceholders}
             renderList={(category: IFoodCategory) => (
               <FoodCategory
-                name={category.name}
-                foodItems={category.foodItems}
+                category={category}
                 renderItem={(foodItem: IFoodItem) => (
                   <FoodItemLi
                     onClick={() => handleModal(foodItem)}
                     enterPress={keyPressed}
                   >
                     <FoodItem
-                      image={foodItem.image}
-                      name={foodItem.name}
-                      ingredients={foodItem.ingredients}
-                      price={foodItem.price}
-                      time={foodItem.time}
-                      serves={foodItem.serves}
-                      discount={foodItem.discount}
+                      foodItem={foodItem}
                     />
                   </FoodItemLi>
                 )}

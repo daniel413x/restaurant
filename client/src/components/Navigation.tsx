@@ -12,6 +12,7 @@ import {
   MENU_ROUTE,
   CART_ROUTE,
   ACCOUNT_ROUTE,
+  ADMIN_ROUTE,
 } from '../utils/consts';
 import { countItems } from '../utils/functions';
 import Context from '../context/context';
@@ -56,8 +57,15 @@ function Navigation() {
                   Account
                 </NavLink>
               </NavDropdown.Item>
-              <NavDropdown.Item>
-                <Button className="nav-link" title="Logout">
+              {user.isAdmin && (
+                <NavDropdown.Item>
+                  <NavLink className="nav-link" to={ADMIN_ROUTE} title="Admin">
+                    Admin
+                  </NavLink>
+                </NavDropdown.Item>
+              )}
+              <NavDropdown.Item className="logout-tab">
+                <Button className="nav-link logout-button" title="Logout">
                   Logout
                 </Button>
               </NavDropdown.Item>

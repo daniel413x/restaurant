@@ -5,16 +5,21 @@ import {
 import { IFoodItem, IFoodCategory } from '../types/types';
 import { makeId } from '../utils/functions';
 
-interface FoodCategoryProps extends IFoodCategory {
+interface FoodCategoryProps {
   renderItem: (item: IFoodItem) => ReactNode;
+  category: IFoodCategory;
 }
 
 function FoodCategory({
-  name, foodItems, renderItem,
+  category, renderItem,
 }: FoodCategoryProps) {
-  const id = makeId(name);
+  const {
+    name,
+    foodItems,
+  } = category;
+  const hrefId = makeId(name);
   return (
-    <Col id={id} className="food-category">
+    <Col id={hrefId} className="food-category">
       <div className="label">
         {name}
       </div>

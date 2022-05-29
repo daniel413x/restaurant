@@ -49,7 +49,7 @@ function ChooseAvatar() {
         onChange={selectFile}
         type="file"
       />
-      <Button className="save-button" onClick={submit}>
+      <Button className={`save-button ${!selectedFile && 'disabled-2'}`} onClick={submit}>
         Save
       </Button>
     </Col>
