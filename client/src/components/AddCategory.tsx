@@ -2,6 +2,7 @@ import React, {
   useContext,
   useState,
   ChangeEvent,
+  FormEvent,
 } from 'react';
 import {
   Col,
@@ -17,8 +18,8 @@ import {
 function AddCategory() {
   const [input, setInput] = useState<string>('');
   const { /* categories, */ notifications } = useContext(Context);
-  const submit = () => {
-    // categories.add(SERVER);
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     notifications.message(
       'Category created',
       green,

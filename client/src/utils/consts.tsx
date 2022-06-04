@@ -2,11 +2,12 @@ import Admin from '../pages/Admin';
 import Orders from '../pages/Orders';
 import Cart from '../pages/Cart';
 import Menu from '../pages/Menu';
+import Logout from '../pages/Logout';
 import Auth from '../pages/Auth';
 import GuestOrder from '../pages/GuestOrder';
 import FrontPage from '../pages/FrontPage';
 import Account from '../pages/Account';
-import AddEditCategories from '../pages/AddEditCategories';
+import EditMenu from '../pages/EditMenu';
 import AccountDetails from '../pages/AccountDetails';
 import foodImage from '../assets/about-us-5.png';
 import imageFour from '../assets/about-us-4.png';
@@ -24,6 +25,7 @@ export const ADMIN_CATEGORIES_ROUTE = 'categories';
 export const ADMIN_FOOD_ITEMS_ROUTE = 'fooditems';
 export const ADMIN_ORDERS_ROUTE = 'orders';
 export const LOGIN_ROUTE = 'login';
+export const LOGOUT_ROUTE = 'logout';
 export const REGISTRATION_ROUTE = 'registration';
 export const FRONT_PAGE_ROUTE = '/*';
 export const MENU_ROUTE = 'menu';
@@ -42,6 +44,10 @@ export const indexAuthedRoutes = [
   {
     path: ACCOUNT_ROUTE,
     Component: Account,
+  },
+  {
+    path: LOGOUT_ROUTE,
+    Component: Logout,
   },
 ];
 
@@ -89,16 +95,12 @@ export const accountRoutes = [
 
 export const adminRoutes = [
   {
-    path: ADMIN_CATEGORIES_ROUTE,
-    Component: AddEditCategories,
-  },
-  {
     path: ADMIN_ORDERS_ROUTE,
     Component: AccountDetails,
   },
   {
-    path: ADMIN_FOOD_ITEMS_ROUTE,
-    Component: Auth,
+    path: MENU_ROUTE,
+    Component: EditMenu,
   },
   {
     path: ACCOUNT_INDEX_ROUTE,
@@ -116,6 +118,10 @@ export const demoFoodItems = [
     serves: 1,
     discount: 0.1,
     id: 1,
+    category: {
+      id: 3,
+      name: 'Lunch',
+    },
   },
   {
     name: 'Vegetarian Burger',
@@ -126,6 +132,10 @@ export const demoFoodItems = [
     serves: 1,
     discount: 0.1,
     id: 1,
+    category: {
+      id: 3,
+      name: 'Lunch',
+    },
   },
   {
     name: 'Raspberry Stuffed French Toast',
@@ -136,12 +146,16 @@ export const demoFoodItems = [
     serves: 1,
     discount: 0.1,
     id: 1,
+    category: {
+      id: 3,
+      name: 'Lunch',
+    },
   },
 ];
 
 export const categoriesPlaceholders = [
   {
-    id: 0,
+    id: 1,
     name: 'Appetizers',
     image: categoryPlaceholder,
     foodItems: [
@@ -154,6 +168,10 @@ export const categoriesPlaceholders = [
         serves: 1,
         discount: 0.1,
         id: 1,
+        category: {
+          id: 1,
+          name: 'Appetizers',
+        },
       },
       {
         name: 'Parsley Tabbuleh',
@@ -164,6 +182,10 @@ export const categoriesPlaceholders = [
         serves: 1,
         discount: 0.1,
         id: 2,
+        category: {
+          id: 1,
+          name: 'Appetizers',
+        },
       },
       {
         name: 'Hummus',
@@ -174,6 +196,10 @@ export const categoriesPlaceholders = [
         serves: 1,
         discount: 0.1,
         id: 3,
+        category: {
+          id: 1,
+          name: 'Appetizers',
+        },
       },
       {
         name: 'Hummus Platter',
@@ -184,6 +210,10 @@ export const categoriesPlaceholders = [
         serves: 1,
         discount: 0.1,
         id: 4,
+        category: {
+          id: 1,
+          name: 'Appetizers',
+        },
       },
       {
         name: 'Fresh Mozzarella Platter',
@@ -194,11 +224,15 @@ export const categoriesPlaceholders = [
         serves: 1,
         discount: 0.1,
         id: 5,
+        category: {
+          id: 1,
+          name: 'Appetizers',
+        },
       },
     ],
   },
   {
-    id: 1,
+    id: 2,
     name: 'Breakfast',
     image: categoryPlaceholder,
     foodItems: [
@@ -210,6 +244,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 6,
+        category: {
+          id: 2,
+          name: 'Breakfast',
+        },
       },
       {
         name: 'Parsley Tabbuleh',
@@ -219,6 +258,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 7,
+        category: {
+          id: 2,
+          name: 'Breakfast',
+        },
       },
       {
         name: 'Hummus',
@@ -228,6 +272,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 8,
+        category: {
+          id: 2,
+          name: 'Breakfast',
+        },
       },
       {
         name: 'Hummus Platter',
@@ -237,6 +286,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 9,
+        category: {
+          id: 2,
+          name: 'Breakfast',
+        },
       },
       {
         name: 'Fresh Mozzarella Platter',
@@ -246,11 +300,16 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 10,
+        category: {
+          id: 2,
+          name: 'Breakfast',
+        },
       },
     ],
   },
   {
-    id: 2,
+    id: 3,
     name: 'Lunch',
     image: categoryPlaceholder,
     foodItems: [
@@ -262,6 +321,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 11,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
       {
         name: 'Parsley Tabbuleh',
@@ -271,6 +335,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 12,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
       {
         name: 'Hummus',
@@ -280,6 +349,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 13,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
       {
         name: 'Hummus Platter',
@@ -289,6 +363,11 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 14,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
       {
         name: 'Fresh Mozzarella Platter',
@@ -298,8 +377,19 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
+        id: 15,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
     ],
+  },
+  {
+    id: -1,
+    name: 'Uncategorized',
+    image: categoryPlaceholder,
+    foodItems: [],
   },
 ];
 
@@ -327,6 +417,10 @@ export const testActiveOrder = {
       discount: 0.1,
       id: 2,
       quantity: 1,
+      category: {
+        id: 3,
+        name: 'Lunch',
+      },
     },
     {
       name: 'Hummus',
@@ -339,6 +433,10 @@ export const testActiveOrder = {
       id: 3,
       quantity: 1,
       instructions: 'no pickles',
+      category: {
+        id: 3,
+        name: 'Lunch',
+      },
     },
   ],
   total: 10.78,
@@ -364,6 +462,10 @@ export const testPreviousOrders = [
         discount: 0.1,
         id: 2,
         quantity: 1,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
       {
         name: 'Hummus',
@@ -376,6 +478,10 @@ export const testPreviousOrders = [
         id: 3,
         quantity: 1,
         instructions: 'no pickles',
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
     ],
     total: 10.78,
@@ -399,6 +505,10 @@ export const testPreviousOrders = [
         discount: 0.1,
         id: 2,
         quantity: 1,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
       {
         name: 'Hummus',
@@ -411,6 +521,10 @@ export const testPreviousOrders = [
         id: 3,
         quantity: 1,
         instructions: 'no pickles',
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
     ],
     total: 10.78,
@@ -434,6 +548,10 @@ export const testPreviousOrders = [
         discount: 0.1,
         id: 2,
         quantity: 1,
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
       {
         name: 'Hummus',
@@ -446,6 +564,10 @@ export const testPreviousOrders = [
         id: 3,
         quantity: 1,
         instructions: 'no pickles',
+        category: {
+          id: 3,
+          name: 'Lunch',
+        },
       },
     ],
     total: 10.78,

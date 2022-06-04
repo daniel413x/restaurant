@@ -7,17 +7,16 @@ import {
 import { NavLink } from 'react-router-dom';
 import {
   adminRoutes,
-  ADMIN_CATEGORIES_ROUTE,
   ADMIN_ORDERS_ROUTE,
-  ADMIN_FOOD_ITEMS_ROUTE,
   ADMIN_INDEX_ROUTE,
+  MENU_ROUTE,
 } from '../utils/consts';
 import AppRouter from '../routers/AppRouter';
 
 function Admin() {
   return (
     <Container id="admin">
-      <Row>
+      <Row className="col-wrapper">
         <Col className="left-col" md="auto">
           <NavLink className="btn btn-primary" to={ADMIN_INDEX_ROUTE}>
             Index
@@ -25,11 +24,8 @@ function Admin() {
           <NavLink className="btn btn-primary" to={ADMIN_ORDERS_ROUTE}>
             Orders (2)
           </NavLink>
-          <NavLink className="btn btn-primary" to={ADMIN_CATEGORIES_ROUTE}>
-            Categories
-          </NavLink>
-          <NavLink className="btn btn-primary" to={ADMIN_FOOD_ITEMS_ROUTE}>
-            Food items
+          <NavLink className="btn btn-primary" to={MENU_ROUTE}>
+            Menu
           </NavLink>
         </Col>
         <Col className="right-col">

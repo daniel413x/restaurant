@@ -24,7 +24,7 @@ export default class UserStore implements IUser {
     this.isAuth = true;
     this.isAdmin = true;
     this.id = -1;
-    this.name = 'Guest';
+    this.name = 'Admin';
     this.avatar = '';
     this.email = '';
     this.addresses = [
@@ -86,7 +86,8 @@ export default class UserStore implements IUser {
   }
 
   unsetUser() {
-    this.isAuth = true;
+    this.isAuth = false;
+    this.isAdmin = false;
     this.id = -1;
     this.name = 'Guest';
     this.avatar = '';

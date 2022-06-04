@@ -47,18 +47,18 @@ export interface ITestimonial {
 }
 
 export interface IFoodItem {
-  id?: number;
-  image?: string;
-  name?: string;
-  time?: number[];
-  serves?: number;
-  price?: number;
-  discount?: number;
-  ingredients?: string[];
-  bootstrapWidth?: number;
+  id: number;
+  image: string;
+  name: string;
+  time: number[];
+  serves: number;
+  price: number;
+  discount: number;
+  ingredients: string[];
   quantity?: number;
   // calories?
   instructions?: string;
+  category: IFoodItemCategory;
 }
 
 export interface IFoodCategory {
@@ -66,6 +66,8 @@ export interface IFoodCategory {
   foodItems: IFoodItem[];
   id: number;
 }
+
+type IFoodItemCategory = Omit<IFoodCategory, 'foodItems'>;
 
 export interface IModalProps {
   onHide: () => void;

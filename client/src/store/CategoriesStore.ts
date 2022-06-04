@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import {
-  IFoodCategory,
+  IFoodCategory, IFoodItem,
 } from '../types/types';
 
 export default class UserStore {
@@ -30,8 +30,63 @@ export default class UserStore {
     this.categories = [...this.categories, obj];
   }
 
-  delete(id: number) {
-    this.categories = this.categories.filter((category) => category.id !== id);
+  deleteCategory(obj: IFoodCategory) {
+    const {
+      id,
+      foodItems,
+    } = obj;
+    const uncategorized = this.categories.find((category) => category.id === -1)!;
+    uncategorized.foodItems = foodItems;
+    const newCategories = this.categories.filter((category) => category.id !== id).map((category) => {
+      if (category.id === -1) {
+        return uncategorized;
+      }
+      return category;
+    });
+    this.categories = newCategories;
+  }
+
+  deleteFoodItem(deletedFoodItemId: number, foodCategoryId: number) {
+    const updatedCategory = this.categories.find((category) => category.id === foodCategoryId)!;
+    updatedCategory.foodItems = updatedCategory?.foodItems.filter((foodItem) => foodItem.id !== deletedFoodItemId);
+    this.categories = this.categories.map((category) => {
+      if (category.id === updatedCategory.id) {
+        return updatedCategory;
+      }
+      return category;
+    });
+  }
+
+  updateFoodItem(updatedFoodItem: IFoodItem, previousCategoryId?: number) {
+    if (previousCategoryId && previousCategoryId >= 0) {
+      const previousCategory = this.categories.find((category) => category.id === previousCategoryId)!;
+      previousCategory.foodItems = previousCategory.foodItems.filter((foodItem) => foodItem.id !== updatedFoodItem.id);
+      const newCategory = this.categories.find((category) => category.id === updatedFoodItem.category.id)!;
+      newCategory.foodItems = [...newCategory.foodItems, updatedFoodItem];
+      this.categories = this.categories.map((category) => {
+        if (category.id === previousCategory.id) {
+          return previousCategory;
+        }
+        if (category.id === newCategory.id) {
+          return newCategory;
+        }
+        return category;
+      });
+      return;
+    }
+    const itemCategory = this.categories.find((category) => category.id === updatedFoodItem.category.id)!;
+    itemCategory.foodItems = itemCategory.foodItems.map((foodItem) => {
+      if (foodItem.id === updatedFoodItem.id) {
+        return updatedFoodItem;
+      }
+      return foodItem;
+    });
+    this.categories = this.categories.map((category) => {
+      if (category.id === itemCategory.id) {
+        return itemCategory;
+      }
+      return category;
+    });
   }
 
   get all() {

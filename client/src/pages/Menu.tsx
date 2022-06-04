@@ -28,22 +28,26 @@ function CategoryAnchor({ categoryName }: CategoryAnchorProps) {
 function Menu() {
   const { categories } = useContext(Context);
   const { keyPressed } = useKeyPress('Enter');
+  const [categoryItems, setCategoryItems] = useState<IFoodCategory[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [addedItem, setAddedItem] = useState<IFoodItem | {}>({});
+  const [addedItem, setAddedItem] = useState<IFoodItem>();
   const handleModal = (item: IFoodItem) => {
     setAddedItem(item);
     setShowModal(true);
   };
   useEffect(() => {
     categories.setCategories(categoriesPlaceholders);
+    setCategoryItems(categoriesPlaceholders);
   }, []);
   return (
     <Container id="menu">
-      <AddItem
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        foodItem={addedItem}
-      />
+      {addedItem && (
+        <AddItem
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          foodItem={addedItem}
+        />
+      )}
       <Row className="col-wrapper">
         <Col className="left-col" md="auto">
           {/* filter by ingredients: any ingredient added to the db such that you can make a checkbox filter list */}
@@ -58,22 +62,29 @@ function Menu() {
         </Col>
         <Col className="right-col">
           <List
-            items={categoriesPlaceholders}
-            renderList={(category: IFoodCategory) => (
-              <FoodCategory
-                category={category}
-                renderItem={(foodItem: IFoodItem) => (
-                  <FoodItemLi
-                    onClick={() => handleModal(foodItem)}
-                    enterPress={keyPressed}
-                  >
-                    <FoodItem
-                      foodItem={foodItem}
-                    />
-                  </FoodItemLi>
-                )}
-              />
-            )}
+            items={categoryItems}
+            renderList={(category: IFoodCategory) => {
+              if (category.id === -1) {
+                return null;
+              }
+              return (
+                <li>
+                  <FoodCategory
+                    category={category}
+                    renderItem={(foodItem: IFoodItem) => (
+                      <FoodItemLi
+                        onClick={() => handleModal(foodItem)}
+                        enterPress={keyPressed}
+                      >
+                        <FoodItem
+                          foodItem={foodItem}
+                        />
+                      </FoodItemLi>
+                    )}
+                  />
+                </li>
+              );
+            }}
           />
         </Col>
       </Row>

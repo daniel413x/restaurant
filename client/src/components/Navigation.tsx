@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-  Container, Navbar, Nav, Image, NavDropdown, Button,
+  Container, Navbar, Nav, Image, NavDropdown,
 } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -13,6 +13,7 @@ import {
   CART_ROUTE,
   ACCOUNT_ROUTE,
   ADMIN_ROUTE,
+  LOGOUT_ROUTE,
 } from '../utils/consts';
 import { countItems } from '../utils/functions';
 import Context from '../context/context';
@@ -52,23 +53,17 @@ function Navigation() {
             )}
             {user.isAuth && (
             <NavDropdown title={user.name}>
-              <NavDropdown.Item>
-                <NavLink className="nav-link" to={ACCOUNT_ROUTE} title="Account">
-                  Account
-                </NavLink>
-              </NavDropdown.Item>
+              <NavLink className="nav-link" to={ACCOUNT_ROUTE} title="Account">
+                Account
+              </NavLink>
               {user.isAdmin && (
-                <NavDropdown.Item>
-                  <NavLink className="nav-link" to={ADMIN_ROUTE} title="Admin">
-                    Admin
-                  </NavLink>
-                </NavDropdown.Item>
+                <NavLink className="nav-link" to={ADMIN_ROUTE} title="Admin">
+                  Admin
+                </NavLink>
               )}
-              <NavDropdown.Item className="logout-tab">
-                <Button className="nav-link logout-button" title="Logout">
-                  Logout
-                </Button>
-              </NavDropdown.Item>
+              <NavLink className="nav-link" to={LOGOUT_ROUTE} title="Logout">
+                Logout
+              </NavLink>
             </NavDropdown>
             )}
           </Nav>
