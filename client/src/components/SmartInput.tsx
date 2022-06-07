@@ -6,18 +6,21 @@ import {
 interface SmartInputProps {
   primaryStyle?: boolean;
   label?: string;
-  onChange: (e: string) => void;
-  value: string;
+  onFileChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: string) => void;
+  value?: string;
   placeholder?: string;
-  pressedSubmit: boolean;
-  setPressedSubmit: (param: boolean) => void;
+  pressedSubmit?: boolean;
+  setPressedSubmit?: (param: boolean) => void;
   optional?: boolean;
   bsWidth?: number | boolean;
+  type?: string;
 }
 
 function SmartInput({
   label,
   onChange,
+  onFileChange,
   value,
   placeholder,
   pressedSubmit,
@@ -25,16 +28,19 @@ function SmartInput({
   optional,
   bsWidth,
   primaryStyle,
+  type,
 }: SmartInputProps) {
   const [warn, setWarn] = useState<boolean>(false);
   useEffect(() => {
-    if (pressedSubmit && !optional && value === '') {
+    if (pressedSubmit && !optional && !value) {
       setWarn(true);
     }
   }, [pressedSubmit]);
   useEffect(() => {
-    setWarn(false);
-    setPressedSubmit(false);
+    if (setPressedSubmit) {
+      setWarn(false);
+      setPressedSubmit(false);
+    }
   }, [value]);
   return (
     <Col className="smart-input" md={bsWidth}>
@@ -43,13 +49,28 @@ function SmartInput({
         {label}
       </span>
       )}
-      <Form.Control
-        placeholder={placeholder}
-        type="text"
-        value={value}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
-        className={`${warn && 'warn'} ${primaryStyle && 'primary-style'}`}
-      />
+      {type === 'file' ? (
+        <Form.Control
+          placeholder={placeholder}
+          type={type}
+          onChange={onFileChange}
+          className={`${warn && 'warn'} ${primaryStyle && 'primary-style'}`}
+          onClick={() => {
+            if (setPressedSubmit) {
+              setWarn(false);
+              setPressedSubmit(false);
+            }
+          }}
+        />
+      ) : (
+        <Form.Control
+          placeholder={placeholder}
+          type={type}
+          value={value}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange!(e.target.value)}
+          className={`${warn && 'warn'} ${primaryStyle && 'primary-style'}`}
+        />
+      )}
     </Col>
   );
 }
@@ -59,7 +80,13 @@ SmartInput.defaultProps = {
   optional: false,
   bsWidth: false,
   primaryStyle: false,
+  value: '',
+  onChange: false,
+  onFileChange: false,
+  pressedSubmit: false,
+  setPressedSubmit: false,
   label: '',
+  type: 'text',
 };
 
 export default SmartInput;

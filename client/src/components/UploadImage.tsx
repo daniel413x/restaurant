@@ -1,40 +1,37 @@
 import React, {
-  useState, useEffect, ChangeEvent, FormEvent,
+  useState, useEffect, ChangeEvent,
 } from 'react';
 import { observer } from 'mobx-react-lite';
-import {
-  Button,
-  Form,
-} from 'react-bootstrap';
+import SmartInput from './SmartInput';
 
 interface UploadImageProps {
-  onSubmit?: () => void;
   dimensions: number[];
   existingImage?: string;
-  onChangeSetStrOutside?: (...args: any[]) => void;
+  outsideFormValue?: any;
+  onChangeSetOutsideFormValue?: (...args: any[]) => void;
+  pressedSubmit?: boolean;
+  setPressedSubmit?: (param: boolean) => void;
 }
 
 function UploadImage({
-  onSubmit,
   dimensions,
   existingImage,
-  onChangeSetStrOutside,
+  onChangeSetOutsideFormValue,
+  pressedSubmit,
+  setPressedSubmit,
+  outsideFormValue,
 }: UploadImageProps) {
   const [selectedFile, setSelectedFile] = useState<Blob | MediaSource>();
   const [preview, setPreview] = useState<string>('');
   const [width, height] = dimensions;
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit!();
-  };
   const selectFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
       return;
     }
     setSelectedFile(e.target.files[0]);
-    if (onChangeSetStrOutside) {
-      onChangeSetStrOutside(e.target.files[0]);
+    if (onChangeSetOutsideFormValue) {
+      onChangeSetOutsideFormValue(e.target.files[0]);
     }
   };
   useEffect(() => setPreview(existingImage || ''), [existingImage]);
@@ -55,9 +52,8 @@ function UploadImage({
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
   return (
-    <Form
+    <div
       className="upload-image"
-      onSubmit={submit}
     >
       <div className="image-container">
         {selectedFile || existingImage ? (
@@ -68,29 +64,30 @@ function UploadImage({
           />
         )
           : (
-            <div className="placeholder-with-dimensions">
+            <div
+              className="placeholder-with-dimensions"
+            >
               {`${width}x${height}`}
             </div>
           )}
       </div>
-      <input
-        onChange={selectFile}
+      <SmartInput
+        onFileChange={selectFile}
         type="file"
-        title=""
+        pressedSubmit={pressedSubmit}
+        setPressedSubmit={setPressedSubmit}
+        value={outsideFormValue}
       />
-      {onSubmit && (
-      <Button className={`save-button ${!selectedFile && 'disabled-2'}`} type="submit">
-        Save
-      </Button>
-      )}
-    </Form>
+    </div>
   );
 }
 
 UploadImage.defaultProps = {
-  onSubmit: false,
   existingImage: '',
-  onChangeSetStrOutside: false,
+  onChangeSetOutsideFormValue: false,
+  pressedSubmit: false,
+  setPressedSubmit: false,
+  outsideFormValue: false,
 };
 
 export default observer(UploadImage);

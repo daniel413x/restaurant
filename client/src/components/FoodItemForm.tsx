@@ -12,7 +12,7 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import Context from '../context/context';
-import { IFoodItem } from '../types/types';
+import { IFoodCategory, IFoodItem, QueryFoodItem } from '../types/types';
 import {
   green,
   red,
@@ -23,31 +23,33 @@ import UploadImage from './UploadImage';
 import { calcItemPrice } from '../utils/functions';
 import List from './List';
 import EditedIngredient from './EditedIngredient';
+import SmartInput from './SmartInput';
 
-interface EditedFoodItemProps {
-  foodItem: IFoodItem,
+interface FoodItemFormProps {
+  foodItem?: IFoodItem,
+  closeModalOnSubmit?: () => void;
 }
 
-function EditedFoodItem({
+function FoodItemForm({
   foodItem,
-}: EditedFoodItemProps) {
+  closeModalOnSubmit,
+}: FoodItemFormProps) {
   const { categories, notifications } = useContext(Context);
-  const {
-    id,
-  } = foodItem;
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [category, setCategory] = useState<{ name: string, id: number }>(foodItem.category);
-  const [name, setName] = useState<string>(foodItem.name);
-  const [discount, setDiscount] = useState<number>(foodItem.discount);
-  const [price, setPrice] = useState<number>(foodItem.price);
-  const previousPrice = foodItem.price;
-  const userChangedPrice = Number(calcItemPrice(price, discount)) !== Number(calcItemPrice(previousPrice, foodItem.discount));
+  const [category, setCategory] = useState<Omit<IFoodCategory, 'foodItems'>>(foodItem?.category || { name: 'Uncategorized', id: -1 });
+  const [name, setName] = useState<string>(foodItem?.name || '');
+  const [discount, setDiscount] = useState<number>(foodItem?.discount || 0);
+  const [price, setPrice] = useState<number>(foodItem?.price || 3);
+  const previousPrice = foodItem?.price || 0;
+  const userChangedPrice = !foodItem ? null : Number(calcItemPrice(price, discount)) !== Number(calcItemPrice(previousPrice, foodItem?.discount));
+  const showPreviousPrice = userChangedPrice && foodItem;
   // const difference = Number(calcItemPrice(price, discount)) - Number(calcItemPrice(previousPrice, discount));
-  const [image, setImage] = useState<string>(foodItem.image);
-  const [ingredients, setIngredients] = useState<string[]>(foodItem.ingredients);
+  const [image, setImage] = useState<string>();
+  const [ingredients, setIngredients] = useState<string[]>(foodItem?.ingredients || []);
   const [newIngredients, setNewIngredients] = useState<string>('');
-  const [serves, setServes] = useState<number>(foodItem.serves);
-  const [time, setTime] = useState<number[]>(foodItem.time);
+  const [serves, setServes] = useState<number>(foodItem?.serves || 1);
+  const [time, setTime] = useState<number[]>(foodItem?.time || [10, 15]);
+  const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
   const submitDelete = () => {
     notifications.message(
       'Category deleted',
@@ -56,14 +58,25 @@ function EditedFoodItem({
     );
   };
   const addIngredient = () => {
-    const newIngredientsArr = newIngredients.split('').filter((c) => c !== ' ').join('').split(',');
-    setIngredients([...ingredients, ...newIngredientsArr]);
+    const newIngredientsArr = newIngredients.split(/,\s+|\s+,|,/).filter(Boolean);
+    newIngredientsArr.forEach((c) => c.split('').filter(Boolean).join(''));
+    setIngredients([...ingredients, ...newIngredientsArr.filter((c) => !/[^\S]+\s+[^\S]+/.test(c))]);
   };
   // const showPercent = (number: number) => number * 100;
   const deleteIngredient = (ingredient: string) => setIngredients(ingredients?.filter((ingredientName) => ingredient !== ingredientName));
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const updatedFoodItem = {
+    setPressedSubmit(true);
+    setPressedSubmit(true);
+    if (!name || !image) {
+      notifications.message(
+        'Please complete highlighted fields',
+        red,
+        shortNotification,
+      );
+      return;
+    }
+    const updatedFoodItem: QueryFoodItem = {
       name,
       discount,
       price,
@@ -72,22 +85,58 @@ function EditedFoodItem({
       serves,
       time,
       category,
-      id,
     };
-    const previousCategoryId = foodItem.category.id;
-    if (category.id !== previousCategoryId) {
-      categories.updateFoodItem(updatedFoodItem, previousCategoryId);
+    if (foodItem) {
+      updatedFoodItem.id = foodItem.id;
+      // SERVER PUT
+      const foodItemFromServer: IFoodItem = { // TEMP; NO BACKEND
+        name,
+        discount,
+        price,
+        image,
+        ingredients,
+        serves,
+        time,
+        category,
+        id: foodItem.id,
+      };
+      const previousCategoryId = foodItem.category.id;
+      if (category.id !== previousCategoryId) {
+        categories.updateFoodItem(foodItemFromServer, previousCategoryId);
+      } else {
+        categories.updateFoodItem(foodItemFromServer);
+      }
+      notifications.message(
+        'Food item updated successfully',
+        green,
+        shortNotification,
+      );
     } else {
-      categories.updateFoodItem(updatedFoodItem);
+      // SERVER POST
+      const foodItemFromServer: IFoodItem = { // TEMP
+        name,
+        discount,
+        price,
+        image: '/static/media/about-us-5.a567a9db1482b99c0fab.png',
+        ingredients,
+        serves,
+        time,
+        category,
+        id: Math.random(),
+      };
+      categories.addFoodItem(foodItemFromServer);
+      notifications.message(
+        'Food item created successfully',
+        green,
+        shortNotification,
+      );
     }
-    notifications.message(
-      'Food item updated successfully',
-      green,
-      shortNotification,
-    );
+    if (closeModalOnSubmit) {
+      closeModalOnSubmit();
+    }
   };
   return (
-    <Col className="edited-food-item">
+    <Col className="food-item-form">
       <Confirmation
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
@@ -96,17 +145,20 @@ function EditedFoodItem({
         body={`Food items under category "${name}" will need to be assigned a new category before they appear in the menu.`}
       />
       <Form onSubmit={submit}>
-        <Row>
-          <Col md="auto">
+        <Row className="col-wrapper">
+          <Col className="image-col" md="auto">
             <Col>
-              <Col className="label left-col-label">
+              <Col className="label image-col-label">
                 Image
               </Col>
               <Col>
                 <UploadImage
+                  pressedSubmit={pressedSubmit}
+                  setPressedSubmit={setPressedSubmit}
                   dimensions={[650, 480]}
-                  existingImage={image}
-                  onChangeSetStrOutside={(str: string) => setImage(str)}
+                  existingImage={foodItem?.image || ''}
+                  onChangeSetOutsideFormValue={setImage}
+                  outsideFormValue={image}
                 />
               </Col>
             </Col>
@@ -138,10 +190,11 @@ function EditedFoodItem({
               <Col className="label">
                 Name
               </Col>
-              <Form.Control
+              <SmartInput
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
                 value={name}
-                name="name"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                onChange={setName}
               />
             </Col>
             <Col className="price-control">
@@ -154,6 +207,7 @@ function EditedFoodItem({
                     value={price}
                     type="number"
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}
+                    min={0}
                   />
                 </Col>
                 <Col>
@@ -171,12 +225,16 @@ function EditedFoodItem({
                 </Col>
               </Row>
               <Col className="calculated-price">
-                {userChangedPrice && (
+                {showPreviousPrice && (
                 <span className="previous-price">
                   {`$${previousPrice}`}
                 </span>
                 )}
-                {userChangedPrice && '→'}
+                {showPreviousPrice && (
+                <span>
+                  →
+                </span>
+                )}
                 <span>
                   {`$${calcItemPrice(price, discount)}`}
                 </span>
@@ -190,7 +248,7 @@ function EditedFoodItem({
               <List
                 items={ingredients}
                 renderList={(ingredient) => (
-                  <li>
+                  <li key={ingredient}>
                     <EditedIngredient
                       ingredient={ingredient}
                       deleteIngredient={deleteIngredient}
@@ -226,6 +284,7 @@ function EditedFoodItem({
                   value={serves}
                   type="number"
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setServes(Number(e.target.value))}
+                  min={1}
                 />
               </Col>
               <Col>
@@ -256,9 +315,8 @@ function EditedFoodItem({
               </Col>
             </Row>
             <Col>
-              <Button className="save-button btn btn-secondary" type="submit">
-                Save
-              </Button>
+              <Button className="save-button btn btn-secondary" type="submit" />
+              {/* use pseudo selector for label */}
             </Col>
           </Col>
         </Row>
@@ -267,4 +325,9 @@ function EditedFoodItem({
   );
 }
 
-export default EditedFoodItem;
+FoodItemForm.defaultProps = {
+  foodItem: false,
+  closeModalOnSubmit: false,
+};
+
+export default FoodItemForm;

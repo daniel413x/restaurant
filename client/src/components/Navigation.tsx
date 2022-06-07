@@ -53,17 +53,23 @@ function Navigation() {
             )}
             {user.isAuth && (
             <NavDropdown title={user.name}>
-              <NavLink className="nav-link" to={ACCOUNT_ROUTE} title="Account">
-                Account
-              </NavLink>
+              <NavDropdown.Item>
+                <NavLink className="nav-link" to={ACCOUNT_ROUTE} title="Account">
+                  Account
+                </NavLink>
+              </NavDropdown.Item>
               {user.isAdmin && (
+              <NavDropdown.Item>
                 <NavLink className="nav-link" to={ADMIN_ROUTE} title="Admin">
                   Admin
                 </NavLink>
+              </NavDropdown.Item>
               )}
-              <NavLink className="nav-link" to={LOGOUT_ROUTE} title="Logout">
-                Logout
-              </NavLink>
+              <NavDropdown.Item>
+                <NavLink className="nav-link" to={LOGOUT_ROUTE} title="Logout">
+                  Logout
+                </NavLink>
+              </NavDropdown.Item>
             </NavDropdown>
             )}
           </Nav>

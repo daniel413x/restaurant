@@ -29,7 +29,7 @@ function AddNewAddress() {
     setPressedSubmit(true);
     if (requiredFieldsIncomplete) {
       return notifications.message(
-        'Please complete all required fields',
+        'Please complete highlighted fields',
         red,
         shortNotification,
       );

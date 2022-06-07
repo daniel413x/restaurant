@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, {
   useContext,
   useState,
@@ -13,21 +11,22 @@ import {
   Button,
   Image,
   Form,
+  Dropdown,
 } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChevronCircleDown,
   faBan,
-  faPenToSquare,
   faTrashAlt,
   faCheck,
+  faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import Context from '../context/context';
 import { IFoodCategory, IFoodItem } from '../types/types';
 import List from './List';
 import Confirmation from './modals/Confirmation';
 import useOnClickOutside from '../hooks/useOnOutsideClick';
+import CreateNewFoodItemButton from './CreateNewFoodItemButton';
 import {
   green,
   shortNotification,
@@ -56,7 +55,7 @@ function FoodItem({
     discountedPrice = calcItemPrice(price, discount);
   }
   return (
-    <Row className="food-item">
+    <Col className="food-item">
       <Image src={image} />
       <span className="name">
         {name}
@@ -70,7 +69,7 @@ function FoodItem({
         </span>
         <span>
           &rarr;
-          {`$${discountedPrice}`}
+          {discount ? `$${discountedPrice}` : `$${price}`}
         </span>
       </Col>
       <Row className="buttons-row">
@@ -88,7 +87,7 @@ function FoodItem({
           </Button>
         </Col>
       </Row>
-    </Row>
+    </Col>
   );
 }
 
@@ -110,7 +109,7 @@ function EditedCategory({
   const [expand, setExpand] = useState(false);
   const outsideClickRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<HTMLInputElement>(null);
-  const [active, setActive] = useState<boolean>(false);
+  const [editTitleMode, setEditTitleMode] = useState<boolean>(false);
   const [showDeleteCategoryModal, setShowDeleteCategoryModal] = useState<boolean>(false);
   const [showDeleteFoodItemModal, setShowDeleteFoodItemModal] = useState<boolean>(false);
   const [deletedFoodItem, setDeletedFoodItem] = useState<IFoodItem>();
@@ -118,11 +117,11 @@ function EditedCategory({
   const uncategorizedCategory = id === -1;
   const submitNewName = () => {
     if (newName === category.name) {
-      return setActive(false);
+      return setEditTitleMode(false);
     }
     categories.setNewName(id, newName);
-    setActive(false);
-    notifications.message(
+    setEditTitleMode(false);
+    return notifications.message(
       'Category name updated',
       green,
       shortNotification,
@@ -140,8 +139,8 @@ function EditedCategory({
     setDeletedFoodItem(foodItem);
     setShowDeleteFoodItemModal(true);
   };
-  const submitDeleteFoodItem = (id: number) => {
-    categories.deleteFoodItem(id, category.id);
+  const submitDeleteFoodItem = (deletedId: number) => {
+    categories.deleteFoodItem(deletedId, category.id);
     notifications.message(
       'Item deleted successfully',
       green,
@@ -152,22 +151,22 @@ function EditedCategory({
     setExpand(!expand);
   };
   const toggleEditTitle = () => {
-    setActive(!active);
+    setEditTitleMode(!editTitleMode);
     if (expand) {
       setExpand(false);
     }
   };
   useEffect(() => {
-    if (active) {
+    if (editTitleMode) {
       focusRef.current?.focus();
     } else {
-      setActive(false);
+      setEditTitleMode(false);
       setNewName(name);
     }
-  }, [active]);
-  useOnClickOutside(outsideClickRef, () => setActive(false));
+  }, [editTitleMode]);
+  useOnClickOutside(outsideClickRef, () => setEditTitleMode(false));
   return (
-    <div className={`category admin-item ${active && 'active'}`} ref={outsideClickRef}>
+    <div className={`category admin-item ${editTitleMode && 'edit-title-mode'}`} ref={outsideClickRef}>
       <Confirmation
         show={showDeleteCategoryModal}
         onHide={() => setShowDeleteCategoryModal(false)}
@@ -175,61 +174,71 @@ function EditedCategory({
         header={`Delete category "${name}"?`}
         body={`Food items under category "${name}" will need to be assigned a new category before they appear in the menu.`}
       />
-      {deletedFoodItem && <Confirmation
+      {deletedFoodItem && (
+      <Confirmation
         show={showDeleteFoodItemModal}
         onHide={() => setShowDeleteFoodItemModal(false)}
         onConfirmFunc={() => submitDeleteFoodItem(deletedFoodItem.id)}
         header={`Delete food item "${deletedFoodItem.name}"?`}
-      />}
-      <Form className="title-buttons-row">
+        body={`Food item "${deletedFoodItem.name}" will be deleted.`}
+      />
+      )}
+      <Form className="title-buttons-row body">
         <Col className="title" md="auto">
           <Form.Control
             ref={focusRef}
-            value={active ? newName : name}
+            value={editTitleMode ? newName : name}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
-            className={`${!active && !expand && 'disabled-2'}`}
+            className={`${!editTitleMode && !expand && 'disabled-2'}`}
           />
         </Col>
-        <Col className="icon-buttons" md="auto">
-          {uncategorizedCategory ? (
-        <Col className="icon-buttons" md="auto">
-            <Button onClick={toggleExpand}>
-              <FontAwesomeIcon icon={faChevronCircleDown} />
-            </Button>
-        </Col>
-          ) : (
-            <Col className="icon-buttons" md="auto">
-          {!active && (
-            <Button onClick={toggleExpand}>
-              <FontAwesomeIcon icon={faChevronCircleDown} />
-            </Button>
-          )}
-          {active && (
-          <Button onClick={() => setActive(false)} title="Cancel">
-            <FontAwesomeIcon icon={faBan} />
-          </Button>
-          )}
-          {!active ? (
-            <Button onClick={toggleEditTitle} title="Edit">
-              <FontAwesomeIcon icon={faPenToSquare} />
-            </Button>
-          ) : (
+
+        {editTitleMode ? (
+          <Col className="icon-buttons" md="auto">
             <Button onClick={submitNewName} title="Save">
               <FontAwesomeIcon icon={faCheck} />
             </Button>
-          )}
-          <Button className={`${active && 'disabled-2'}`} onClick={() => setShowDeleteCategoryModal(true)} title="Delete">
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </Button>
-          </Col>)}
-        </Col>
+            <Button onClick={() => setEditTitleMode(false)} title="Cancel">
+              <FontAwesomeIcon icon={faBan} />
+            </Button>
+          </Col>
+        ) : (
+          <Col className="ellipsis-menu" md="auto">
+            <Dropdown autoClose>
+              <Dropdown.Toggle>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item>
+                  <Button onClick={toggleExpand}>
+                    {expand ? 'Collapse' : 'Expand'}
+                  </Button>
+                </Dropdown.Item>
+                {!uncategorizedCategory && (
+                <Dropdown.Item>
+                  <Button onClick={toggleEditTitle}>
+                    Re-title
+                  </Button>
+                </Dropdown.Item>
+                )}
+                {!uncategorizedCategory && (
+                <Dropdown.Item>
+                  <Button onClick={() => setShowDeleteCategoryModal(true)}>
+                    Delete
+                  </Button>
+                </Dropdown.Item>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+        )}
       </Form>
       {expand && <div className="divider" />}
       <List
         className={`food-items-list ${expand && 'expand'}`}
         items={foodItems}
         renderList={(foodItem: IFoodItem) => (
-          <li>
+          <li key={foodItem.id}>
             <FoodItem
               foodItem={foodItem}
               selectFoodItemToEdit={selectFoodItemToEdit}
@@ -237,7 +246,11 @@ function EditedCategory({
             />
           </li>
         )}
-      />
+      >
+        <li>
+          <CreateNewFoodItemButton />
+        </li>
+      </List>
     </div>
   );
 }

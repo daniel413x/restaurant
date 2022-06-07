@@ -58,8 +58,12 @@ export interface IFoodItem {
   quantity?: number;
   // calories?
   instructions?: string;
-  category: IFoodItemCategory;
+  category: FoodItemCategory;
 }
+
+type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+export type QueryFoodItem = PartiallyOptional<IFoodItem, 'id'>;
 
 export interface IFoodCategory {
   name: string;
@@ -67,7 +71,7 @@ export interface IFoodCategory {
   id: number;
 }
 
-type IFoodItemCategory = Omit<IFoodCategory, 'foodItems'>;
+type FoodItemCategory = Omit<IFoodCategory, 'foodItems'>;
 
 export interface IModalProps {
   onHide: () => void;

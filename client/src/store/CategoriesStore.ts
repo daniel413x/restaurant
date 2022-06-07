@@ -36,7 +36,7 @@ export default class UserStore {
       foodItems,
     } = obj;
     const uncategorized = this.categories.find((category) => category.id === -1)!;
-    uncategorized.foodItems = foodItems;
+    uncategorized.foodItems = uncategorized.foodItems.concat(foodItems);
     const newCategories = this.categories.filter((category) => category.id !== id).map((category) => {
       if (category.id === -1) {
         return uncategorized;
@@ -44,6 +44,17 @@ export default class UserStore {
       return category;
     });
     this.categories = newCategories;
+  }
+
+  addFoodItem(obj: IFoodItem) {
+    const updatedCategory = this.categories.find((category) => category.id === obj.category.id)!;
+    updatedCategory.foodItems = [...updatedCategory.foodItems, obj];
+    this.categories = this.categories.map((category) => {
+      if (category.id === updatedCategory.id) {
+        return updatedCategory;
+      }
+      return category;
+    });
   }
 
   deleteFoodItem(deletedFoodItemId: number, foodCategoryId: number) {
@@ -90,6 +101,7 @@ export default class UserStore {
   }
 
   get all() {
-    return this.categories;
+    const sortedCategories = this.categories.slice().sort((a, b) => a.id + b.id);
+    return sortedCategories;
   }
 }

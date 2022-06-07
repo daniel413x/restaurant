@@ -371,12 +371,16 @@ input.form-control:focus {
   }
 }
 
-#navbar .dropdown-menu>* {
-  font-weight: bold;
-  padding: .75rem;
+#navbar .dropdown-menu .dropdown-item {
+  padding: 0;
 }
 
-#navbar .dropdown-menu>*:hover {
+#navbar .dropdown-menu .nav-link {
+  font-weight: bold;
+  padding: 0.8rem;
+}
+
+#navbar .dropdown-menu .nav-link:hover {
   background-color: var(--primary-red);
   color: #fff;
 }
@@ -1124,7 +1128,7 @@ input.form-control:focus {
   justify-content: center;
   grid-template-columns: 33% 33% 33%;
   flex-wrap: wrap;
-  grid-gap: 0px 10px;
+  grid-gap: 2rem 0.6rem;
 }
 
 @media (max-width: 1199px) {
@@ -1567,7 +1571,7 @@ input.form-control:focus {
 
 #active-order .status #order-progress .orb-wrapper .inner-orb {
   position: absolute;
-  content: 'aaaaa';
+  content: '';
   background-color: rgb(255, 255, 255);
   width: 90px;
   height: 90px;
@@ -1581,7 +1585,7 @@ input.form-control:focus {
 
 #active-order .status #order-progress .orb-wrapper .over-connector {
   position: absolute;
-  content: 'aaaaa';
+  content: '';
   background-color: rgb(255, 255, 255);
   width: 50px;
   height: 20px;
@@ -1603,7 +1607,7 @@ input.form-control:focus {
 
 #active-order .status #order-progress .orb-wrapper .under-connector {
   position: absolute;
-  content: 'aaaaa';
+  content: '';
   border: 5px solid var(--primary-red-light);
   width: 75px;
   height: 30px;
@@ -1803,6 +1807,54 @@ input.form-control:focus {
   }
 }
 
+.upload-image {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-image .image-container {
+  margin: .5rem auto;
+  pointer-events: none;
+}
+
+.upload-image .placeholder-with-dimensions {
+  border-radius: 50%;
+  width: 85px;
+  height: 85px;
+  border: 2px solid var(--primary-red);
+  background-color: #fff;
+  color: var(--secondary-red);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-image img {
+  border-radius: 50%;
+  max-width: 85px;
+}
+
+.upload-image input[type=file]::file-selector-button {
+  border: 2px solid var(--secondary-red);
+  color: var(--secondary-red);
+  padding: .2em .4em;
+  border-radius: 0;
+  transition: 1s;
+  margin-right: .5rem;
+  transition: 0.2s all ease-in-out;
+}
+
+#account-details #edit-avatar .save-button {
+  margin: 1rem auto;
+  display: block;
+}
+
+#account-details #edit-avatar .image-container {
+  height: 89.33px;
+  width: 85px;
+}
+
 #account-details .section-label {
   text-align: center;
   display: block;
@@ -1886,48 +1938,6 @@ input.form-control:focus {
   justify-content: space-between;
   margin-top: 1rem; 
   max-width: 330px;
-}
-
-.upload-image {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.upload-image .image-container {
-  margin: .5rem auto;
-  pointer-events: none;
-}
-
-.upload-image .placeholder-with-dimensions {
-  border-radius: 50%;
-  width: 85px;
-  height: 85px;
-  background-color: var(--secondary-red);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.upload-image img {
-  border-radius: 50%;
-  max-width: 85px;
-}
-
-.upload-image input[type=file]::file-selector-button {
-  border: 2px solid var(--secondary-red);
-  color: #fff;
-  padding: .2em .4em;
-  border-radius: 0;
-  background-color: var(--secondary-red);
-  transition: 1s;
-  margin-left: .5rem;
-  margin-right: .5rem;
-}
-
-.upload-image .save-button {
-  margin: 1rem auto;
 }
 
 #account #previous-orders h2 {
@@ -2020,8 +2030,6 @@ input.form-control:focus {
 
 #admin .admin-item .title-buttons-row {
   display: flex;
-  padding: 1.05rem 1.5rem 1.05rem 1.75rem;
-  flex-direction: row;
   justify-content: space-between;
 }
 
@@ -2031,7 +2039,7 @@ input.form-control:focus {
 }
 
 #admin .admin-item .icon-buttons>.btn.btn-primary {
-  padding: 1.25rem;
+  padding: 1.375rem !important;
   border-radius: 25%;
 }
 
@@ -2050,9 +2058,46 @@ input.form-control:focus {
   justify-content: center;
 }
 
-#admin #edit-menu .category form {
+#admin #edit-menu .admin-item .body {
   padding: 1.05rem 1.5rem;
   padding-left: 1.05rem;
+}
+
+#admin #edit-menu .category .dropdown-toggle {
+  background-color: #fff;
+  border: 0;
+  box-shadow: 0;
+  position: relative;
+}
+
+#admin #edit-menu .category .dropdown-toggle:hover {
+  color: #fff;;
+  border: 0;
+}
+
+#admin #edit-menu .category .dropdown svg {
+  color: var(--primary-red);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.25rem;
+}
+
+#admin #edit-menu .category .dropdown-menu {
+  padding: 0;
+}
+
+#admin #edit-menu .category .dropdown-menu .dropdown-item {
+  padding: 0;
+}
+
+#admin #edit-menu .category .dropdown-menu button {
+  width: 100%;
+}
+
+#admin #edit-menu .category .ellipses-menu {
+  height: 40px;
 }
 
 #admin #edit-menu .category form .form-control {
@@ -2069,15 +2114,16 @@ input.form-control:focus {
   font-weight: bold;
 }
 
-#admin #edit-menu .category.active {
+#admin #edit-menu .category.edit-title-mode {
   box-shadow: rgba(110, 0, 0, 0.4) 0px 1px 8px;
   transition: .2s ease-in-out;
 }
 
 #admin #edit-menu .category .divider {
-  border: 1px dashed var(--primary-red);
-  width: 75%;
-  margin: 1rem auto 0.65rem;
+  border: 1px dotted var(--primary-red);
+  opacity: 0.35;
+  width: 100%;
+  margin: 0rem auto 0.65rem;
 }
 
 #admin #edit-menu .category .food-items-list {
@@ -2087,12 +2133,6 @@ input.form-control:focus {
   justify-content: center;
   overflow: hidden;
 }
-
-/*#admin #edit-menu .category .food-items-list::after {
-  grid-template-columns: repeat(auto-fill, 33%); 
-  width: 100%;
-  content: ''
-}*/
 
 #admin #edit-menu .category .food-items-list.expand {
   margin-top: 1rem;
@@ -2142,6 +2182,58 @@ input.form-control:focus {
   width: max-content;
 }
 
+#admin #edit-menu .category .add-food-item-button {
+  height: 100%;
+  padding: 0.5rem;
+  position: relative;
+}
+
+#admin #edit-menu .category .add-food-item-button .button-wrapper {
+  opacity: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  z-index: 1;
+}
+
+#admin #edit-menu .category .add-food-item-button .name {
+  text-align: start;
+  color: var(--primary-red);
+  text-overflow: initial;
+  font-weight: 500;
+}
+
+#admin #edit-menu .category .add-food-item-button .middle-col {
+  height: 116px;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+#admin #edit-menu .category .add-food-item-button .buttons-row {
+  width: 233px;
+  height: 71px;
+}
+
+#admin #edit-menu .category .add-food-item-button .buttons-row .edit-button-outline {
+  border: 2px solid var(--primary-red);
+  background-color: #fff;
+  color: var(--primary-red);
+  height: 52px;
+}
+
+#admin #edit-menu .category .add-food-item-button .img-outline {
+  margin: 0;
+  width: 209px;
+  height: 154px;
+  border: 2px solid var(--primary-red);
+}
+
 #admin #edit-menu .return-button {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -2157,103 +2249,116 @@ input.form-control:focus {
   top: .9rem;
 }
 
-#admin #edit-menu .edited-food-item {
+.food-item-form {
   margin-top: 0.8rem;
   display: flex;
   flex-direction: column;
 }
 
-#admin #edit-menu .edited-food-item .upload-image {
+.food-item-form input, .food-item-form .category-menu .dropdown-toggle, .food-item-form .dropdown-menu, .food-item-form .info-col .ingredients {
+  border: 1px solid var(--primary-red-light);
+}
+
+.food-item-form input {
+  color: var(--primary-red);
+  font-weight: bold;
+}
+
+.food-item-form .upload-image {
   display: block;
   margin-bottom: 1rem;
 }
 
-#admin #edit-menu .edited-food-item .upload-image .image-container {
+.food-item-form .upload-image .image-container {
   margin-top: 0;
 }
 
-#admin #edit-menu .edited-food-item .upload-image .placeholder-with-dimensions {
+.food-item-form .upload-image .placeholder-with-dimensions {
   border-radius: 2px;
-  width: 300px;
-  height: 300px;
+  width: 263.75px;
+  height: 200px;
 }
 
-#admin #edit-menu .edited-food-item .upload-image .preview {
+.food-item-form .upload-image .preview {
   border-radius: 2px;
   width: 263.75px;
   height: 200px;
   max-width: 325px;
 }
 
-#admin #edit-menu .edited-food-item .label {
+.food-item-form .label {
   background-color: var(--primary-red);
   color: #fff;
   padding-left: .85rem;
 }
 
-#admin #edit-menu .edited-food-item .left-col-label {
+.food-item-form .image-col-label {
   max-width: 263px;
 }
 
-#admin #edit-menu .edited-food-item .info-col {
+.food-item-form .image-col {
+  width: 288.75px;
+}
+
+.food-item-form .info-col {
   display: flex;
   flex-direction: column;
   grid-gap: 1rem;
   max-width: 325px;
 }
 
-#admin #edit-menu .edited-food-item .category-menu {
+.food-item-form .category-menu {
   margin-bottom: 0.8rem;
 }
 
-#admin #edit-menu .edited-food-item .category-menu .dropdown-toggle {
+.food-item-form .category-menu .dropdown-toggle {
   background-color: #fff;
   color: var(--primary-red);
-  border: 1px solid #ced4da;
   width: 100%;
 }
 
-#admin #edit-menu .edited-food-item .category-menu .dropdown-toggle:hover {
+.food-item-form .category-menu .dropdown-toggle:hover {
   background-color: var(--primary-red);
   border: 1px solid var(--primary-red-light);
   color: #fff;
 }
 
-#admin #edit-menu .edited-food-item .category-menu .dropdown-menu {
+.food-item-form .category-menu .dropdown-menu {
   width: 100%;
 }
 
-#admin #edit-menu .edited-food-item .category-menu .dropdown-menu a {
+.food-item-form .category-menu .dropdown-menu a {
   font-weight: bold;
   color: var(--primary-red);
 }
 
-#admin #edit-menu .edited-food-item .category-menu .dropdown-menu a:hover {
+.food-item-form .category-menu .dropdown-menu a:hover {
   background-color: var(--primary-red);
   color: #fff;
 }
 
-#admin #edit-menu .edited-food-item .info-col .calculated-price {
+.food-item-form .info-col .calculated-price {
+  margin-top: 1rem;
   text-align: center;
   font-size: 1.5rem;
   font-family: 'Quicksand', sans-serif;
+  color: var(--primary-red);
 }
 
-#admin #edit-menu .edited-food-item .info-col .calculated-price .previous-price {
+.food-item-form .info-col .calculated-price .previous-price {
   font-family: 'Quicksand', sans-serif;
   text-decoration: line-through;
 }
 
-#admin #edit-menu .edited-food-item .info-col .ingredients {
-  border: 1px solid #ced4da;
+.food-item-form .info-col .ingredients {
   border-radius: 0.25rem;
 }
 
-#admin #edit-menu .edited-food-item .info-col .ingredients ul {
+.food-item-form .info-col .ingredients ul {
   margin-top: 1rem;
 }
 
-#admin #edit-menu .edited-food-item .info-col .ingredients .edited-ingredient {
+.food-item-form .info-col .ingredients .edited-ingredient {
   align-items: center;
   margin-bottom: 0.5rem;
   padding-left: 1.2rem;
@@ -2261,34 +2366,74 @@ input.form-control:focus {
   flex-wrap: nowrap;
 }
 
-#admin #edit-menu .edited-food-item .info-col .ingredients .edited-ingredient .name {
+.food-item-form .info-col .ingredients .edited-ingredient .name {
   width: max-content;
+  color: var(--primary-red);
 }
 
-#admin #edit-menu .edited-food-item .info-col .ingredients .edited-ingredient .spacer {
+.food-item-form .info-col .ingredients .edited-ingredient .spacer {
   height: 40px;
   position: relative;
   top: 1.25rem;
   left: 0.25rem;
-  border-top: 2px dotted #bbb;
+  border-top: 2px dotted var(--primary-red-light);
 }
 
-#admin #edit-menu .edited-food-item .info-col .ingredients .add-ingredient-row button {
+.food-item-form .info-col .ingredients .add-ingredient-row button {
   padding: .313rem .75rem;
 }
 
-#admin #edit-menu .edited-food-item .info-col .ingredients .edited-ingredient .icon-buttons {
+.food-item-form .info-col .ingredients .edited-ingredient .icon-buttons {
   width: max-content;
 }
 
-#admin #edit-menu .edited-food-item .info-col .serves-time-row .min-col {
+.food-item-form .info-col .serves-time-row .min-col {
   padding-right: 0;
 }
 
-#admin #edit-menu .edited-food-item .info-col .serves-time-row .max-col {
+.food-item-form .info-col .serves-time-row .max-col {
   padding-left: 0;
 }
 
-#admin #edit-menu .edited-food-item .info-col .save-button {
+.food-item-form .info-col .save-button {
   margin-bottom: 8rem;
+}
+
+.food-item-form .info-col .save-button::after {
+  content: 'Save';
+}
+
+#create-food-item .modal-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#create-food-item .food-item-form {
+  margin-top: 0;
+}
+
+#create-food-item .food-item-form .col-wrapper {
+  justify-content: center;
+}
+
+#create-food-item .food-item-form .col-wrapper .image-col {
+  padding-top: 3rem;
+}
+
+@media (min-width: 992px) {
+  #create-food-item .food-item-form .col-wrapper .image-col {
+    border-left: 1px solid var(--primary-red);
+  }
+}
+
+#create-food-item .food-item-form .col-wrapper .info-col {
+  padding-top: 2rem;
+}
+
+#create-food-item .food-item-form .save-button {
+  margin-bottom: 2rem;
+}
+
+#create-food-item .food-item-form .save-button::after {
+  content: 'Create'
 }

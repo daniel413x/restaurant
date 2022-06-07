@@ -11,21 +11,22 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Context from '../context/context';
 import { IFoodCategory, IFoodItem } from '../types/types';
-import EditedFoodItem from '../components/EditedFoodItem';
+import FoodItemForm from '../components/FoodItemForm';
 import EditedCategory from '../components/EditedCategory';
 import List from '../components/List';
 import { categoriesPlaceholders } from '../utils/consts';
+import AddCategory from '../components/AddCategory';
 
 function EditMenu() {
   const [editedItem, setEditedItem] = useState<IFoodItem>();
   const { categories } = useContext(Context);
-  useEffect(() => {
-    categories.setCategories(categoriesPlaceholders);
-  }, []);
   const selectFoodItemToEdit = (obj: IFoodItem) => {
     setEditedItem(obj);
     window.scrollTo(0, 0);
   };
+  useEffect(() => {
+    categories.setCategories(categoriesPlaceholders);
+  }, []);
   return (
     <Container id="edit-menu">
       {editedItem ? (
@@ -40,7 +41,7 @@ function EditMenu() {
             <FontAwesomeIcon icon={faAngleLeft} />
             Return
           </Button>
-          <EditedFoodItem
+          <FoodItemForm
             foodItem={editedItem}
           />
         </Col>
@@ -57,7 +58,7 @@ function EditMenu() {
                 return null;
               }
               return (
-                <li className="category-li">
+                <li key={category.id}>
                   <EditedCategory
                     category={category}
                     selectFoodItemToEdit={selectFoodItemToEdit}
@@ -65,7 +66,11 @@ function EditMenu() {
                 </li>
               );
             }}
-          />
+          >
+            <AddCategory
+              key="add-category-li"
+            />
+          </List>
         </Col>
       )}
     </Container>
