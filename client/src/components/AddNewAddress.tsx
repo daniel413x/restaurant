@@ -51,7 +51,6 @@ function AddNewAddress() {
     return user.setAddresses([...user.addresses, newAddress]);
   };
   return (
-
     <Col lg={6}>
       <h4>
         Add new address

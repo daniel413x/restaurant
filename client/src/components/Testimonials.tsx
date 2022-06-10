@@ -73,6 +73,7 @@ function Testimonials() {
         {testimonials.map((t) => (
           <Testimonial
             testimonial={t}
+            key={t.id}
           />
         ))}
       </Slider>

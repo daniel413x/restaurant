@@ -104,6 +104,8 @@ export interface ITimestampedAction {
 export interface IOrder {
   id: number;
   userId: number;
+  addressId: number;
+  address?: ICostumerAddress;
   foodItems: IFoodItem[];
   status: {
     value: number,

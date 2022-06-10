@@ -16,7 +16,7 @@ function FoodItemOrder({
     price,
   } = foodItem;
   return (
-    <li className="food-item-order">
+    <div className="food-item-order">
       <div className="info">
         <div className="name">
           {name}
@@ -25,7 +25,13 @@ function FoodItemOrder({
           {ingredients?.join(', ')}
         </div>
         <div>
-          {`Quantity: ${quantity} Price: $${price}`}
+          <span className="quantity">
+            {`Quantity: ${quantity}`}
+          </span>
+          {' '}
+          <span className="price">
+            {`Price: $${price}`}
+          </span>
         </div>
         {instructions && (
         <textarea
@@ -34,7 +40,7 @@ function FoodItemOrder({
         />
         )}
       </div>
-    </li>
+    </div>
   );
 }
 

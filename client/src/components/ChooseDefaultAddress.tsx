@@ -64,43 +64,43 @@ function ChooseDefaultAddress() {
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {addresses.map(((address: ICostumerAddress) => (
-            <Dropdown.Item><Button onClick={() => setSelectedDefaultAddress(address)}>{address.addressLineOne}</Button></Dropdown.Item>
+            <Dropdown.Item key={address.id}><Button onClick={() => setSelectedDefaultAddress(address)}>{address.addressLineOne}</Button></Dropdown.Item>
           )))}
         </Dropdown.Menu>
       </Dropdown>
       First name
       <Form.Control
-        value={selectedDefaultAddress?.firstName}
+        value={selectedDefaultAddress?.firstName || ''}
         readOnly
       />
       Last name
       <Form.Control
-        value={selectedDefaultAddress?.lastName}
+        value={selectedDefaultAddress?.lastName || ''}
         readOnly
       />
       Address Line One
       <Form.Control
-        value={selectedDefaultAddress?.addressLineOne}
+        value={selectedDefaultAddress?.addressLineOne || ''}
         readOnly
       />
       Address Line Two
       <Form.Control
-        value={selectedDefaultAddress?.addressLineTwo}
+        value={selectedDefaultAddress?.addressLineTwo || ''}
         readOnly
       />
       City/Territory
       <Form.Control
-        value={selectedDefaultAddress?.city}
+        value={selectedDefaultAddress?.city || ''}
         readOnly
       />
       State
       <Form.Control
-        value={selectedDefaultAddress?.state}
+        value={selectedDefaultAddress?.state || ''}
         readOnly
       />
       Zip
       <Form.Control
-        value={selectedDefaultAddress?.zip}
+        value={selectedDefaultAddress?.zip || ''}
         readOnly
       />
       <Col className="button-row">

@@ -51,7 +51,9 @@ function Cart() {
         <List
           items={cart.foodItems}
           renderList={(foodItem: IFoodItem) => (
-            <li>
+            <li
+              key={foodItem.id}
+            >
               <FoodItemAuxiliary
                 foodItem={foodItem}
                 handleDeleteModal={() => handleDeleteModal(foodItem)}

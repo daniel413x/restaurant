@@ -18,14 +18,15 @@ function ExploreOurFoods() {
       <h2>
         Explore Our Foods
       </h2>
-      <Row>
+      <ul>
         {demoFoodItems.map((foodItem: IFoodItem) => (
-          <FoodItem
-            foodItem={foodItem}
-            bootstrapWidth={4}
-          />
+          <li key={foodItem.name}>
+            <FoodItem
+              foodItem={foodItem}
+            />
+          </li>
         ))}
-      </Row>
+      </ul>
     </Container>
   );
 }

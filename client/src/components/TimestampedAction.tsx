@@ -14,11 +14,11 @@ function TimestampedAction({
   currentOrb,
 }: TimestampedActionProps) {
   return (
-    <li className={`timestamped-action ${index < currentOrb && 'old'}`}>
+    <div className={`timestamped-action ${index < currentOrb && 'old'}`}>
       {timestamp}
       {' '}
       {message}
-    </li>
+    </div>
   );
 }
 

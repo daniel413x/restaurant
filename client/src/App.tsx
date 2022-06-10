@@ -12,7 +12,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
 function App() {
-  const { orders } = useContext(Context);
+  const { /* admin, user, */ orders } = useContext(Context);
   useEffect(() => {
     orders.setActiveOrder(testActiveOrder);
   }, []);

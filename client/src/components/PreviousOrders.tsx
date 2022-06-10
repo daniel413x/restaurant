@@ -24,10 +24,11 @@ function PreviousOrders() {
         className="order-list"
         items={orders.all}
         renderList={(order: IOrder) => (
-          <PreviousOrder
-            order={order}
-            key={order.id}
-          />
+          <li key={order.id}>
+            <PreviousOrder
+              order={order}
+            />
+          </li>
         )}
       />
     </Container>

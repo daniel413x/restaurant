@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Col, Image, Button,
+  Col, Image,
 } from 'react-bootstrap';
 import { calcItemPrice } from '../utils/functions';
 import { IFoodItem } from '../types/types';
@@ -75,9 +75,9 @@ function FoodItem({
             </span>
           ) : null}
         </div>
-        <Button>
+        <Col className="order-now-button btn btn-primary">
           Order Now
-        </Button>
+        </Col>
       </Col>
     </Col>
   );

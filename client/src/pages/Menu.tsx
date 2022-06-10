@@ -6,11 +6,9 @@ import {
 } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
-import useKeyPress from '../hooks/useKeyPress';
 import List from '../components/List';
 import FoodCategory from '../components/FoodCategory';
 import FoodItem from '../components/FoodItem';
-import FoodItemLi from '../components/FoodItemLi';
 import AddItem from '../components/modals/AddItem';
 import { IFoodItem, IFoodCategory } from '../types/types';
 import { makeId } from '../utils/functions';
@@ -22,12 +20,11 @@ interface CategoryAnchorProps {
 
 function CategoryAnchor({ categoryName }: CategoryAnchorProps) {
   const id = makeId(categoryName);
-  return <li><a href={`#${id}`}>{categoryName}</a></li>;
+  return <a href={`#${id}`}>{categoryName}</a>;
 }
 
 function Menu() {
   const { categories } = useContext(Context);
-  const { keyPressed } = useKeyPress('Enter');
   const [categoryItems, setCategoryItems] = useState<IFoodCategory[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [addedItem, setAddedItem] = useState<IFoodItem>();
@@ -54,9 +51,13 @@ function Menu() {
           <List
             items={categories.all}
             renderList={(category) => (
-              <CategoryAnchor
-                categoryName={category.name}
-              />
+              <li
+                key={category.id}
+              >
+                <CategoryAnchor
+                  categoryName={category.name}
+                />
+              </li>
             )}
           />
         </Col>
@@ -64,22 +65,26 @@ function Menu() {
           <List
             items={categoryItems}
             renderList={(category: IFoodCategory) => {
-              if (category.id === -1) {
+              if (category.id === -1 || category.name === 'Uncategorized') {
                 return null;
               }
               return (
-                <li>
+                <li
+                  key={category.id}
+                >
                   <FoodCategory
                     category={category}
                     renderItem={(foodItem: IFoodItem) => (
-                      <FoodItemLi
-                        onClick={() => handleModal(foodItem)}
-                        enterPress={keyPressed}
+                      <li
+                        className="food-item-li"
+                        key={foodItem.id}
                       >
-                        <FoodItem
-                          foodItem={foodItem}
-                        />
-                      </FoodItemLi>
+                        <button onClick={() => handleModal(foodItem)} type="button">
+                          <FoodItem
+                            foodItem={foodItem}
+                          />
+                        </button>
+                      </li>
                     )}
                   />
                 </li>

@@ -11,17 +11,18 @@ function PreviousOrder({
   order,
 }: FoodItemOrderProps) {
   return (
-    <li className="previous-order">
+    <div className="previous-order">
       <div className="date">
         {order.date}
       </div>
       <List
         items={order?.foodItems!}
         renderList={(foodItem: IFoodItem) => (
-          <FoodItemOrder
-            foodItem={foodItem}
-            key={foodItem.id}
-          />
+          <li key={foodItem.id}>
+            <FoodItemOrder
+              foodItem={foodItem}
+            />
+          </li>
         )}
       />
       <div className="date">
@@ -31,7 +32,7 @@ function PreviousOrder({
           {order.total}
         </div>
       </div>
-    </li>
+    </div>
   );
 }
 

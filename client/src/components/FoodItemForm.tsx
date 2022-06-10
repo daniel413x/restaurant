@@ -60,7 +60,19 @@ function FoodItemForm({
   const addIngredient = () => {
     const newIngredientsArr = newIngredients.split(/,\s+|\s+,|,/).filter(Boolean);
     newIngredientsArr.forEach((c) => c.split('').filter(Boolean).join(''));
-    setIngredients([...ingredients, ...newIngredientsArr.filter((c) => !/[^\S]+\s+[^\S]+/.test(c))]);
+    for (let newIngredient = 0; newIngredient < newIngredientsArr.length; newIngredient += 1) {
+      for (let previousIngredient = 0; previousIngredient < ingredients.length; previousIngredient += 1) {
+        if (ingredients[previousIngredient] === newIngredientsArr[newIngredient]) {
+          return notifications.message(
+            'Ingredient already exists; check input',
+            red,
+            shortNotification,
+          );
+        }
+      }
+    }
+    setNewIngredients('');
+    return setIngredients([...ingredients, ...newIngredientsArr.filter((c) => !/[^\S]+\s+[^\S]+/.test(c))]);
   };
   // const showPercent = (number: number) => number * 100;
   const deleteIngredient = (ingredient: string) => setIngredients(ingredients?.filter((ingredientName) => ingredient !== ingredientName));
@@ -174,10 +186,12 @@ function FoodItemForm({
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {categories.all.map((categoryItem) => (
-                    <Dropdown.Item onClick={() => setCategory({
-                      name: categoryItem.name,
-                      id: categoryItem.id,
-                    })}
+                    <Dropdown.Item
+                      onClick={() => setCategory({
+                        name: categoryItem.name,
+                        id: categoryItem.id,
+                      })}
+                      key={categoryItem.id}
                     >
                       {categoryItem.name}
                       {categoryItem.name === 'Uncategorized' && '/hidden'}

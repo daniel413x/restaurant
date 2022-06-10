@@ -109,7 +109,7 @@ function EditedCategory({
   const [expand, setExpand] = useState(false);
   const outsideClickRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<HTMLInputElement>(null);
-  const [editTitleMode, setEditTitleMode] = useState<boolean>(false);
+  const [active, setActive] = useState<boolean>(false);
   const [showDeleteCategoryModal, setShowDeleteCategoryModal] = useState<boolean>(false);
   const [showDeleteFoodItemModal, setShowDeleteFoodItemModal] = useState<boolean>(false);
   const [deletedFoodItem, setDeletedFoodItem] = useState<IFoodItem>();
@@ -117,10 +117,10 @@ function EditedCategory({
   const uncategorizedCategory = id === -1;
   const submitNewName = () => {
     if (newName === category.name) {
-      return setEditTitleMode(false);
+      return setActive(false);
     }
     categories.setNewName(id, newName);
-    setEditTitleMode(false);
+    setActive(false);
     return notifications.message(
       'Category name updated',
       green,
@@ -151,22 +151,22 @@ function EditedCategory({
     setExpand(!expand);
   };
   const toggleEditTitle = () => {
-    setEditTitleMode(!editTitleMode);
+    setActive(!active);
     if (expand) {
       setExpand(false);
     }
   };
   useEffect(() => {
-    if (editTitleMode) {
+    if (active) {
       focusRef.current?.focus();
     } else {
-      setEditTitleMode(false);
+      setActive(false);
       setNewName(name);
     }
-  }, [editTitleMode]);
-  useOnClickOutside(outsideClickRef, () => setEditTitleMode(false));
+  }, [active]);
+  useOnClickOutside(outsideClickRef, () => setActive(false));
   return (
-    <div className={`category admin-item ${editTitleMode && 'edit-title-mode'}`} ref={outsideClickRef}>
+    <div className={`category admin-item ${active && 'active'}`} ref={outsideClickRef}>
       <Confirmation
         show={showDeleteCategoryModal}
         onHide={() => setShowDeleteCategoryModal(false)}
@@ -184,21 +184,21 @@ function EditedCategory({
       />
       )}
       <Form className="title-buttons-row body">
-        <Col className="title" md="auto">
+        <Col className="tab-col" md="auto">
           <Form.Control
             ref={focusRef}
-            value={editTitleMode ? newName : name}
+            value={active ? newName : name}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
-            className={`${!editTitleMode && !expand && 'disabled-2'}`}
+            className={`${!active && !expand && 'disabled-2'}`}
           />
         </Col>
 
-        {editTitleMode ? (
+        {active ? (
           <Col className="icon-buttons" md="auto">
             <Button onClick={submitNewName} title="Save">
               <FontAwesomeIcon icon={faCheck} />
             </Button>
-            <Button onClick={() => setEditTitleMode(false)} title="Cancel">
+            <Button onClick={() => setActive(false)} title="Cancel">
               <FontAwesomeIcon icon={faBan} />
             </Button>
           </Col>

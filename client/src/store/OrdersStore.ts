@@ -21,6 +21,17 @@ export default class OrdersStore {
       },
       date: '5/26/22',
       total: 0,
+      addressId: 1,
+      address: {
+        id: 1,
+        firstName: 'Daniel',
+        lastName: 'Admin',
+        addressLineOne: '2425 TypeScript Avenue',
+        addressLineTwo: '#333',
+        city: 'Washington',
+        zip: '20008',
+        state: 'DC',
+      },
     };
     makeAutoObservable(this);
   }

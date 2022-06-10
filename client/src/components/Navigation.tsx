@@ -1,4 +1,9 @@
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  MouseEvent,
+} from 'react';
 import {
   Container, Navbar, Nav, Image, NavDropdown,
 } from 'react-bootstrap';
@@ -17,60 +22,86 @@ import {
 } from '../utils/consts';
 import { countItems } from '../utils/functions';
 import Context from '../context/context';
+import useWindowSize from '../hooks/useWindowSize';
 
 function Navigation() {
   const { user, cart } = useContext(Context);
+  const { md } = useWindowSize();
+  const [expandIndex, setExpandIndex] = useState<boolean>(false);
+  const [expandAccount, setExpandAccount] = useState<boolean>(false);
   const cartCount = countItems(cart.foodItems);
+  const collapseMenu = () => {
+    if (!md) {
+      setExpandIndex(false);
+      setTimeout(() => setExpandAccount(false), 250);
+    }
+  };
+  const openSubMenu = (e: MouseEvent) => {
+    if ((e.target as HTMLDivElement).className === 'dropdown-toggle nav-link' && expandAccount) {
+      setExpandAccount(false);
+    } else if (!expandAccount) {
+      setExpandAccount(true);
+    }
+  };
+  const openIndex = () => {
+    if (expandIndex) {
+      setExpandIndex(false);
+    } else {
+      setExpandIndex(true);
+    }
+    if (expandAccount) {
+      setTimeout(() => setExpandAccount(false), 250);
+    }
+  };
+  useEffect(() => {
+    if (md) {
+      setExpandIndex(false);
+    }
+  }, [md]);
   return (
-    <Navbar id="navbar" expand="lg">
+    <Navbar id="navbar" expand="lg" expanded={expandIndex}>
       <Container>
         <Navbar.Brand href={FRONT_PAGE_ROUTE}>
           <Image src={Logo} alt="logo" title="Home" />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle onClick={openIndex} aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <NavLink className="nav-link" to={FRONT_PAGE_ROUTE} title="Home">
+            <NavLink className="nav-link" to={FRONT_PAGE_ROUTE} title="Home" onClick={collapseMenu}>
               Home
             </NavLink>
-            <NavLink className="nav-link" to={MENU_ROUTE} title="Menu">
+            <NavLink className="nav-link" to={MENU_ROUTE} title="Menu" onClick={collapseMenu}>
               Menu
             </NavLink>
-            <NavLink className="nav-link" to={CART_ROUTE} title="Cart">
+            <NavLink className="nav-link" to={CART_ROUTE} title="Cart" onClick={collapseMenu}>
               Cart
               {' '}
               {cartCount ? `(${cartCount})` : null}
             </NavLink>
             {!user.isAuth && (
-              <NavLink className="nav-link" to={LOGIN_ROUTE} title="Login">
+              <NavLink className="nav-link" to={LOGIN_ROUTE} title="Login" onClick={collapseMenu}>
                 Login
               </NavLink>
             )}
             {!user.isAuth && (
-            <NavLink className="nav-link" to={REGISTRATION_ROUTE} title="Register">
+            <NavLink className="nav-link" to={REGISTRATION_ROUTE} title="Register" onClick={collapseMenu}>
               Register
             </NavLink>
             )}
             {user.isAuth && (
-            <NavDropdown title={user.name}>
-              <NavDropdown.Item>
-                <NavLink className="nav-link" to={ACCOUNT_ROUTE} title="Account">
+              <NavDropdown title={user.name} show={expandAccount} onClick={openSubMenu}>
+                <NavLink tabIndex={0} role="button" className="nav-link" to={ACCOUNT_ROUTE} title="Account" onClick={collapseMenu}>
                   Account
                 </NavLink>
-              </NavDropdown.Item>
-              {user.isAdmin && (
-              <NavDropdown.Item>
-                <NavLink className="nav-link" to={ADMIN_ROUTE} title="Admin">
+                {user.isAdmin && (
+                <NavLink tabIndex={0} role="button" className="nav-link" to={ADMIN_ROUTE} title="Admin" onClick={collapseMenu}>
                   Admin
                 </NavLink>
-              </NavDropdown.Item>
-              )}
-              <NavDropdown.Item>
-                <NavLink className="nav-link" to={LOGOUT_ROUTE} title="Logout">
+                )}
+                <NavLink tabIndex={0} role="button" className="nav-link" to={LOGOUT_ROUTE} title="Logout" onClick={collapseMenu}>
                   Logout
                 </NavLink>
-              </NavDropdown.Item>
-            </NavDropdown>
+              </NavDropdown>
             )}
           </Nav>
           <Nav>

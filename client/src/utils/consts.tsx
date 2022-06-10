@@ -14,6 +14,7 @@ import imageFour from '../assets/about-us-4.png';
 import imageSix from '../assets/about-us-6.png';
 import categoryPlaceholder from '../assets/menu-appetizers.png';
 import { actionTimestamp, orderDate } from './functions';
+import AdminOrders from '../pages/AdminOrders';
 
 export const ACCOUNT_INDEX_ROUTE = '/*';
 export const ACCOUNT_ROUTE = 'account/*';
@@ -96,7 +97,7 @@ export const accountRoutes = [
 export const adminRoutes = [
   {
     path: ADMIN_ORDERS_ROUTE,
-    Component: AccountDetails,
+    Component: AdminOrders,
   },
   {
     path: MENU_ROUTE,
@@ -104,7 +105,7 @@ export const adminRoutes = [
   },
   {
     path: ACCOUNT_INDEX_ROUTE,
-    Component: AccountDetails,
+    Component: AdminOrders,
   },
 ];
 
@@ -393,6 +394,17 @@ export const categoriesPlaceholders = [
   },
 ];
 
+export const testAddress = {
+  id: 1,
+  firstName: 'Daniel',
+  lastName: 'McAdmin',
+  addressLineOne: '2425 TypeScript Avenue',
+  addressLineTwo: '#333',
+  city: 'Washington',
+  zip: '20008',
+  state: 'DC',
+};
+
 export const testActiveOrder = {
   id: 5,
   userId: -1,
@@ -440,6 +452,8 @@ export const testActiveOrder = {
     },
   ],
   total: 10.78,
+  addressId: testAddress.id,
+  address: testAddress,
 };
 
 export const testPreviousOrders = [
@@ -484,6 +498,8 @@ export const testPreviousOrders = [
         },
       },
     ],
+    addressId: testAddress.id,
+    address: testAddress,
     total: 10.78,
   },
   {
@@ -528,6 +544,8 @@ export const testPreviousOrders = [
       },
     ],
     total: 10.78,
+    addressId: testAddress.id,
+    address: testAddress,
   },
   {
     id: 8,
@@ -571,5 +589,7 @@ export const testPreviousOrders = [
       },
     ],
     total: 10.78,
+    addressId: testAddress.id,
+    address: testAddress,
   },
 ];

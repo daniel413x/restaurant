@@ -14,6 +14,7 @@ import {
   shortNotification,
   red,
   ACCOUNT_ROUTE,
+  testAddress,
 } from '../../utils/consts';
 import { actionTimestamp, orderDate } from '../../utils/functions';
 
@@ -111,6 +112,7 @@ function Checkout({
         },
         date: orderDate(),
         total: cart.total,
+        addressId: testAddress.id,
       };
       orders.addOrder(order);
       cart.clearItems();
@@ -159,7 +161,10 @@ function Checkout({
                   Receipt
                 </h5>
                 {checkoutItems.map((item) => (
-                  <Row className="item-price-pair">
+                  <Row
+                    className="item-price-pair"
+                    key={item.id}
+                  >
                     <Col className="item">
                       {' '}
                       {item.name}
@@ -185,7 +190,7 @@ function Checkout({
               </div>
               <hr />
               <h5>
-                Shipping & billing
+                Shipping &amp; billing
               </h5>
               <Form>
                 * = required field

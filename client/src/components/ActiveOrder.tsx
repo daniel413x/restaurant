@@ -21,6 +21,15 @@ function ActiveOrder() {
   const [dynamicStatusSubheading, setDynamicStatusSubheading] = useState<string>('');
   const [min, setMin] = useState<number>(0);
   const [max, setMax] = useState<number>(0);
+  const {
+    firstName,
+    lastName,
+    addressLineOne,
+    addressLineTwo,
+    city,
+    state,
+    zip,
+  } = orders.activeOrder.address!;
   useEffect(() => {
     if (!orders.activeOrder.status.actionLog.length) {
       return;
@@ -46,23 +55,47 @@ function ActiveOrder() {
   return (
     <Container id="active-order">
       <Row className="main-row">
-        <Col className="items" md={6}>
+        <Col className="items-delivery-address-col" md={6}>
           <h2>
             Order #
             {orders.activeOrder?.id}
           </h2>
           <List
+            className="items-ul"
             items={orders.activeOrder?.foodItems!}
             renderList={(foodItem: IFoodItem) => (
-              <FoodItemOrder
-                foodItem={foodItem}
-                key={foodItem.id}
-              />
+              <li key={foodItem.id}>
+                <FoodItemOrder
+                  foodItem={foodItem}
+                />
+              </li>
             )}
           />
+          <Col className="delivery-address">
+            <Col className="label">
+              Deliver to:
+            </Col>
+            <Col>
+              {firstName}
+              {' '}
+              {lastName}
+            </Col>
+            <Col>
+              {addressLineOne}
+              {' '}
+              {addressLineTwo}
+            </Col>
+            <Col>
+              {city}
+              {', '}
+              {state}
+              {' '}
+              {zip}
+            </Col>
+          </Col>
         </Col>
         <Col className="status" md={6}>
-          <h2>
+          <h2 className="header">
             The rest is on us!
           </h2>
           <span className="label">
@@ -80,13 +113,14 @@ function ActiveOrder() {
                 </span>
                 <ul>
                   {orders.activeOrder?.status!.actionLog.map((action: ITimestampedAction, index) => (
-                    <TimestampedAction
-                      message={action.message}
-                      timestamp={action.timestamp}
-                      currentOrb={currentOrb}
-                      index={index}
-                      key={action.message}
-                    />
+                    <li key={action.message}>
+                      <TimestampedAction
+                        message={action.message}
+                        timestamp={action.timestamp}
+                        currentOrb={currentOrb}
+                        index={index}
+                      />
+                    </li>
                   ))}
                 </ul>
               </div>
