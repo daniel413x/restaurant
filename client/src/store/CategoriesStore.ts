@@ -47,7 +47,7 @@ export default class UserStore {
   }
 
   addFoodItem(obj: IFoodItem) {
-    const updatedCategory = this.categories.find((category) => category.id === obj.category.id)!;
+    const updatedCategory = this.categories.find((category) => category.id === obj.category!.id)!;
     updatedCategory.foodItems = [...updatedCategory.foodItems, obj];
     this.categories = this.categories.map((category) => {
       if (category.id === updatedCategory.id) {
@@ -72,7 +72,7 @@ export default class UserStore {
     if (previousCategoryId && previousCategoryId >= 0) {
       const previousCategory = this.categories.find((category) => category.id === previousCategoryId)!;
       previousCategory.foodItems = previousCategory.foodItems.filter((foodItem) => foodItem.id !== updatedFoodItem.id);
-      const newCategory = this.categories.find((category) => category.id === updatedFoodItem.category.id)!;
+      const newCategory = this.categories.find((category) => category.id === updatedFoodItem.category!.id)!;
       newCategory.foodItems = [...newCategory.foodItems, updatedFoodItem];
       this.categories = this.categories.map((category) => {
         if (category.id === previousCategory.id) {
@@ -85,7 +85,7 @@ export default class UserStore {
       });
       return;
     }
-    const itemCategory = this.categories.find((category) => category.id === updatedFoodItem.category.id)!;
+    const itemCategory = this.categories.find((category) => category.id === updatedFoodItem.category!.id)!;
     itemCategory.foodItems = itemCategory.foodItems.map((foodItem) => {
       if (foodItem.id === updatedFoodItem.id) {
         return updatedFoodItem;

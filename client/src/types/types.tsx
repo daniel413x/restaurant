@@ -58,12 +58,12 @@ export interface IFoodItem {
   quantity?: number;
   // calories?
   instructions?: string;
-  category: FoodItemCategory;
+  category?: FoodItemCategory;
 }
 
 type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-export type QueryFoodItem = PartiallyOptional<IFoodItem, 'id'>;
+export type QueryFoodItem = PartiallyOptional<IFoodItem, 'id'>; // sent in POST
 
 export interface IFoodCategory {
   name: string;

@@ -3,7 +3,7 @@ import {
   IOrder,
 } from '../types/types';
 import { calcTotal } from '../utils/functions';
-
+Expected 'this' to be used by class async method 'registration'
 export default class OrdersStore {
   orders: IOrder[];
 
