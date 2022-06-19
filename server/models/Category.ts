@@ -14,7 +14,7 @@ class Category extends Model<InferAttributes<Category>, InferCreationAttributes<
 
   name!: string;
 
-  publicCategory!: boolean;
+  publicCategory!: CreationOptional<boolean>;
 
   static associate(models: any) {
     Category.hasMany(models.FoodItem, {

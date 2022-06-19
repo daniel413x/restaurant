@@ -18,11 +18,13 @@ class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>
 
   address!: CreationOptional<IAddress>;
 
+  time!: [number, number];
+
   foodItems!: IFoodItem[];
 
   static associate(models: any) {
     Order.belongsTo(models.User, { targetKey: 'id' });
-    Order.hasMany(models.FoodItem, {
+    Order.hasMany(models.FoodItemOrder, {
       sourceKey: 'id',
       foreignKey: 'cartId',
       as: 'foodItems',
@@ -50,6 +52,10 @@ Order.init({
   },
   foodItems: {
     type: DataTypes.ARRAY(DataTypes.ABSTRACT),
+    allowNull: false,
+  },
+  time: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false,
   },
 }, {

@@ -28,19 +28,8 @@ export interface IUser {
 
 export interface IFoodItem {
   id: string;
-  image?: string;
   name: string;
-  time?: number[];
-  serves?: number;
   price: number;
-  discount?: number;
-  ingredients?: string[];
-  quantity?: number;
-  instructions?: string;
-  categoryId?: string;
-  category?: ICategory;
-  orderId?: string;
-  cartId?: string;
 }
 
 export interface IOrder {

@@ -13,7 +13,7 @@ class Cart extends Model<InferAttributes<Cart>, InferCreationAttributes<Cart>> {
 
   static associate(models: any) {
     Cart.belongsTo(models.User, { targetKey: 'id' });
-    Cart.hasMany(models.FoodItem, {
+    Cart.hasMany(models.FoodItemCart, {
       sourceKey: 'id',
       foreignKey: 'cartId',
       as: 'foodItems',

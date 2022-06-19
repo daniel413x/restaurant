@@ -1,33 +1,31 @@
 import {
+  CreationOptional,
+  DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
   Model,
   UUIDV4,
-  DataTypes,
 } from 'sequelize';
 import sequelize from '../db';
-import { ICategory } from '../types/types';
+import { ICategory, IFoodItem } from '../types/types';
 
 // eslint-disable-next-line no-use-before-define
-class FoodItem extends Model<InferAttributes<FoodItem>, InferCreationAttributes<FoodItem>> {
+class FoodItemMenu extends Model<InferAttributes<FoodItemMenu>, InferCreationAttributes<FoodItemMenu>> implements IFoodItem {
   id!: CreationOptional<string>;
-
-  image?: string;
 
   name!: string;
 
-  time?: number[];
-
-  serves?: number;
-
   price!: number;
+
+  image!: string;
+
+  time!: [number, number];
+
+  serves!: number;
 
   discount?: number;
 
   ingredients?: string[];
-
-  quantity?: number;
 
   instructions?: string;
 
@@ -35,29 +33,22 @@ class FoodItem extends Model<InferAttributes<FoodItem>, InferCreationAttributes<
 
   category?: ICategory;
 
-  orderId?: string;
-
-  cartId?: string;
-
   static associate(models: any) {
-    FoodItem.belongsTo(models.Category, { targetKey: 'id' });
-    FoodItem.belongsTo(models.Cart, { targetKey: 'id' });
-    FoodItem.belongsTo(models.Order, { targetKey: 'id' });
+    FoodItemMenu.belongsTo(models.Category, { targetKey: 'id' });
   }
 }
-FoodItem.init({
+FoodItemMenu.init({
   id: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUIDV4,
     defaultValue: UUIDV4,
-    autoIncrement: true,
     primaryKey: true,
   },
   name: {
-    type: DataTypes.STRING(256),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   price: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.NUMBER,
     allowNull: false,
   },
   discount: {
@@ -79,10 +70,6 @@ FoodItem.init({
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false,
   },
-  quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
   instructions: {
     type: DataTypes.STRING,
   },
@@ -91,7 +78,7 @@ FoodItem.init({
   },
 }, {
   sequelize,
-  modelName: 'FoodItem',
+  modelName: 'FoodItemMenu',
 });
 
-export default FoodItem;
+export default FoodItemMenu;
