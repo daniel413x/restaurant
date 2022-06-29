@@ -15,6 +15,14 @@
     "plugins": [
         "@typescript-eslint"
     ],
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx"],
+        "parserOptions": {
+          "project": ["./tsconfig.json"]
+        }
+      }
+    ],
     "settings": {
       "import/resolver": {
         "node": {

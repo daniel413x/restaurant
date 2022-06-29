@@ -2,11 +2,10 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  Model, UUIDV4,
-  DataTypes,
+  Model,
 } from 'sequelize';
-import sequelize from '../db';
-import { USER } from '../utils/consts';
+import { userAttributes } from '../../utils/modelAttributes';
+import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
@@ -22,15 +21,19 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
   avatar?: CreationOptional<string>;
 
+  createdAt?: CreationOptional<Date>;
+
+  updatedAt?: CreationOptional<Date>;
+
   static associate(models: any) {
     User.hasMany(models.Address, {
       sourceKey: 'id',
-      foreignKey: 'userId',
+      foreignKey: 'UserId',
       as: 'addresses',
     });
     User.hasMany(models.Order, {
       sourceKey: 'id',
-      foreignKey: 'userId',
+      foreignKey: 'UserId',
       as: 'orders',
     });
     User.hasOne(models.Cart, {
@@ -38,43 +41,13 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     });
   }
 }
+
 User.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  name: {
-    type: DataTypes.STRING,
-  },
-  role: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: USER,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true,
-    },
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      is: /(?=^\S{6,256}$)^.+$/i,
-    },
-  },
-  avatar: {
-    type: DataTypes.STRING,
-  },
+  ...userAttributes,
 }, {
   sequelize,
   modelName: 'User',
+  freezeTableName: true,
 });
 
 export default User;

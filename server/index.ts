@@ -1,9 +1,9 @@
 import express from 'express';
-import fileUpload from 'express-fileupload';
 import cors from 'cors';
 import path from 'path';
+import fileUpload from 'express-fileupload';
 import 'dotenv/config';
-import sequelize from './db';
+import db from './db';
 import router from './routes/index';
 import errorMiddleware from './middleware/errorMiddleware';
 import requestLogger from './middleware/requestLogger';
@@ -19,18 +19,13 @@ app.use(fileUpload({}));
 app.use('/api/', router);
 app.use(errorMiddleware);
 
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'www' });
-});
-
-const start = async () => {
+const init = async () => {
   try {
-    await sequelize.authenticate();
-    await sequelize.sync({ alter: true });
+    await db.sequelize.authenticate();
     app.listen(PORT, () => logger(`server started on port ${PORT}`));
   } catch (e) {
     logger(e);
   }
 };
 
-start();
+init();

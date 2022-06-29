@@ -2,9 +2,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import ApiError from '../error/ApiError';
-import User from '../models/User';
-import Cart from '../models/Cart';
 import { IUser } from '../types/types';
+import { ADMIN } from '../utils/consts';
+import Cart from '../db/models/Cart';
+import User from '../db/models/User';
 
 const generateJwt = (id: string, email: string, role: string) => jwt.sign(
   {
@@ -56,8 +57,9 @@ class UserController {
     const user = await User.create({
       email,
       password: hashPassword,
+      role: ADMIN,
     });
-    await Cart.create({ id: user.id });
+    await Cart.create({ UserId: user.id });
     const token = generateJwt(
       user.id,
       user.email,
@@ -74,6 +76,9 @@ class UserController {
     const user: IUser | null = await User.findOne({
       where: {
         email,
+      },
+      include: {
+        model: Cart,
       },
     });
     if (!user) {
@@ -107,6 +112,12 @@ class UserController {
       role,
     );
     return res.json({ token });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    await User.destroy({ where: { id } });
+    return res.status(204).end();
   }
 }
 

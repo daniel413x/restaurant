@@ -1,13 +1,9 @@
 import { Request, Response } from 'express';
 import { col } from 'sequelize';
-import Category from '../models/Category';
+import FoodItemInMenu from '../db/models/FoodItemInMenu';
+import Category from '../db/models/Category';
 
 class CategoryController {
-  constuctor() {
-    this.create = this.create.bind(this);
-    this.edit = this.edit.bind(this);
-  }
-
   async get(req: Request, res: Response) {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 12;
@@ -21,6 +17,10 @@ class CategoryController {
       offset,
       order,
       where,
+      include: [{
+        model: FoodItemInMenu,
+        as: 'foodItems',
+      }],
     };
     if (byNewest) {
       params.order = [[col('createdAt'), 'DESC']];

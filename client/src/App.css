@@ -60,7 +60,7 @@ input[type="submit"] {
 }
 
 .labeled-checkbox-button {
-  all:inherit;
+  all: inherit;
   display: flex;
   grid-gap: .5rem;
 }
