@@ -40,11 +40,6 @@ export interface IOrder {
   foodItems: IFoodItem[];
 }
 
-export interface ITimestampedAction {
-  timestamp: string;
-  message: string;
-}
-
 export interface ICart {
   id?: string;
   userId: string;

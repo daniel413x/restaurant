@@ -1,11 +1,12 @@
 import {
   CreationOptional,
   InferAttributes,
+  DataTypes,
+  UUIDV4,
   InferCreationAttributes,
   Model,
 } from 'sequelize';
 import { IFoodItem } from '../../types/types';
-import { foodItemInCartAttributes } from '../../utils/modelAttributes';
 import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
@@ -24,6 +25,8 @@ class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreatio
 
   instructions?: string;
 
+  quantity?: number;
+
   createdAt?: CreationOptional<Date>;
 
   updatedAt?: CreationOptional<Date>;
@@ -34,7 +37,42 @@ class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreatio
 }
 
 FoodItemInCart.init({
-  ...foodItemInCartAttributes,
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: UUIDV4,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
+  ingredients: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: false,
+  },
+  time: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: false,
+  },
+  quantity: {
+    type: DataTypes.INTEGER,
+  },
+  instructions: {
+    type: DataTypes.STRING,
+  },
+  CartId: {
+    type: DataTypes.UUID,
+    references: {
+      model: 'Cart',
+      key: 'id',
+    },
+  },
+  createdAt: DataTypes.DATE,
+  updatedAt: DataTypes.DATE,
 }, {
   sequelize,
   modelName: 'FoodItemInCart',

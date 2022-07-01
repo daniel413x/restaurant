@@ -1,10 +1,11 @@
 import {
   InferAttributes,
   InferCreationAttributes,
+  DataTypes,
+  UUIDV4,
   Model,
   CreationOptional,
 } from 'sequelize';
-import { cartAttributes } from '../../utils/modelAttributes';
 import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
@@ -28,7 +29,22 @@ class Cart extends Model<InferAttributes<Cart>, InferCreationAttributes<Cart>> {
 }
 
 Cart.init({
-  ...cartAttributes,
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: UUIDV4,
+    allowNull: false,
+    primaryKey: true,
+  },
+  UserId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'User',
+      key: 'id',
+    },
+  },
+  createdAt: DataTypes.DATE,
+  updatedAt: DataTypes.DATE,
 }, {
   sequelize,
   modelName: 'Cart',
