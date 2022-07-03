@@ -7,13 +7,13 @@ import { calcTotal } from '../utils/functions';
 export default class CartStore implements ICart {
   id: number;
 
-  userId: number;
+  UserId: string;
 
   foodItems: IFoodItem[];
 
   constructor() {
     this.id = -1;
-    this.userId = -1;
+    this.UserId = '-1';
     this.foodItems = [];
     makeAutoObservable(this);
   }
@@ -45,15 +45,15 @@ export default class CartStore implements ICart {
   }
 
   setCart(obj: ICart) {
-    const { id, userId, foodItems } = obj;
+    const { id, UserId, foodItems } = obj;
     this.id = id;
-    this.userId = userId;
+    this.UserId = UserId;
     this.foodItems = foodItems;
   }
 
   unsetCart() {
     this.id = -1;
-    this.userId = -1;
+    this.UserId = '-1';
     this.foodItems = [];
   }
 }

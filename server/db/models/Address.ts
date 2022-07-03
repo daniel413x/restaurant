@@ -6,10 +6,11 @@ import {
   CreationOptional,
   Model,
 } from 'sequelize';
+import { IAddress } from '../../types/types';
 import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
-class Address extends Model<InferAttributes<Address>, InferCreationAttributes<Address>> {
+class Address extends Model<InferAttributes<Address>, InferCreationAttributes<Address>> implements IAddress {
   id!: string;
 
   firstName!: string;
@@ -27,8 +28,6 @@ class Address extends Model<InferAttributes<Address>, InferCreationAttributes<Ad
   state!: string;
 
   UserId!: string;
-
-  saved?: boolean;
 
   isDefault?: CreationOptional<boolean>;
 
@@ -74,9 +73,6 @@ Address.init({
   state: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  saved: {
-    type: DataTypes.BOOLEAN,
   },
   UserId: {
     type: DataTypes.UUID,

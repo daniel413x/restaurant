@@ -6,11 +6,12 @@ import {
   Container,
 } from 'react-bootstrap';
 import {
-  LOGIN_ROUTE,
-  shortNotification,
-  green,
   FRONT_PAGE_ROUTE,
   REGISTRATION_ROUTE,
+  LOGIN_ROUTE,
+  GUEST,
+  shortNotification,
+  green,
 } from '../utils/consts';
 import AuthBox from '../components/AuthBox';
 import Context from '../context/context';
@@ -18,17 +19,20 @@ import Context from '../context/context';
 function Auth() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { notifications } = useContext(Context);
-  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const { notifications, user } = useContext(Context);
+  const [forLogin, setShowLogin] = useState<boolean>(false);
   const onSuccess = () => {
     notifications.message(
-      showLogin ? 'You logged in successfully' : 'Registration successful',
+      forLogin ? 'You logged in successfully' : 'Registration successful',
       green,
       shortNotification,
     );
     navigate(FRONT_PAGE_ROUTE);
   };
   useEffect(() => {
+    if (user.role !== GUEST) {
+      navigate(FRONT_PAGE_ROUTE);
+    }
     if (location.pathname === `/${LOGIN_ROUTE}`) {
       setShowLogin(true);
     } else {
@@ -38,14 +42,14 @@ function Auth() {
   return (
     <Container id="auth">
       <h2>
-        {showLogin ? 'Login' : 'Registration'}
+        {forLogin ? 'Login' : 'Registration'}
       </h2>
       <AuthBox
         onSuccess={onSuccess}
-        showLogin={showLogin}
+        forLogin={forLogin}
       />
-      <NavLink to={`/${showLogin ? REGISTRATION_ROUTE : LOGIN_ROUTE}`}>
-        {showLogin ? 'Register an account' : 'I\'m already registered'}
+      <NavLink to={`/${forLogin ? REGISTRATION_ROUTE : LOGIN_ROUTE}`}>
+        {forLogin ? 'Register an account' : 'I\'m already registered'}
       </NavLink>
     </Container>
   );

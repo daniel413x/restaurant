@@ -15,6 +15,7 @@ interface SmartInputProps {
   optional?: boolean;
   bsWidth?: number | boolean;
   type?: string;
+  classes?: string;
 }
 
 function SmartInput({
@@ -29,6 +30,7 @@ function SmartInput({
   bsWidth,
   primaryStyle,
   type,
+  classes,
 }: SmartInputProps) {
   const [warn, setWarn] = useState<boolean>(false);
   useEffect(() => {
@@ -43,7 +45,7 @@ function SmartInput({
     }
   }, [value]);
   return (
-    <Col className="smart-input" md={bsWidth}>
+    <Col className={`smart-input ${classes}`} md={bsWidth}>
       {label && (
       <span className="label">
         {label}
@@ -87,6 +89,7 @@ SmartInput.defaultProps = {
   setPressedSubmit: false,
   label: '',
   type: 'text',
+  classes: '',
 };
 
 export default SmartInput;

@@ -3,6 +3,7 @@ import React, {
   useState,
   useEffect,
   MouseEvent,
+  useRef,
 } from 'react';
 import {
   Container, Navbar, Nav, Image, NavDropdown,
@@ -19,23 +20,30 @@ import {
   ACCOUNT_ROUTE,
   ADMIN_ROUTE,
   LOGOUT_ROUTE,
+  ADMIN,
+  GUEST,
+  green,
+  shortNotification,
 } from '../utils/consts';
 import { countItems } from '../utils/functions';
 import Context from '../context/context';
 import useWindowSize from '../hooks/useWindowSize';
+import useOnClickOutside from '../hooks/useOnOutsideClick';
 
 function Navigation() {
-  const { user, cart } = useContext(Context);
+  const { notifications, user, cart } = useContext(Context);
   const { md } = useWindowSize();
   const [expandIndex, setExpandIndex] = useState<boolean>(false);
   const [expandAccount, setExpandAccount] = useState<boolean>(false);
-  const cartCount = countItems(cart.foodItems);
+  const ref = useRef<HTMLDivElement>(null);
+  const cartCount = countItems(cart.foodItems) || 0;
   const collapseMenu = () => {
     if (!md) {
       setExpandIndex(false);
       setTimeout(() => setExpandAccount(false), 250);
     }
   };
+  useOnClickOutside(ref, collapseMenu);
   const openSubMenu = (e: MouseEvent) => {
     if ((e.target as HTMLDivElement).className === 'dropdown-toggle nav-link' && expandAccount) {
       setExpandAccount(false);
@@ -53,13 +61,23 @@ function Navigation() {
       setTimeout(() => setExpandAccount(false), 250);
     }
   };
+  const logout = () => {
+    localStorage.removeItem('token');
+    user.unsetUser();
+    cart.unsetCart();
+    notifications.message(
+      'You were logged out',
+      green,
+      shortNotification,
+    );
+  };
   useEffect(() => {
     if (md) {
       setExpandIndex(false);
     }
   }, [md]);
   return (
-    <Navbar id="navbar" expand="lg" expanded={expandIndex}>
+    <Navbar id="navbar" expand="lg" expanded={expandIndex} ref={ref}>
       <Container>
         <Navbar.Brand href={FRONT_PAGE_ROUTE}>
           <Image src={Logo} alt="logo" title="Home" />
@@ -78,27 +96,27 @@ function Navigation() {
               {' '}
               {cartCount ? `(${cartCount})` : null}
             </NavLink>
-            {!user.isAuth && (
+            {user.role === GUEST && (
               <NavLink className="nav-link" to={LOGIN_ROUTE} title="Login" onClick={collapseMenu}>
                 Login
               </NavLink>
             )}
-            {!user.isAuth && (
+            {user.role === GUEST && (
             <NavLink className="nav-link" to={REGISTRATION_ROUTE} title="Register" onClick={collapseMenu}>
               Register
             </NavLink>
             )}
-            {user.isAuth && (
-              <NavDropdown title={user.name} show={expandAccount} onClick={openSubMenu}>
+            {user.role !== GUEST && (
+              <NavDropdown title="Account" show={expandAccount} onClick={openSubMenu}>
                 <NavLink tabIndex={0} role="button" className="nav-link" to={ACCOUNT_ROUTE} title="Account" onClick={collapseMenu}>
-                  Account
+                  Main
                 </NavLink>
-                {user.isAdmin && (
+                {user.role === ADMIN && (
                 <NavLink tabIndex={0} role="button" className="nav-link" to={ADMIN_ROUTE} title="Admin" onClick={collapseMenu}>
                   Admin
                 </NavLink>
                 )}
-                <NavLink tabIndex={0} role="button" className="nav-link" to={LOGOUT_ROUTE} title="Logout" onClick={collapseMenu}>
+                <NavLink tabIndex={0} role="button" className="nav-link" to={LOGOUT_ROUTE} title="Logout" onClick={logout}>
                   Logout
                 </NavLink>
               </NavDropdown>

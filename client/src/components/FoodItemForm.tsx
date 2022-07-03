@@ -112,7 +112,7 @@ function FoodItemForm({
         category,
         id: foodItem.id,
       };
-      const previousCategoryId = foodItem.category.id;
+      const previousCategoryId = foodItem.category!.id;
       if (category.id !== previousCategoryId) {
         categories.updateFoodItem(foodItemFromServer, previousCategoryId);
       } else {

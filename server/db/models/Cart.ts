@@ -7,12 +7,15 @@ import {
   CreationOptional,
 } from 'sequelize';
 import sequelize from '../connection';
+import FoodItemInCart from './FoodItemInCart';
 
 // eslint-disable-next-line no-use-before-define
 class Cart extends Model<InferAttributes<Cart>, InferCreationAttributes<Cart>> {
   id!: string;
 
   UserId!: string;
+
+  foodItems?: FoodItemInCart[];
 
   createdAt?: CreationOptional<Date>;
 

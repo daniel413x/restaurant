@@ -39,7 +39,7 @@ function SuggestRegistration() {
       <div>
         <AuthBox
           onSuccess={onSuccess}
-          showLogin={false}
+          forLogin={false}
         />
       </div>
     </div>

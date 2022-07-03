@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 export interface IRouterRoute {
   path: string;
   Component: FC;
@@ -12,26 +14,45 @@ export interface INavbarRoute {
   tooltipClasses?: string;
 }
 
-export interface ICostumerAddress {
+export interface IAddress {
   id: number;
   firstName: string;
   lastName: string;
   addressLineOne: string;
-  addressLineTwo: string;
+  addressLineTwo?: string;
   city: string;
   zip: string;
   state: string;
+  UserId?: string;
+  saved?: boolean;
+  isDefault?: boolean;
 }
 
+export type QueryAddress = PartiallyOptional<IAddress, 'id'>;
+
 export interface IUser {
-  isAuth?: boolean;
-  isAdmin?: boolean;
-  id: number;
+  role: string;
+  id: string;
   name: string;
   email: string;
   avatar: string;
-  addresses: ICostumerAddress[];
-  defaultAddress?: ICostumerAddress | null;
+  addresses: IAddress[];
+  defaultAddress?: IAddress | null;
+}
+
+export type QueryUser = {
+  email: string;
+  password: string;
+};
+
+export interface IRegistrationRequest {
+  user: QueryUser;
+  address?: QueryAddress;
+}
+
+export interface IRegistrationResponse {
+  newUser: IUser;
+  newCart: ICart;
 }
 
 export interface ITestimonialUser {
@@ -60,8 +81,6 @@ export interface IFoodItem {
   instructions?: string;
   category?: FoodItemCategory;
 }
-
-type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type QueryFoodItem = PartiallyOptional<IFoodItem, 'id'>; // sent in POST
 
@@ -92,7 +111,7 @@ export interface INotification {
 
 export interface ICart {
   id: number;
-  userId: number;
+  UserId: string;
   foodItems: IFoodItem[];
 }
 
@@ -103,9 +122,9 @@ export interface ITimestampedAction {
 
 export interface IOrder {
   id: number;
-  userId: number;
+  UserId: string;
   addressId: number;
-  address?: ICostumerAddress;
+  address?: IAddress;
   foodItems: IFoodItem[];
   status: {
     value: number,

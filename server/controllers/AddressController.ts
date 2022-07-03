@@ -22,11 +22,10 @@ class AddressController {
       city,
       zip,
       state,
-      saved,
-      isDefault,
       UserId,
+      isDefault,
     } = req.body;
-    const addressFoodItem = await Address.create({
+    const address = await Address.create({
       firstName,
       lastName,
       addressLineOne,
@@ -34,11 +33,10 @@ class AddressController {
       city,
       zip,
       state,
-      saved,
       UserId,
       isDefault,
     });
-    return res.json(addressFoodItem);
+    return res.json(address);
   }
 
   async edit(req: Request, res: Response) {

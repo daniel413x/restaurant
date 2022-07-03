@@ -9,10 +9,11 @@ export interface IAddress {
   firstName: string;
   lastName: string;
   addressLineOne: string;
-  addressLineTwo: string;
+  addressLineTwo?: string;
   city: string;
   zip: string;
   state: string;
+  UserId?: string;
   isDefault?: boolean;
 }
 

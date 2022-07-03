@@ -8,6 +8,7 @@ import router from './routes/index';
 import errorMiddleware from './middleware/errorMiddleware';
 import requestLogger from './middleware/requestLogger';
 import logger from './middleware/logger';
+import catchNotFound from './middleware/catchNotFound';
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -17,6 +18,7 @@ app.use(requestLogger);
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(fileUpload({}));
 app.use('/api/', router);
+app.use(catchNotFound);
 app.use(errorMiddleware);
 
 const init = async () => {

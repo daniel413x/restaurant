@@ -53,7 +53,7 @@ function Checkout({
   const [loading, setLoading] = useState<boolean>(false);
   const [confirmation, setConfirmation] = useState<boolean>(false);
   const [orderNumber, setOrderNumber] = useState<number>(0);
-  // const userId = user.id;
+  // const UserId = user.id;
   const action = async () => {
     setPressedSubmit(true);
     const requiredFieldsIncomplete = !email || !firstName || !lastName
@@ -68,19 +68,19 @@ function Checkout({
         shortNotification,
       );
     }
-    /* const noItems = basket.foodItems.length === 0;
+    /* const noItems = cart.foodItems.length === 0;
     if (noItems) {
       return notifications.message(
-        'No items in basket',
+        'No items in cart',
         red,
         shortNotification,
       );
     } */
     setLoading(true);/*
-    const basketFoodItemIds = [];
+    const cartFoodItemIds = [];
     const foodItemIds = [];
-    basket.foodItems.forEach((foodItem) => {
-      basketFoodItemIds.push(foodItem.id || null);
+    cart.foodItems.forEach((foodItem) => {
+      cartFoodItemIds.push(foodItem.id || null);
       foodItemIds.push(foodItem.device.id || null);
     }); */
     try { /*
@@ -94,12 +94,12 @@ function Checkout({
         country,
         state,
         foodItemIds,
-        userId,
+        UserId,
       );
-      basket.setFoodItems([]); */
+      cart.setFoodItems([]); */
       const order = {
         id: Math.floor(Math.random() * 100),
-        userId: user.id,
+        UserId: user.id,
         foodItems: cart.foodItems,
         status: {
           value: 0,

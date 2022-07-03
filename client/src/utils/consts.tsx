@@ -33,9 +33,13 @@ export const MENU_ROUTE = 'menu';
 export const CART_ROUTE = 'cart';
 export const ORDERS_ROUTE = 'orders';
 export const GUEST_ROUTE = 'guest';
+export const ADMIN = 'ADMIN';
+export const GUEST = 'GUEST'; // must manually change this.role = 'GUEST'; in UserStore
+export const REGISTERED = 'REGISTERED';
 export const green = 'green';
 export const red = 'red';
 export const shortNotification = 4000;
+export const longNotification = 6000;
 
 export const indexAuthedRoutes = [
   {
@@ -403,11 +407,12 @@ export const testAddress = {
   city: 'Washington',
   zip: '20008',
   state: 'DC',
+  UserId: 'TEMP',
 };
 
 export const testActiveOrder = {
   id: 5,
-  userId: -1,
+  UserId: '-1',
   status: {
     value: 0,
     actionLog: [
@@ -459,7 +464,7 @@ export const testActiveOrder = {
 export const testPreviousOrders = [
   {
     id: 6,
-    userId: -1,
+    UserId: '-1',
     status: {
       value: 0,
       actionLog: [],
@@ -504,7 +509,7 @@ export const testPreviousOrders = [
   },
   {
     id: 7,
-    userId: -1,
+    UserId: '-1',
     status: {
       value: 0,
       actionLog: [],
@@ -549,7 +554,7 @@ export const testPreviousOrders = [
   },
   {
     id: 8,
-    userId: -1,
+    UserId: '-1',
     status: {
       value: 0,
       actionLog: [],

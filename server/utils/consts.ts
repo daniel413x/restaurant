@@ -1,2 +1,3 @@
 export const ADMIN = 'ADMIN';
-export const USER = 'USER';
+export const REGISTERED = 'REGISTERED';
+export const AUTHORIZED = ADMIN || REGISTERED;

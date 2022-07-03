@@ -43,12 +43,13 @@ function AddNewAddress() {
       city,
       zip,
       state,
+      UserId: 'TEMP',
     };
     // SEND TO SERVER FOR ID
     if (pressedSaveAsDefault) {
       user.setDefaultAddress(newAddress);
     }
-    return user.setAddresses([...user.addresses, newAddress]);
+    return user.addAddress(newAddress);
   };
   return (
     <Col lg={6}>

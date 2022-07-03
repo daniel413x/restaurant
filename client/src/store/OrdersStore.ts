@@ -3,7 +3,7 @@ import {
   IOrder,
 } from '../types/types';
 import { calcTotal } from '../utils/functions';
-Expected 'this' to be used by class async method 'registration'
+
 export default class OrdersStore {
   orders: IOrder[];
 
@@ -14,7 +14,7 @@ export default class OrdersStore {
     this.activeOrder = {
       foodItems: [],
       id: -1,
-      userId: -1,
+      UserId: '-1',
       status: {
         value: -1,
         actionLog: [],
@@ -31,6 +31,7 @@ export default class OrdersStore {
         city: 'Washington',
         zip: '20008',
         state: 'DC',
+        UserId: 'TEMP',
       },
     };
     makeAutoObservable(this);

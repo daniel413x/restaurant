@@ -1,14 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 import {
-  IUser, ICostumerAddress,
+  IUser, IAddress,
 } from '../types/types';
+import { GUEST } from '../utils/consts';
 
 export default class UserStore implements IUser {
-  isAuth?: boolean;
+  role: string;
 
-  isAdmin?: boolean;
-
-  id: number;
+  id: string;
 
   avatar: string;
 
@@ -16,14 +15,13 @@ export default class UserStore implements IUser {
 
   email: string;
 
-  addresses: ICostumerAddress[];
+  addresses: IAddress[];
 
-  defaultAddress?: ICostumerAddress | null;
+  defaultAddress?: IAddress | null;
 
   constructor() {
-    this.isAuth = true;
-    this.isAdmin = true;
-    this.id = -1;
+    this.role = 'GUEST';
+    this.id = '-1';
     this.name = 'Admin';
     this.avatar = '';
     this.email = '';
@@ -37,6 +35,7 @@ export default class UserStore implements IUser {
         city: 'washington',
         zip: '20008',
         state: 'DC',
+        UserId: 'TEMP',
       },
       {
         id: 4,
@@ -47,6 +46,7 @@ export default class UserStore implements IUser {
         city: 'washington',
         zip: '20008',
         state: 'DC',
+        UserId: 'TEMP',
       },
     ];
     this.defaultAddress = {
@@ -58,17 +58,14 @@ export default class UserStore implements IUser {
       city: 'washington',
       zip: '20008',
       state: 'DC',
+      UserId: 'TEMP',
     };
     makeAutoObservable(this);
   }
 
-  setIsAuth(bool: boolean) {
-    this.isAuth = bool;
-  }
-
   setUser(obj: IUser) {
     const {
-      isAuth,
+      role,
       id,
       name,
       avatar,
@@ -76,19 +73,18 @@ export default class UserStore implements IUser {
       addresses,
       defaultAddress,
     } = obj;
-    this.isAuth = isAuth;
+    this.role = role;
     this.id = id;
     this.name = name;
     this.avatar = avatar;
     this.email = email;
-    this.addresses = addresses;
+    this.addresses = addresses || [];
     this.defaultAddress = defaultAddress;
   }
 
   unsetUser() {
-    this.isAuth = false;
-    this.isAdmin = false;
-    this.id = -1;
+    this.role = GUEST;
+    this.id = '-1';
     this.name = 'Guest';
     this.avatar = '';
     this.email = '';
@@ -96,15 +92,15 @@ export default class UserStore implements IUser {
     this.defaultAddress = null;
   }
 
-  setAddresses(arr: ICostumerAddress[]) {
-    this.addresses = arr;
+  addAddress(obj: IAddress) {
+    this.addresses = [...this.addresses, obj];
   }
 
   removeAddress(id: number) {
     this.addresses = this.addresses?.filter((address) => address.id !== id);
   }
 
-  setDefaultAddress(obj: ICostumerAddress | null) {
+  setDefaultAddress(obj: IAddress | null) {
     this.defaultAddress = obj;
   }
 

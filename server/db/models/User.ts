@@ -6,7 +6,7 @@ import {
   CreationOptional,
   Model,
 } from 'sequelize';
-import { USER } from '../../utils/consts';
+import { REGISTERED } from '../../utils/consts';
 import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
@@ -57,15 +57,12 @@ User.init({
   role: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: USER,
+    defaultValue: REGISTERED,
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    validate: {
-      isEmail: true,
-    },
   },
   password: {
     type: DataTypes.STRING,

@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
-import { ICostumerAddress } from '../types/types';
+import { IAddress } from '../types/types';
 import {
   green, shortNotification,
 } from '../utils/consts';
@@ -14,7 +14,7 @@ import {
 function ChooseDefaultAddress() {
   const { user, notifications } = useContext(Context);
   const addresses = user.addresses!;
-  const [selectedDefaultAddress, setSelectedDefaultAddress] = useState<ICostumerAddress | null>(null);
+  const [selectedDefaultAddress, setSelectedDefaultAddress] = useState<IAddress | null>(null);
   useEffect(() => {
     if (user.defaultAddress) {
       setSelectedDefaultAddress(user.defaultAddress!);
@@ -31,7 +31,7 @@ function ChooseDefaultAddress() {
     );
   };
   const deleteAddress = () => {
-    const deletedIndex = addresses.findIndex((address: ICostumerAddress) => address.id === selectedDefaultAddress?.id);
+    const deletedIndex = addresses.findIndex((address: IAddress) => address.id === selectedDefaultAddress?.id);
     if (deletedIndex > 0) {
       setSelectedDefaultAddress(addresses[deletedIndex - 1]);
     }
@@ -63,7 +63,7 @@ function ChooseDefaultAddress() {
           {selectedDefaultAddress ? selectedDefaultAddress.addressLineOne : 'Select default address'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {addresses.map(((address: ICostumerAddress) => (
+          {addresses.map(((address: IAddress) => (
             <Dropdown.Item key={address.id}><Button onClick={() => setSelectedDefaultAddress(address)}>{address.addressLineOne}</Button></Dropdown.Item>
           )))}
         </Dropdown.Menu>

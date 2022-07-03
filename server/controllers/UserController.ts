@@ -6,6 +6,7 @@ import { IUser } from '../types/types';
 import { ADMIN } from '../utils/consts';
 import Cart from '../db/models/Cart';
 import User from '../db/models/User';
+import FoodItemInCart from '../db/models/FoodItemInCart';
 
 const generateJwt = (id: string, email: string, role: string) => jwt.sign(
   {
@@ -20,12 +21,6 @@ const generateJwt = (id: string, email: string, role: string) => jwt.sign(
 );
 
 class UserController {
-  constuctor() {
-    this.registration = this.registration.bind(this);
-    this.login = this.login.bind(this);
-    this.auth = this.auth.bind(this);
-  }
-
   async registration(req: Request, res: Response, next: NextFunction) {
     const {
       email,
@@ -59,13 +54,23 @@ class UserController {
       password: hashPassword,
       role: ADMIN,
     });
-    await Cart.create({ UserId: user.id });
+    const UserId = user.id;
+    await Cart.create({ UserId });
+    const cart = await Cart.findOne({
+      where: {
+        UserId,
+      },
+      include: {
+        model: FoodItemInCart,
+        as: 'foodItems',
+      },
+    });
     const token = generateJwt(
       user.id,
       user.email,
       user.role,
     );
-    return res.json({ token });
+    return res.json({ token, cart });
   }
 
   async login(req: Request, res: Response, next: NextFunction) {

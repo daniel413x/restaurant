@@ -10,10 +10,10 @@ import { IFoodItem, ITimestampedAction } from '../types/types';
 
 function ActiveOrder() {
   /*
-  const [loading, setLoading] = useState(true); // block content until orderId matches with the userId
+  const [loading, setLoading] = useState(true); // block content until orderId matches with the UserId
   const { orders } = useContext(Context);
   useEffect(() => {
-    if (orders.activeOrder.userId !== )
+    if (orders.activeOrder.UserId !== )
   }, []);
   */
   const { orders } = useContext(Context);
