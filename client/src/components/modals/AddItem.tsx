@@ -10,10 +10,12 @@ import {
 import {
   shortNotification,
   green,
+  red,
 } from '../../utils/consts';
 import { IModalProps, IFoodItem } from '../../types/types';
 import FoodItemAuxiliary from '../FoodItemAuxiliary';
 import Context from '../../context/context';
+import { addFoodItem } from '../../http/cartAPI';
 
 interface AddItemProps extends IModalProps {
   foodItem: IFoodItem;
@@ -27,18 +29,44 @@ function AddItem({
   const { cart, notifications } = useContext(Context);
   const [quantity, setQuantity] = useState<number>(1);
   const [instructions, setInstructions] = useState<string>('');
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    cart.addItem(foodItem, quantity, instructions);
-    notifications.message(
-      `Added to cart ${foodItem.name}`,
-      green,
-      shortNotification,
-      foodItem.image,
-    );
-    setInstructions('');
-    setTimeout(() => setQuantity(1), 500);
-    onHide();
+    const CartId = cart.id;
+    const {
+      name,
+      price,
+      time,
+      ingredients,
+      discount,
+    } = foodItem;
+    try {
+      const addedFoodItem = await addFoodItem({
+        name,
+        price,
+        discount,
+        time,
+        ingredients,
+        quantity,
+        instructions,
+        CartId,
+      });
+      cart.addItem(addedFoodItem);
+      notifications.message(
+        `Added to cart ${foodItem.name}`,
+        green,
+        shortNotification,
+        foodItem.image,
+      );
+      setInstructions('');
+      setTimeout(() => setQuantity(1), 500);
+      onHide();
+    } catch (error: any) {
+      notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
   };
   return (
     <Modal

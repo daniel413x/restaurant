@@ -5,6 +5,7 @@ import CartStore from '../store/CartStore';
 import CategoriesStore from '../store/CategoriesStore';
 import OrdersStore from '../store/OrdersStore';
 import AdminStore from '../store/AdminStore';
+import AddressesStore from '../store/AddressesStore';
 
 interface ContextProps {
   notifications: NotificationStore;
@@ -13,6 +14,7 @@ interface ContextProps {
   categories: CategoriesStore;
   orders: OrdersStore;
   admin: AdminStore;
+  addresses: AddressesStore;
 }
 
 const Context = createContext<ContextProps>({
@@ -22,6 +24,7 @@ const Context = createContext<ContextProps>({
   categories: new CategoriesStore(),
   orders: new OrdersStore(),
   admin: new AdminStore(),
+  addresses: new AddressesStore(),
 });
 
 export default Context;

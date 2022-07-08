@@ -1,13 +1,18 @@
-import { ICart } from '../types/types';
+import { ICart, QueryCartFoodItem } from '../types/types';
 import { $authHost } from './index';
 
-export const fetchOneCart = async (): Promise<ICart> => {
+export const fetchUserCart = async (): Promise<ICart> => {
   const { data } = await $authHost.get('api/cart');
   return data;
 };
 
-export const addFoodItem = async (id: string) => {
-  const { data } = await $authHost.post('api/cart', { id });
+export const addFoodItem = async (obj: QueryCartFoodItem) => {
+  const { data } = await $authHost.post('api/cart/additem', obj);
+  return data;
+};
+
+export const changeQuantity = async (id: string, quantity: number, increment?: boolean) => {
+  const { data } = await $authHost.put(`api/cart/changequantity/${id}`, { quantity, increment });
   return data;
 };
 

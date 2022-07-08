@@ -1,4 +1,4 @@
-import { IFoodItem } from '../types/types';
+import { OrderOrCartFoodItem } from '../types/types';
 
 export function makeId(string: string) {
   const id = string.toLowerCase().split(' ').join(' ');
@@ -14,12 +14,12 @@ export function calcItemPrice(price: number, discount?: number) {
   return returnedPrice.toFixed(2);
 }
 
-export function calcTotal(foodItems: IFoodItem[]) {
+export function calcTotal(foodItems: OrderOrCartFoodItem[]) {
   let total = 0;
   if (foodItems.length === 0) {
     return total;
   }
-  foodItems.forEach((foodItem: IFoodItem) => {
+  foodItems.forEach((foodItem) => {
     const { quantity, discount, price } = foodItem;
     const itemTotal = calcItemPrice(price! * quantity!, discount);
     total += Number(itemTotal) * 1000;
@@ -27,7 +27,7 @@ export function calcTotal(foodItems: IFoodItem[]) {
   return total * 0.001;
 }
 
-export function countItems(arr: IFoodItem[]) {
+export function countItems(arr: OrderOrCartFoodItem[]) {
   let count = 0;
   arr.forEach((item) => {
     count += item.quantity || 0;
@@ -35,8 +35,8 @@ export function countItems(arr: IFoodItem[]) {
   return count;
 }
 
-export function actionTimestamp() {
-  return new Date().toLocaleTimeString(navigator.language, {
+export function actionTimestamp(string: string) {
+  return new Date(string).toLocaleTimeString(navigator.language, {
     hour: '2-digit',
     minute: '2-digit',
   });

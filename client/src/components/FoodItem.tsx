@@ -5,7 +5,7 @@ import {
 import { calcItemPrice } from '../utils/functions';
 import { IFoodItem } from '../types/types';
 
-function Time({ time }: { time: number[] | undefined }) {
+function Time({ time }: { time: [number, number] | undefined }) {
   if (!time) {
     return null;
   }

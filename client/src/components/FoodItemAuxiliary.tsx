@@ -1,9 +1,9 @@
 import React, { MouseEventHandler } from 'react';
-import { IFoodItem } from '../types/types';
+import { OrderOrCartFoodItem } from '../types/types';
 import QuantityButtons from './QuantityButtons';
 
 interface FoodItemAuxiliaryProps {
-  foodItem: IFoodItem;
+  foodItem: Omit<OrderOrCartFoodItem, 'quantity'>;
   handleDeleteModal?: MouseEventHandler<HTMLButtonElement>;
   quantity: number;
   increment: (...args: number[]) => void;

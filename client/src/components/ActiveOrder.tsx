@@ -6,16 +6,11 @@ import List from './List';
 import FoodItemOrder from './FoodItemOrder';
 import OrderProgress from './OrderProgress';
 import TimestampedAction from './TimestampedAction';
-import { IFoodItem, ITimestampedAction } from '../types/types';
+import { OrderOrCartFoodItem } from '../types/types';
+import { fetchActiveOrder } from '../http/orderAPI';
+import { actionTimestamp } from '../utils/functions';
 
 function ActiveOrder() {
-  /*
-  const [loading, setLoading] = useState(true); // block content until orderId matches with the UserId
-  const { orders } = useContext(Context);
-  useEffect(() => {
-    if (orders.activeOrder.UserId !== )
-  }, []);
-  */
   const { orders } = useContext(Context);
   const [currentOrb, setCurrentOrb] = useState<number>(0);
   const [dynamicStatusSubheading, setDynamicStatusSubheading] = useState<string>('');
@@ -29,41 +24,35 @@ function ActiveOrder() {
     city,
     state,
     zip,
-  } = orders.activeOrder.address!;
+  } = orders.activeOrder?.address;
   useEffect(() => {
-    if (!orders.activeOrder.status.actionLog.length) {
+    if (!orders.activeOrder.actionLog.length) {
       return;
     }
-    const { value, actionLog } = orders.activeOrder.status;
-    setDynamicStatusSubheading(actionLog[actionLog.length - 1].message);
-    setCurrentOrb(value); // status codes range from 0 (incomplete) to 3 (complete)
-    let currentMin = 0;
-    orders.activeOrder.foodItems.forEach((obj: IFoodItem) => {
-      if (obj.time![0] > currentMin) {
-        [currentMin] = obj.time!;
-        setMin(obj.time![0] + 25 - (4 * value));
-      }
-    });
-    let currentMax = 0;
-    orders.activeOrder!.foodItems.forEach((obj: IFoodItem) => {
-      if (obj.time![1] > currentMax) {
-        [currentMax] = obj.time!;
-        setMax(obj.time![1] + 25 - (4 * value));
-      }
-    });
-  }, [orders.activeOrder?.status.value]);
+    const { status, actionLog } = orders.activeOrder;
+    setDynamicStatusSubheading(actionLog[actionLog.length - 1][1]);
+    setCurrentOrb(status); // status codes range from 0 (incomplete) to 3 (complete)
+    setMin(orders.activeOrder.time[0] + 25 - (4 * status));
+    setMax(orders.activeOrder.time[1] + 25 - (4 * status));
+  }, [orders.activeOrder?.status]);
+  useEffect(() => {
+    (async () => {
+      const activeOrder = await fetchActiveOrder();
+      orders.setActiveOrder(activeOrder);
+    })();
+  }, []);
   return (
     <Container id="active-order">
       <Row className="main-row">
         <Col className="items-delivery-address-col" md={6}>
           <h2>
             Order #
-            {orders.activeOrder?.id}
+            {orders.activeOrder?.id.split('').slice(0, 8).join('')}
           </h2>
           <List
             className="items-ul"
             items={orders.activeOrder?.foodItems!}
-            renderList={(foodItem: IFoodItem) => (
+            renderList={(foodItem: OrderOrCartFoodItem) => (
               <li key={foodItem.id}>
                 <FoodItemOrder
                   foodItem={foodItem}
@@ -112,11 +101,11 @@ function ActiveOrder() {
                   Order tracker
                 </span>
                 <ul>
-                  {orders.activeOrder?.status!.actionLog.map((action: ITimestampedAction, index) => (
-                    <li key={action.message}>
+                  {orders.activeOrder?.actionLog.map((action: [string, string], index: number) => (
+                    <li key={action[1]}>
                       <TimestampedAction
-                        message={action.message}
-                        timestamp={action.timestamp}
+                        message={action[1]}
+                        timestamp={actionTimestamp(action[0])}
                         currentOrb={currentOrb}
                         index={index}
                       />

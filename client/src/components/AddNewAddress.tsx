@@ -35,7 +35,7 @@ function AddNewAddress() {
       );
     }
     const newAddress = {
-      id: Math.floor(Math.random() * 20), // temp of course
+      id: '4', // temp of course
       firstName,
       lastName,
       addressLineOne,

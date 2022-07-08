@@ -13,7 +13,14 @@ export interface IAddress {
   city: string;
   zip: string;
   state: string;
-  UserId?: string;
+}
+
+export interface IAddressForOrder extends IAddress {
+  OrderId: string;
+}
+
+export interface IAddressInAddressBook extends IAddress {
+  UserId: string;
   isDefault?: boolean;
 }
 
@@ -24,7 +31,7 @@ export interface IUser {
   email: string;
   password: string;
   avatar?: string;
-  addresses?: IAddress[];
+  addresses?: IAddressInAddressBook[];
 }
 
 export interface IFoodItem {
@@ -33,12 +40,28 @@ export interface IFoodItem {
   price: number;
 }
 
+export interface IFoodItemInMenu extends IFoodItem {
+  image: string;
+  time: [number, number];
+  serves: number;
+  discount?: number;
+  ingredients: string[];
+  CategoryId: string;
+  category?: ICategory;
+}
+
 export interface IOrder {
   id: string;
-  userId: string;
-  addressId: string;
-  address: IAddress;
-  foodItems: IFoodItem[];
+  UserId: string;
+  AddressForOrderId: string;
+  address?: IAddressForOrder;
+  time: [number, number];
+  foodItems?: IFoodItem[];
+  status: number;
+  activeOrder: boolean;
+  date: string;
+  total: number;
+  actionLog: [string, string][];
 }
 
 export interface ICart {

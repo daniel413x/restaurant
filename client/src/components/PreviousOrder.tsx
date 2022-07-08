@@ -1,5 +1,5 @@
 import React from 'react';
-import { IFoodItem, IOrder } from '../types/types';
+import { OrderOrCartFoodItem, IOrder } from '../types/types';
 import List from './List';
 import FoodItemOrder from './FoodItemOrder';
 
@@ -16,8 +16,8 @@ function PreviousOrder({
         {order.date}
       </div>
       <List
-        items={order?.foodItems!}
-        renderList={(foodItem: IFoodItem) => (
+        items={order?.foodItems}
+        renderList={(foodItem: OrderOrCartFoodItem) => (
           <li key={foodItem.id}>
             <FoodItemOrder
               foodItem={foodItem}

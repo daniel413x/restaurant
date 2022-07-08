@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/', authMiddleware, CartController.get);
 router.post('/additem', authMiddleware, CartController.addItem);
-router.put('/edititemquantity/:id', authMiddleware, CartController.editItemQuantity);
-router.delete('/:id', authMiddleware, CartController.delete);
+router.put('/changequantity/:id', authMiddleware, CartController.editItemQuantity);
+router.delete('/:id', authMiddleware, CartController.deleteItem);
 
 export default router;

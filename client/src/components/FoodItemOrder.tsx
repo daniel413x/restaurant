@@ -1,8 +1,8 @@
 import React from 'react';
-import { IFoodItem } from '../types/types';
+import { OrderOrCartFoodItem } from '../types/types';
 
 interface FoodItemOrderProps {
-  foodItem: IFoodItem;
+  foodItem: OrderOrCartFoodItem;
 }
 
 function FoodItemOrder({

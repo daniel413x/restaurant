@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import Category from '../db/models/Category';
-import Address from '../db/models/Address';
+import AddressInAddressBook from '../db/models/AddressInAddressBook';
 
 class AddressController {
   async get(req: Request, res: Response) {
     const { id } = res.locals.user;
-    const address = await Address.findOne({
+    const addresses = await AddressInAddressBook.findAll({
       where: {
         UserId: id,
       },
     });
-    return res.json(address);
+    return res.json(addresses);
   }
 
   async create(req: Request, res: Response) {
@@ -25,7 +25,7 @@ class AddressController {
       UserId,
       isDefault,
     } = req.body;
-    const address = await Address.create({
+    const address = await AddressInAddressBook.create({
       firstName,
       lastName,
       addressLineOne,
@@ -42,7 +42,7 @@ class AddressController {
   async edit(req: Request, res: Response) {
     const { id } = req.params;
     const updatedVals = req.body;
-    await Address.update(updatedVals, { where: { id } });
+    await AddressInAddressBook.update(updatedVals, { where: { id } });
     return res.status(204).end();
   }
 

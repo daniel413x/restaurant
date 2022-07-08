@@ -6,11 +6,11 @@ import {
   UUIDV4,
   Model,
 } from 'sequelize';
-import { ICategory, IFoodItem } from '../../types/types';
+import { ICategory, IFoodItemInMenu } from '../../types/types';
 import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
-class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreationAttributes<FoodItemInMenu>> implements IFoodItem {
+class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreationAttributes<FoodItemInMenu>> implements IFoodItemInMenu {
   id!: CreationOptional<string>;
 
   name!: string;
@@ -25,9 +25,7 @@ class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreatio
 
   discount?: number;
 
-  ingredients?: string[];
-
-  instructions?: string;
+  ingredients: string[];
 
   CategoryId!: string;
 
@@ -74,9 +72,6 @@ FoodItemInMenu.init({
   time: {
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false,
-  },
-  instructions: {
-    type: DataTypes.STRING,
   },
   CategoryId: {
     type: DataTypes.UUID,

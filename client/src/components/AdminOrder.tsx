@@ -17,7 +17,7 @@ import {
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import Context from '../context/context';
-import { IFoodItem, IOrder } from '../types/types';
+import { OrderOrCartFoodItem, IOrder } from '../types/types';
 import List from './List';
 import {
   green,
@@ -51,10 +51,10 @@ function AdminOrder({
   const { admin, notifications } = useContext(Context);
   const [expand, setExpand] = useState(true);
   const [newStatus, setNewStatus] = useState<number>(0);
-  const orderReceived = status.value >= 0;
-  const orderBeingPrepared = order.status.value >= 1;
-  const orderEnRoute = status.value >= 2;
-  const orderDelivered = status.value >= 3;
+  const orderReceived = status >= 0;
+  const orderBeingPrepared = order.status >= 1;
+  const orderEnRoute = status >= 2;
+  const orderDelivered = status >= 3;
   const submitUpdateStatus = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     admin.setOrderStatus(order, newStatus);
@@ -112,7 +112,7 @@ function AdminOrder({
             </Col>
             <List
               items={foodItems}
-              renderList={(foodItem: IFoodItem) => (
+              renderList={(foodItem: OrderOrCartFoodItem) => (
                 <li key={foodItem.id}>
                   <FoodItemOrder
                     foodItem={foodItem}

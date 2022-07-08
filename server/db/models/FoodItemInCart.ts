@@ -17,6 +17,8 @@ class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreatio
 
   price!: number;
 
+  discount!: number;
+
   time!: [number, number];
 
   CartId!: string;
@@ -25,7 +27,7 @@ class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreatio
 
   instructions?: string;
 
-  quantity?: number;
+  quantity!: number;
 
   createdAt?: CreationOptional<Date>;
 
@@ -50,6 +52,10 @@ FoodItemInCart.init({
     type: DataTypes.DECIMAL,
     allowNull: false,
   },
+  discount: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
   ingredients: {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
@@ -60,6 +66,7 @@ FoodItemInCart.init({
   },
   quantity: {
     type: DataTypes.INTEGER,
+    allowNull: false,
   },
   instructions: {
     type: DataTypes.STRING,

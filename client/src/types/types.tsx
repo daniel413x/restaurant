@@ -15,7 +15,7 @@ export interface INavbarRoute {
 }
 
 export interface IAddress {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   addressLineOne: string;
@@ -24,11 +24,10 @@ export interface IAddress {
   zip: string;
   state: string;
   UserId?: string;
-  saved?: boolean;
   isDefault?: boolean;
 }
 
-export type QueryAddress = PartiallyOptional<IAddress, 'id'>;
+export type QueryNewAddress = PartiallyOptional<IAddress, 'id'>;
 
 export interface IUser {
   role: string;
@@ -47,7 +46,7 @@ export type QueryUser = {
 
 export interface IRegistrationRequest {
   user: QueryUser;
-  address?: QueryAddress;
+  address?: QueryNewAddress;
 }
 
 export interface IRegistrationResponse {
@@ -68,21 +67,30 @@ export interface ITestimonial {
 }
 
 export interface IFoodItem {
-  id: number;
+  id: string;
   image: string;
   name: string;
-  time: number[];
+  time: [number, number];
   serves: number;
   price: number;
   discount: number;
   ingredients: string[];
-  quantity?: number;
   // calories?
-  instructions?: string;
   category?: FoodItemCategory;
 }
 
-export type QueryFoodItem = PartiallyOptional<IFoodItem, 'id'>; // sent in POST
+type OrderOrCartFoodItemSpecificProps = {
+  quantity: number;
+  instructions?: string;
+};
+
+export type OrderOrCartFoodItem = Omit<IFoodItem, 'image' | 'serves'> & OrderOrCartFoodItemSpecificProps;
+
+export type QueryRequestMenuFoodItem = PartiallyOptional<IFoodItem, 'id'>;
+
+export type QueryResponseMenuFoodItem = IFoodItem;
+
+export type QueryCartFoodItem = Omit<OrderOrCartFoodItem, 'id'> & { CartId: string };
 
 export interface IFoodCategory {
   name: string;
@@ -110,9 +118,9 @@ export interface INotification {
 }
 
 export interface ICart {
-  id: number;
+  id: string;
   UserId: string;
-  foodItems: IFoodItem[];
+  foodItems: OrderOrCartFoodItem[];
 }
 
 export interface ITimestampedAction {
@@ -121,15 +129,23 @@ export interface ITimestampedAction {
 }
 
 export interface IOrder {
-  id: number;
+  id: string;
   UserId: string;
-  addressId: number;
   address?: IAddress;
-  foodItems: IFoodItem[];
-  status: {
-    value: number,
-    actionLog: ITimestampedAction[],
-  };
+  foodItems: OrderOrCartFoodItem[];
+  status: number;
+  actionLog: [string, string][]; // first index is date, second is message
+  activeOrder?: boolean;
   date: string;
   total: number;
 }
+
+type QueryOrderAddress = Omit<IAddress, 'id' | 'UserId' | 'isDefault'> & {
+  selectedAddressId?: string
+};
+
+export type QuerySubmittedOrder = {
+  UserId: string;
+  CartId: string;
+  address: string | QueryOrderAddress;
+};

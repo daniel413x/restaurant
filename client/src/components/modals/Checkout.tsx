@@ -1,27 +1,38 @@
-import React, { useContext, useState } from 'react';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
 import {
-  Modal, Button, Row, Col, Form, Spinner,
+  Modal,
+  Button,
+  Row,
+  Col,
+  Form,
+  Spinner,
+  Dropdown,
 } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 // import { submitOrder } from '../../../http/orderAPI';
 import Context from '../../context/context';
 import SmartInput from '../SmartInput';
 import {
-  IFoodItem,
+  IAddress,
+  OrderOrCartFoodItem,
 } from '../../types/types';
 import {
   shortNotification,
   red,
   ACCOUNT_ROUTE,
-  testAddress,
+  GUEST,
 } from '../../utils/consts';
-import { actionTimestamp, orderDate } from '../../utils/functions';
+import { submitOrder } from '../../http/orderAPI';
 
 interface CheckoutProps {
   onHide: () => void;
   show: boolean;
-  checkoutItems: IFoodItem[];
+  checkoutItems: OrderOrCartFoodItem[];
 }
 
 function Checkout({
@@ -33,15 +44,15 @@ function Checkout({
     notifications,
     cart,
     user,
-    orders,
+    // orders,
+    addresses,
   } = useContext(Context);
-  const navigate = useNavigate();
   // const { cart /* user */ } = useContext(Context);
   const [email, setEmail] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
-  const [streetAddress, setStreetAddress] = useState<string>('');
-  const [streetAddressLineTwo, setStreetAddressLineTwo] = useState<string>('');
+  const [addressLineOne, setAddressLineOne] = useState<string>('');
+  const [addressLineTwo, setAddressLineTwo] = useState<string | undefined>('');
   const [city, setCity] = useState<string>('');
   const [zip, setZip] = useState<string>('');
   const [state, setState] = useState<string>('');
@@ -54,12 +65,12 @@ function Checkout({
   const [confirmation, setConfirmation] = useState<boolean>(false);
   const [orderNumber, setOrderNumber] = useState<number>(0);
   // const UserId = user.id;
+  const requiredFieldsIncomplete = !email || !firstName || !lastName
+  || !addressLineOne || !city || !zip
+  || !state || !cardName
+  || !cardNumber || !cardExpiration || !cardCVC;
   const action = async () => {
     setPressedSubmit(true);
-    const requiredFieldsIncomplete = !email || !firstName || !lastName
-    || !streetAddress || !city || !zip
-    || !state || !cardName
-    || !cardNumber || !cardExpiration || !cardCVC;
 
     if (requiredFieldsIncomplete) {
       return notifications.message(
@@ -68,53 +79,32 @@ function Checkout({
         shortNotification,
       );
     }
-    /* const noItems = cart.foodItems.length === 0;
+    const noItems = cart.foodItems.length === 0;
     if (noItems) {
       return notifications.message(
         'No items in cart',
         red,
         shortNotification,
       );
-    } */
-    setLoading(true);/*
-    const cartFoodItemIds = [];
-    const foodItemIds = [];
-    cart.foodItems.forEach((foodItem) => {
-      cartFoodItemIds.push(foodItem.id || null);
-      foodItemIds.push(foodItem.device.id || null);
-    }); */
-    try { /*
-      const order = await submitOrder(
-        email,
-        firstName,
-        lastName,
-        streetAddress,
-        city,
-        zip,
-        country,
-        state,
-        foodItemIds,
+    }
+    setLoading(true);
+    try {
+      const UserId = user.id;
+      const CartId = cart.id;
+      const order = await submitOrder({
         UserId,
-      );
-      cart.setFoodItems([]); */
-      const order = {
-        id: Math.floor(Math.random() * 100),
-        UserId: user.id,
-        foodItems: cart.foodItems,
-        status: {
-          value: 0,
-          actionLog: [
-            {
-              timestamp: actionTimestamp(),
-              message: 'Order received',
-            },
-          ],
+        CartId,
+        address: {
+          firstName,
+          lastName,
+          addressLineOne,
+          addressLineTwo,
+          city,
+          zip,
+          state,
         },
-        date: orderDate(),
-        total: cart.total,
-        addressId: testAddress.id,
-      };
-      orders.addOrder(order);
+      });
+      // orders.addOrder(order);
       cart.clearItems();
       setConfirmation(true);
       return setOrderNumber(order.id);
@@ -128,6 +118,25 @@ function Checkout({
       setLoading(false);
     }
   };
+  const selectFromSavedAddresses = (obj: IAddress) => {
+    setFirstName(obj.firstName);
+    setLastName(obj.lastName);
+    setAddressLineOne(obj.addressLineOne);
+    setAddressLineTwo(obj.addressLineTwo);
+    setCity(obj.city);
+    setZip(obj.zip);
+    setState(obj.state);
+  };
+  useEffect(() => {
+    if (user.role !== GUEST) {
+      setEmail(user.email);
+    }
+  }, [user.email]);
+  useEffect(() => {
+    if (addresses.defaultAddress) {
+      selectFromSavedAddresses(addresses.defaultAddress!);
+    }
+  }, [addresses.defaultAddress]);
   return (
     <Modal
       show={show}
@@ -151,7 +160,7 @@ function Checkout({
               <Col className="order-number">
                 {`Order #${orderNumber}`}
               </Col>
-              Upon receival of your product you may leave a rating and a review on its product page.
+              Click &apos;Track my order&apos; to follow your order!
             </Modal.Body>
           )
           : (
@@ -192,8 +201,25 @@ function Checkout({
               <h5>
                 Shipping &amp; billing
               </h5>
+              * = required field
+              {addresses.all.length > 0 && (
+              <Dropdown>
+                <Dropdown.Toggle className="btn-secondary">
+                  Saved addresses
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {addresses.all.map((addressObj) => (
+                    <Dropdown.Item
+                      onClick={() => selectFromSavedAddresses(addressObj)}
+                      key={addressObj.id}
+                    >
+                      {addressObj.addressLineOne}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+              )}
               <Form>
-                * = required field
                 <SmartInput
                   label="Email*"
                   value={email}
@@ -223,15 +249,15 @@ function Checkout({
                 <SmartInput
                   primaryStyle
                   label="Street address*"
-                  value={streetAddress}
-                  onChange={setStreetAddress}
+                  value={addressLineOne}
+                  onChange={setAddressLineOne}
                   pressedSubmit={pressedSubmit}
                   setPressedSubmit={setPressedSubmit}
                 />
                 <SmartInput
                   label="Street address Line Two"
-                  value={streetAddressLineTwo}
-                  onChange={setStreetAddressLineTwo}
+                  value={addressLineTwo}
+                  onChange={setAddressLineTwo}
                   pressedSubmit={pressedSubmit}
                   setPressedSubmit={setPressedSubmit}
                   optional
@@ -308,8 +334,12 @@ function Checkout({
             </Modal.Body>
           )}
         <Modal.Footer>
-          {confirmation ? <Button onClick={() => navigate(ACCOUNT_ROUTE)}>Track my order</Button>
-            : <Button variant="outline-success" onClick={action}>Submit</Button>}
+          {confirmation ? (
+            <NavLink to={`/${ACCOUNT_ROUTE}`}>
+              <Button>Track my order</Button>
+            </NavLink>
+          )
+            : <Button className={`${requiredFieldsIncomplete && 'disabled-2'}`} onClick={action}>Submit</Button>}
         </Modal.Footer>
       </div>
     </Modal>

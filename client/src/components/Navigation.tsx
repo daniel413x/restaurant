@@ -31,7 +31,12 @@ import useWindowSize from '../hooks/useWindowSize';
 import useOnClickOutside from '../hooks/useOnOutsideClick';
 
 function Navigation() {
-  const { notifications, user, cart } = useContext(Context);
+  const {
+    notifications,
+    user,
+    cart,
+    addresses,
+  } = useContext(Context);
   const { md } = useWindowSize();
   const [expandIndex, setExpandIndex] = useState<boolean>(false);
   const [expandAccount, setExpandAccount] = useState<boolean>(false);
@@ -63,8 +68,9 @@ function Navigation() {
   };
   const logout = () => {
     localStorage.removeItem('token');
-    user.unsetUser();
-    cart.unsetCart();
+    user.unset();
+    cart.unset();
+    addresses.unset();
     notifications.message(
       'You were logged out',
       green,

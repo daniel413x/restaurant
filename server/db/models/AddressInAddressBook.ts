@@ -6,11 +6,11 @@ import {
   CreationOptional,
   Model,
 } from 'sequelize';
-import { IAddress } from '../../types/types';
+import { IAddressInAddressBook } from '../../types/types';
 import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
-class Address extends Model<InferAttributes<Address>, InferCreationAttributes<Address>> implements IAddress {
+class AddressInAddressBook extends Model<InferAttributes<AddressInAddressBook>, InferCreationAttributes<AddressInAddressBook>> implements IAddressInAddressBook {
   id!: string;
 
   firstName!: string;
@@ -36,11 +36,11 @@ class Address extends Model<InferAttributes<Address>, InferCreationAttributes<Ad
   updatedAt?: CreationOptional<Date>;
 
   static associate(models: any) {
-    Address.belongsTo(models.User, { targetKey: 'id' });
+    AddressInAddressBook.belongsTo(models.User, { targetKey: 'id' });
   }
 }
 
-Address.init({
+AddressInAddressBook.init({
   id: {
     type: DataTypes.UUID,
     defaultValue: UUIDV4,
@@ -88,8 +88,8 @@ Address.init({
   updatedAt: DataTypes.DATE,
 }, {
   sequelize,
-  modelName: 'Address',
+  modelName: 'AddressInAddressBook',
   freezeTableName: true,
 });
 
-export default Address;
+export default AddressInAddressBook;

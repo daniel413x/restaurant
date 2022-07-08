@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import {
   Routes,
@@ -42,4 +43,4 @@ AppRouter.defaultProps = {
   authedRoutes: [],
 };
 
-export default AppRouter;
+export default observer(AppRouter);

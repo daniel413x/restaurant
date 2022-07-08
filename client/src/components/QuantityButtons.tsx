@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-bootstrap';
 import { calcItemPrice } from '../utils/functions';
-import { IFoodItem } from '../types/types';
+import { OrderOrCartFoodItem } from '../types/types';
 
 interface QuantityButtonsProps {
-  foodItem: IFoodItem;
+  foodItem: Omit<OrderOrCartFoodItem, 'quantity'>;
   handleDeleteModal?: MouseEventHandler<HTMLButtonElement>; // if handleDeleteModal is passed in then the delete button appears, used on /cart
   quantity: number;
   increment: () => void;

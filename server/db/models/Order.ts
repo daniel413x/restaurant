@@ -6,18 +6,18 @@ import {
   Model,
   CreationOptional,
 } from 'sequelize';
-import { IAddress, IFoodItem } from '../../types/types';
+import { IAddressForOrder, IFoodItem, IOrder } from '../../types/types';
 import sequelize from '../connection';
 
 // eslint-disable-next-line no-use-before-define
-class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>> {
+class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>> implements IOrder {
   id!: string;
 
   UserId!: string;
 
-  AddressId!: string;
+  AddressForOrderId!: string;
 
-  address?: IAddress;
+  address?: IAddressForOrder;
 
   time!: [number, number];
 
@@ -25,7 +25,13 @@ class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>
 
   status!: number;
 
-  actionLog!: string[];
+  activeOrder!: boolean;
+
+  date!: string;
+
+  total!: number;
+
+  actionLog!: [string, string][];
 
   createdAt?: CreationOptional<Date>;
 
@@ -37,6 +43,11 @@ class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>
       sourceKey: 'id',
       foreignKey: 'OrderId',
       as: 'foodItems',
+    });
+    Order.hasOne(models.AddressForOrder, {
+      sourceKey: 'id',
+      foreignKey: 'OrderId',
+      as: 'address',
     });
   }
 }
@@ -56,7 +67,7 @@ Order.init({
     },
     allowNull: false,
   },
-  AddressId: {
+  AddressForOrderId: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -68,8 +79,20 @@ Order.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  total: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
+  date: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  activeOrder: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
   actionLog: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.ARRAY(DataTypes.ARRAY),
     allowNull: false,
   },
   createdAt: DataTypes.DATE,

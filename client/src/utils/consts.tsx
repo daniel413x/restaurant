@@ -12,9 +12,9 @@ import AccountDetails from '../pages/AccountDetails';
 import foodImage from '../assets/about-us-5.png';
 import imageFour from '../assets/about-us-4.png';
 import imageSix from '../assets/about-us-6.png';
-import categoryPlaceholder from '../assets/menu-appetizers.png';
-import { actionTimestamp, orderDate } from './functions';
+import { orderDate } from './functions';
 import AdminOrders from '../pages/AdminOrders';
+import { IFoodCategory, IFoodItem, IOrder } from '../types/types';
 
 export const ACCOUNT_INDEX_ROUTE = '/*';
 export const ACCOUNT_ROUTE = 'account/*';
@@ -113,7 +113,7 @@ export const adminRoutes = [
   },
 ];
 
-export const demoFoodItems = [
+export const demoFoodItems: IFoodItem[] = [
   {
     name: 'Rainbow Vegetable Sandwich',
     ingredients: ['rice', 'nuts', 'spices', 'olive oil', 'lemon juice'],
@@ -122,7 +122,7 @@ export const demoFoodItems = [
     time: [15, 20],
     serves: 1,
     discount: 0.1,
-    id: 1,
+    id: '1',
     category: {
       id: 3,
       name: 'Lunch',
@@ -136,7 +136,7 @@ export const demoFoodItems = [
     time: [30, 45],
     serves: 1,
     discount: 0.1,
-    id: 1,
+    id: '1',
     category: {
       id: 3,
       name: 'Lunch',
@@ -150,7 +150,7 @@ export const demoFoodItems = [
     time: [15, 20],
     serves: 1,
     discount: 0.1,
-    id: 1,
+    id: '1',
     category: {
       id: 3,
       name: 'Lunch',
@@ -158,11 +158,10 @@ export const demoFoodItems = [
   },
 ];
 
-export const categoriesPlaceholders = [
+export const categoriesPlaceholders: IFoodCategory[] = [
   {
     id: 1,
     name: 'Appetizers',
-    image: categoryPlaceholder,
     foodItems: [
       {
         name: 'Grape Leaves',
@@ -172,7 +171,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 1,
+        id: '1',
         category: {
           id: 1,
           name: 'Appetizers',
@@ -186,7 +185,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 2,
+        id: '2',
         category: {
           id: 1,
           name: 'Appetizers',
@@ -200,7 +199,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 3,
+        id: '3',
         category: {
           id: 1,
           name: 'Appetizers',
@@ -214,7 +213,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 4,
+        id: '4',
         category: {
           id: 1,
           name: 'Appetizers',
@@ -228,7 +227,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 5,
+        id: '5',
         category: {
           id: 1,
           name: 'Appetizers',
@@ -239,7 +238,6 @@ export const categoriesPlaceholders = [
   {
     id: 2,
     name: 'Breakfast',
-    image: categoryPlaceholder,
     foodItems: [
       {
         name: 'Grape Leaves',
@@ -249,7 +247,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 6,
+        id: '6',
         category: {
           id: 2,
           name: 'Breakfast',
@@ -263,7 +261,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 7,
+        id: '7',
         category: {
           id: 2,
           name: 'Breakfast',
@@ -277,7 +275,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 8,
+        id: '8',
         category: {
           id: 2,
           name: 'Breakfast',
@@ -291,7 +289,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 9,
+        id: '9',
         category: {
           id: 2,
           name: 'Breakfast',
@@ -305,7 +303,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 10,
+        id: '10',
         category: {
           id: 2,
           name: 'Breakfast',
@@ -316,7 +314,6 @@ export const categoriesPlaceholders = [
   {
     id: 3,
     name: 'Lunch',
-    image: categoryPlaceholder,
     foodItems: [
       {
         name: 'Grape Leaves',
@@ -326,7 +323,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 11,
+        id: '11',
         category: {
           id: 3,
           name: 'Lunch',
@@ -340,7 +337,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 12,
+        id: '12',
         category: {
           id: 3,
           name: 'Lunch',
@@ -354,7 +351,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 13,
+        id: '13',
         category: {
           id: 3,
           name: 'Lunch',
@@ -368,7 +365,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 14,
+        id: '14',
         category: {
           id: 3,
           name: 'Lunch',
@@ -382,7 +379,7 @@ export const categoriesPlaceholders = [
         time: [10, 15],
         serves: 1,
         discount: 0.1,
-        id: 15,
+        id: '15',
         category: {
           id: 3,
           name: 'Lunch',
@@ -393,13 +390,12 @@ export const categoriesPlaceholders = [
   {
     id: -1,
     name: 'Uncategorized',
-    image: categoryPlaceholder,
     foodItems: [],
   },
 ];
 
 export const testAddress = {
-  id: 1,
+  id: '1',
   firstName: 'Daniel',
   lastName: 'McAdmin',
   addressLineOne: '2425 TypeScript Avenue',
@@ -410,76 +406,21 @@ export const testAddress = {
   UserId: 'TEMP',
 };
 
-export const testActiveOrder = {
-  id: 5,
-  UserId: '-1',
-  status: {
-    value: 0,
-    actionLog: [
-      {
-        timestamp: actionTimestamp(),
-        message: 'Order received',
-      },
-    ],
-  },
-  date: orderDate(),
-  foodItems: [
-    {
-      name: 'Parsley Tabbuleh',
-      ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
-      price: 6.99,
-      image: foodImage,
-      time: [10, 15],
-      serves: 1,
-      discount: 0.1,
-      id: 2,
-      quantity: 1,
-      category: {
-        id: 3,
-        name: 'Lunch',
-      },
-    },
-    {
-      name: 'Hummus',
-      ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
-      price: 4.99,
-      image: foodImage,
-      time: [10, 15],
-      serves: 1,
-      discount: 0.1,
-      id: 3,
-      quantity: 1,
-      instructions: 'no pickles',
-      category: {
-        id: 3,
-        name: 'Lunch',
-      },
-    },
-  ],
-  total: 10.78,
-  addressId: testAddress.id,
-  address: testAddress,
-};
-
-export const testPreviousOrders = [
+export const testPreviousOrders: IOrder[] = [
   {
-    id: 6,
+    id: '6',
     UserId: '-1',
-    status: {
-      value: 0,
-      actionLog: [],
-    },
+    status: 0,
+    actionLog: [],
     date: orderDate(),
     foodItems: [
       {
         name: 'Parsley Tabbuleh',
         ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
         price: 6.99,
-        image: foodImage,
-        time: [10, 15],
-        serves: 1,
         discount: 0.1,
-        id: 2,
+        time: [10, 15],
+        id: '2',
         quantity: 1,
         category: {
           id: 3,
@@ -490,11 +431,9 @@ export const testPreviousOrders = [
         name: 'Hummus',
         ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
         price: 4.99,
-        image: foodImage,
-        time: [10, 15],
-        serves: 1,
         discount: 0.1,
-        id: 3,
+        time: [10, 15],
+        id: '3',
         quantity: 1,
         instructions: 'no pickles',
         category: {
@@ -503,28 +442,23 @@ export const testPreviousOrders = [
         },
       },
     ],
-    addressId: testAddress.id,
     address: testAddress,
     total: 10.78,
   },
   {
-    id: 7,
+    id: '7',
     UserId: '-1',
-    status: {
-      value: 0,
-      actionLog: [],
-    },
+    status: 0,
+    actionLog: [],
     date: orderDate(),
     foodItems: [
       {
         name: 'Parsley Tabbuleh',
         ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
         price: 6.99,
-        image: foodImage,
-        time: [10, 15],
-        serves: 1,
         discount: 0.1,
-        id: 2,
+        time: [10, 15],
+        id: '2',
         quantity: 1,
         category: {
           id: 3,
@@ -535,11 +469,9 @@ export const testPreviousOrders = [
         name: 'Hummus',
         ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
         price: 4.99,
-        image: foodImage,
         time: [10, 15],
-        serves: 1,
         discount: 0.1,
-        id: 3,
+        id: '3',
         quantity: 1,
         instructions: 'no pickles',
         category: {
@@ -549,27 +481,22 @@ export const testPreviousOrders = [
       },
     ],
     total: 10.78,
-    addressId: testAddress.id,
     address: testAddress,
   },
   {
-    id: 8,
+    id: '8',
     UserId: '-1',
-    status: {
-      value: 0,
-      actionLog: [],
-    },
+    status: 0,
+    actionLog: [],
     date: orderDate(),
     foodItems: [
       {
         name: 'Parsley Tabbuleh',
         ingredients: ['cucumber', 'tomato', 'sea salt', 'parsley', 'mint', 'green onion'],
         price: 6.99,
-        image: foodImage,
         time: [10, 15],
-        serves: 1,
         discount: 0.1,
-        id: 2,
+        id: '2',
         quantity: 1,
         category: {
           id: 3,
@@ -580,11 +507,9 @@ export const testPreviousOrders = [
         name: 'Hummus',
         ingredients: ['chickpeas', 'tahini', 'lemon', 'olive oil'],
         price: 4.99,
-        image: foodImage,
         time: [10, 15],
-        serves: 1,
         discount: 0.1,
-        id: 3,
+        id: '3',
         quantity: 1,
         instructions: 'no pickles',
         category: {
@@ -594,7 +519,6 @@ export const testPreviousOrders = [
       },
     ],
     total: 10.78,
-    addressId: testAddress.id,
     address: testAddress,
   },
 ];

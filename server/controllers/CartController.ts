@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import Category from '../db/models/Category';
 import FoodItemInCart from '../db/models/FoodItemInCart';
 import Cart from '../db/models/Cart';
 
@@ -21,6 +20,7 @@ class CartController {
   async addItem(req: Request, res: Response) {
     const {
       name,
+      discount,
       price,
       time,
       CartId,
@@ -31,6 +31,7 @@ class CartController {
     const cartFoodItem = await FoodItemInCart.create({
       name,
       price,
+      discount,
       time,
       CartId,
       ingredients,
@@ -49,14 +50,20 @@ class CartController {
 
   async editItemQuantity(req: Request, res: Response) {
     const { id } = req.params;
-    const { quantity } = req.body;
+    let { quantity } = req.body;
+    const { increment } = req.body;
+    if (increment) {
+      quantity += 1;
+    } else {
+      quantity -= 1;
+    }
     await FoodItemInCart.update({ quantity }, { where: { id } });
     return res.status(204).end();
   }
 
-  async delete(req: Request, res: Response) {
+  async deleteItem(req: Request, res: Response) {
     const { id } = req.params;
-    await Category.destroy({ where: { id } });
+    await FoodItemInCart.destroy({ where: { id } });
     return res.status(204).end();
   }
 }

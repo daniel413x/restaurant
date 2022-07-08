@@ -1,18 +1,20 @@
 import React, { useEffect, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
-import {
-  testPreviousOrders,
-} from '../utils/consts';
 import Context from '../context/context';
 import List from './List';
 import PreviousOrder from './PreviousOrder';
 import { IOrder } from '../types/types';
+import { fetchAllOrders } from '../http/orderAPI';
 
 function PreviousOrders() {
   const { orders } = useContext(Context);
   useEffect(() => {
-    orders.setOrders(testPreviousOrders);
+    (async () => {
+      const previousOrders = await fetchAllOrders();
+      console.log(previousOrders);
+      orders.setOrders(previousOrders);
+    })();
   }, []);
   return (
     <Container id="previous-orders">

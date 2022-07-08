@@ -28,7 +28,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   updatedAt?: CreationOptional<Date>;
 
   static associate(models: any) {
-    User.hasMany(models.Address, {
+    User.hasMany(models.AddressInAddressBook, {
       sourceKey: 'id',
       foreignKey: 'UserId',
       as: 'addresses',

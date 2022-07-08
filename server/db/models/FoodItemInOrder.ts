@@ -17,13 +17,15 @@ class FoodItemInOrder extends Model<InferAttributes<FoodItemInOrder>, InferCreat
 
   price!: number;
 
+  discount!: number;
+
   OrderId!: string;
 
   ingredients!: string[];
 
   instructions?: string;
 
-  quantity?: number;
+  quantity!: number;
 
   createdAt?: CreationOptional<Date>;
 
@@ -48,6 +50,10 @@ FoodItemInOrder.init({
     type: DataTypes.DECIMAL,
     allowNull: false,
   },
+  discount: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
   ingredients: {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
@@ -57,6 +63,7 @@ FoodItemInOrder.init({
   },
   quantity: {
     type: DataTypes.INTEGER,
+    allowNull: false,
   },
   OrderId: {
     type: DataTypes.UUID,

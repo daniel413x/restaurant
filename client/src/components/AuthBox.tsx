@@ -14,7 +14,7 @@ import LabeledCheckboxButton from './LabeledCheckboxButton';
 import Context from '../context/context';
 import { login, registration } from '../http/userAPI';
 import { createAddress } from '../http/addressAPI';
-import { fetchOneCart } from '../http/cartAPI';
+import { fetchUserCart } from '../http/cartAPI';
 
 interface AuthBoxProps {
   onSuccess: () => void;
@@ -25,12 +25,17 @@ function AuthBox({
   onSuccess,
   forLogin,
 }: AuthBoxProps) {
-  const { notifications, user, cart } = useContext(Context);
+  const {
+    notifications,
+    user,
+    cart,
+    addresses,
+  } = useContext(Context);
   const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
   const [saveDefaultAddress, setSaveDefaultAddress] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  // const [username, setUsername] = useState<string>('');
+  // const [username, setname] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [middleName, setMiddleName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -85,13 +90,13 @@ function AuthBox({
     try {
       if (forLogin) {
         const fetchedUser = await login(email, password);
-        const fetchedCart = await fetchOneCart();
-        user.setUser(fetchedUser);
-        cart.setCart(fetchedCart);
+        const fetchedCart = await fetchUserCart();
+        user.set(fetchedUser);
+        cart.set(fetchedCart);
       } else {
         const { newUser, newCart } = await registration(email, password);
-        user.setUser(newUser);
-        cart.setCart(newCart);
+        user.set(newUser);
+        cart.set(newCart);
         let defaultAddress;
         if (saveDefaultAddress) {
           defaultAddress = await createAddress({
@@ -105,7 +110,7 @@ function AuthBox({
             isDefault: true,
             UserId: newUser.id,
           });
-          user.addAddress(defaultAddress);
+          addresses.add(defaultAddress);
         }
       }
       onSuccess();

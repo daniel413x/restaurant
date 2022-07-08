@@ -7,13 +7,14 @@ import {
   faBasketShopping,
 } from '@fortawesome/free-solid-svg-icons';
 import { observer } from 'mobx-react-lite';
-import { IFoodItem } from '../types/types';
+import { OrderOrCartFoodItem } from '../types/types';
 import List from '../components/List';
 import FoodItemAuxiliary from '../components/FoodItemAuxiliary';
 import { countItems } from '../utils/functions';
 import RemoveFromCart from '../components/modals/RemoveFromCart';
 import Checkout from '../components/modals/Checkout';
 import Context from '../context/context';
+import { changeQuantity } from '../http/cartAPI';
 
 function Cart() {
   const { cart } = useContext(Context);
@@ -21,10 +22,14 @@ function Cart() {
   const thereAreItems = cartCount > 0;
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(false);
-  const [deletedItem, setDeletedItem] = useState<IFoodItem | null>(null);
-  const handleDeleteModal = (item: IFoodItem) => {
+  const [deletedItem, setDeletedItem] = useState<OrderOrCartFoodItem | null>(null);
+  const handleDeleteModal = (item: OrderOrCartFoodItem) => {
     setDeletedItem(item);
     setShowDeleteModal(true);
+  };
+  const changeCartItemQuantity = async (itemId: string, quantity: number, increment?: boolean) => {
+    await changeQuantity(itemId, quantity, increment);
+    cart.changeItemQuantity(itemId, increment ? quantity + 1 : quantity - 1);
   };
   return (
     <Container id="cart">
@@ -50,7 +55,7 @@ function Cart() {
         </Col>
         <List
           items={cart.foodItems}
-          renderList={(foodItem: IFoodItem) => (
+          renderList={(foodItem: OrderOrCartFoodItem) => (
             <li
               key={foodItem.id}
             >
@@ -58,8 +63,8 @@ function Cart() {
                 foodItem={foodItem}
                 handleDeleteModal={() => handleDeleteModal(foodItem)}
                 quantity={foodItem.quantity!}
-                increment={() => cart.changeItemQuantity(foodItem.id!, 1)}
-                decrement={() => cart.changeItemQuantity(foodItem.id!, -1)}
+                increment={() => changeCartItemQuantity(foodItem.id!, foodItem.quantity, true)}
+                decrement={() => changeCartItemQuantity(foodItem.id!, foodItem.quantity)}
               />
             </li>
           )}

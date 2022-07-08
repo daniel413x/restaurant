@@ -11,10 +11,11 @@ import {
   green,
 } from '../../utils/consts';
 import Context from '../../context/context';
+import { removeFoodItem } from '../../http/cartAPI';
 
 interface RemoveFromCartProps extends IModalProps {
   itemName: string | undefined;
-  itemId: number | undefined;
+  itemId: string | undefined;
 }
 
 function RemoveFromCart({
@@ -24,9 +25,9 @@ function RemoveFromCart({
   itemId,
 }: RemoveFromCartProps) {
   const { notifications, cart } = useContext(Context);
-  const action = (e: FormEvent<HTMLFormElement>) => {
+  const action = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // axios, delete from context, etc
+    await removeFoodItem(itemId!);
     cart.changeItemQuantity(itemId!, 0);
     notifications.message(
       'Item removed from cart',

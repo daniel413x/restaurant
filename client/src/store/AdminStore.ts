@@ -21,7 +21,7 @@ export default class AdminStore {
 
   setOrderStatus(orderObj: IOrder, newStatus: number) {
     const updatedOrder = { ...orderObj };
-    updatedOrder.status.value = newStatus;
+    updatedOrder.status = newStatus;
     this.orders = this.orders.map((order) => {
       if (order.id === updatedOrder.id) {
         return updatedOrder;

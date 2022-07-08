@@ -5,10 +5,15 @@ import ApiError from '../error/ApiError';
 import { IUser } from '../types/types';
 import { ADMIN } from '../utils/consts';
 import Cart from '../db/models/Cart';
+import AddressInAddressBook from '../db/models/AddressInAddressBook';
 import User from '../db/models/User';
 import FoodItemInCart from '../db/models/FoodItemInCart';
 
-const generateJwt = (id: string, email: string, role: string) => jwt.sign(
+const generateJwt = ({
+  id,
+  email,
+  role,
+}: IUser) => jwt.sign(
   {
     id,
     email,
@@ -65,11 +70,7 @@ class UserController {
         as: 'foodItems',
       },
     });
-    const token = generateJwt(
-      user.id,
-      user.email,
-      user.role,
-    );
+    const token = generateJwt(user);
     return res.json({ token, cart });
   }
 
@@ -82,9 +83,13 @@ class UserController {
       where: {
         email,
       },
-      include: {
+      include: [{
         model: Cart,
       },
+      {
+        model: AddressInAddressBook,
+        as: 'addresses',
+      }],
     });
     if (!user) {
       return next(ApiError.internal('Username/email not found'));
@@ -97,25 +102,13 @@ class UserController {
     if (!comparePassword) {
       return next(ApiError.internal('Incorrect password'));
     }
-    const token = generateJwt(
-      user.id,
-      user.email,
-      user.role,
-    );
+    const token = generateJwt(user);
     return res.json({ token });
   }
 
   async auth(req: Request, res: Response) {
-    const {
-      id,
-      email,
-      role,
-    } = res.locals.user!;
-    const token = generateJwt(
-      id,
-      email,
-      role,
-    );
+    const { user } = res.locals;
+    const token = generateJwt(user);
     return res.json({ token });
   }
 

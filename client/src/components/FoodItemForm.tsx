@@ -12,7 +12,11 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import Context from '../context/context';
-import { IFoodCategory, IFoodItem, QueryFoodItem } from '../types/types';
+import {
+  IFoodCategory,
+  IFoodItem,
+  QueryRequestMenuFoodItem,
+} from '../types/types';
 import {
   green,
   red,
@@ -48,7 +52,7 @@ function FoodItemForm({
   const [ingredients, setIngredients] = useState<string[]>(foodItem?.ingredients || []);
   const [newIngredients, setNewIngredients] = useState<string>('');
   const [serves, setServes] = useState<number>(foodItem?.serves || 1);
-  const [time, setTime] = useState<number[]>(foodItem?.time || [10, 15]);
+  const [time, setTime] = useState<[number, number]>(foodItem?.time || [10, 15]);
   const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
   const submitDelete = () => {
     notifications.message(
@@ -88,7 +92,7 @@ function FoodItemForm({
       );
       return;
     }
-    const updatedFoodItem: QueryFoodItem = {
+    const updatedFoodItem: QueryRequestMenuFoodItem = {
       name,
       discount,
       price,
@@ -134,7 +138,7 @@ function FoodItemForm({
         serves,
         time,
         category,
-        id: Math.random(),
+        id: 'idid',
       };
       categories.addFoodItem(foodItemFromServer);
       notifications.message(

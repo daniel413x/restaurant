@@ -218,6 +218,12 @@ a.btn.btn-primary.active, a.btn.btn-primary:hover {
   box-shadow:0 0 0 .25rem rgba(80, 0, 0, 0.25) 
 }
 
+.btn-check:active+.btn-secondary, .btn-check:checked+.btn-secondary, .btn-secondary.active, .btn-secondary:active, .show>.btn-secondary.dropdown-toggle {
+  color: #fff;
+  background-color: var(--primary-red) !important;
+  border-color: var(--tertiary-red-border) !important;
+}
+
 .btn.disabled,.btn:disabled,fieldset:disabled .btn {
   pointer-events:none;
   opacity:.65 
@@ -230,7 +236,7 @@ a.btn.btn-primary.active, a.btn.btn-primary:hover {
   box-shadow:0 0 0 .25rem rgba(253, 49, 49, 0.5);
 }
 
-.btn-check:active+.btn-primary,.btn-check:checked+.btn-primary,.btn-primary.active,.btn-primary:active, .show>.btn-secondary.dropdown-toggle  {
+.btn-check:active+.btn-primary,.btn-check:checked+.btn-primary,.btn-primary.active,.btn-primary:active, .show>.btn-secondary.dropdown-toggle {
   color:#fff;
   background-color:#ca0a0a;
   border-color:#be0a0a;
@@ -1372,6 +1378,23 @@ input.form-control:focus {
 #checkout .item-price-pair {
   display: flex;
   align-items: center;
+}
+
+#checkout .dropdown {
+  margin: 1em 0;
+}
+
+#checkout .dropdown-toggle {
+  display: flex;
+  align-items: center;
+}
+
+#checkout .dropdown-menu {
+  border: 2px solid var(--tertiary-red-border);
+}
+
+#checkout .dropdown-item:hover {
+  background-color: rgba(255, 0, 0, .1);
 }
 
 #checkout form .smart-input {

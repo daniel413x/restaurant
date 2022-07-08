@@ -18,7 +18,7 @@ function Logout() {
         green,
         shortNotification,
       );
-      user.unsetUser();
+      user.unset();
     }
     navigate(FRONT_PAGE_ROUTE);
   }, []);

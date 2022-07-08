@@ -7,32 +7,50 @@ import { calcTotal } from '../utils/functions';
 export default class OrdersStore {
   orders: IOrder[];
 
-  activeOrder: IOrder;
+  activeOrder: IOrder | any;
 
   constructor() {
-    this.orders = [];
-    this.activeOrder = {
-      foodItems: [],
-      id: -1,
-      UserId: '-1',
-      status: {
-        value: -1,
+    this.orders = [
+      {
+        id: '-1',
+        UserId: '-1',
+        status: -1,
         actionLog: [],
+        date: '',
+        foodItems: [],
+        address: {
+          id: '',
+          firstName: '',
+          lastName: '',
+          addressLineOne: '',
+          addressLineTwo: '',
+          city: '',
+          zip: '',
+          state: '',
+          UserId: '',
+        },
+        total: 0,
       },
-      date: '5/26/22',
-      total: 0,
-      addressId: 1,
+    ];
+    this.activeOrder = {
+      id: '-1',
+      UserId: '-1',
+      status: -1,
+      actionLog: [],
+      date: '',
+      foodItems: [],
       address: {
-        id: 1,
-        firstName: 'Daniel',
-        lastName: 'Admin',
-        addressLineOne: '2425 TypeScript Avenue',
-        addressLineTwo: '#333',
-        city: 'Washington',
-        zip: '20008',
-        state: 'DC',
-        UserId: 'TEMP',
+        id: '',
+        firstName: '',
+        lastName: '',
+        addressLineOne: '',
+        addressLineTwo: '',
+        city: '',
+        zip: '',
+        state: '',
+        UserId: '',
       },
+      total: 0,
     };
     makeAutoObservable(this);
   }

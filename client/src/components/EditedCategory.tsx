@@ -139,7 +139,7 @@ function EditedCategory({
     setDeletedFoodItem(foodItem);
     setShowDeleteFoodItemModal(true);
   };
-  const submitDeleteFoodItem = (deletedId: number) => {
+  const submitDeleteFoodItem = (deletedId: string) => {
     categories.deleteFoodItem(deletedId, category.id);
     notifications.message(
       'Item deleted successfully',

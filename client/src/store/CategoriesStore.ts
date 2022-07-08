@@ -57,7 +57,7 @@ export default class UserStore {
     });
   }
 
-  deleteFoodItem(deletedFoodItemId: number, foodCategoryId: number) {
+  deleteFoodItem(deletedFoodItemId: string, foodCategoryId: number) {
     const updatedCategory = this.categories.find((category) => category.id === foodCategoryId)!;
     updatedCategory.foodItems = updatedCategory?.foodItems.filter((foodItem) => foodItem.id !== deletedFoodItemId);
     this.categories = this.categories.map((category) => {

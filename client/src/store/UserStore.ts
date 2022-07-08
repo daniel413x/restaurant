@@ -27,7 +27,7 @@ export default class UserStore implements IUser {
     this.email = '';
     this.addresses = [
       {
-        id: 3,
+        id: '3',
         firstName: 'guest',
         lastName: 'guest',
         addressLineOne: '123 fake street',
@@ -38,7 +38,7 @@ export default class UserStore implements IUser {
         UserId: 'TEMP',
       },
       {
-        id: 4,
+        id: '4',
         firstName: 'guest',
         lastName: 'guest',
         addressLineOne: '12364 fake street',
@@ -50,7 +50,7 @@ export default class UserStore implements IUser {
       },
     ];
     this.defaultAddress = {
-      id: 3,
+      id: '3',
       firstName: 'guest',
       lastName: 'guest',
       addressLineOne: '123 fake street',
@@ -63,7 +63,7 @@ export default class UserStore implements IUser {
     makeAutoObservable(this);
   }
 
-  setUser(obj: IUser) {
+  set(obj: IUser) {
     const {
       role,
       id,
@@ -82,7 +82,7 @@ export default class UserStore implements IUser {
     this.defaultAddress = defaultAddress;
   }
 
-  unsetUser() {
+  unset() {
     this.role = GUEST;
     this.id = '-1';
     this.name = 'Guest';
@@ -96,7 +96,7 @@ export default class UserStore implements IUser {
     this.addresses = [...this.addresses, obj];
   }
 
-  removeAddress(id: number) {
+  removeAddress(id: string) {
     this.addresses = this.addresses?.filter((address) => address.id !== id);
   }
 
