@@ -20,8 +20,6 @@ import {
   ACCOUNT_ROUTE,
   ADMIN_ROUTE,
   LOGOUT_ROUTE,
-  ADMIN,
-  GUEST,
   green,
   shortNotification,
 } from '../utils/consts';
@@ -102,22 +100,22 @@ function Navigation() {
               {' '}
               {cartCount ? `(${cartCount})` : null}
             </NavLink>
-            {user.role === GUEST && (
+            {user.isGuest && (
               <NavLink className="nav-link" to={LOGIN_ROUTE} title="Login" onClick={collapseMenu}>
                 Login
               </NavLink>
             )}
-            {user.role === GUEST && (
+            {user.isGuest && (
             <NavLink className="nav-link" to={REGISTRATION_ROUTE} title="Register" onClick={collapseMenu}>
               Register
             </NavLink>
             )}
-            {user.role !== GUEST && (
+            {user.isRegistered && (
               <NavDropdown title="Account" show={expandAccount} onClick={openSubMenu}>
                 <NavLink tabIndex={0} role="button" className="nav-link" to={ACCOUNT_ROUTE} title="Account" onClick={collapseMenu}>
                   Main
                 </NavLink>
-                {user.role === ADMIN && (
+                {user.isAdmin && (
                 <NavLink tabIndex={0} role="button" className="nav-link" to={ADMIN_ROUTE} title="Admin" onClick={collapseMenu}>
                   Admin
                 </NavLink>

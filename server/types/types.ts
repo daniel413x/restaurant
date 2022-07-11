@@ -26,7 +26,7 @@ export interface IAddressInAddressBook extends IAddress {
 
 export interface IUser {
   id: string;
-  role: string;
+  roles: string[];
   name?: string;
   email: string;
   password: string;

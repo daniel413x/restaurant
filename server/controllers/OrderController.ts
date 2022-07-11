@@ -22,17 +22,16 @@ class OrderController {
   }
 
   async getAll(req: Request, res: Response) {
-    const { id } = res.locals.user;
-    const order = await Order.findAndCountAll({
-      where: {
-        UserId: id,
-      },
-      include: {
+    const orders = await Order.findAndCountAll({
+      include: [{
         model: FoodItemInOrder,
         as: 'foodItems',
-      },
+      }, {
+        model: AddressForOrder,
+        as: 'address',
+      }],
     });
-    return res.json(order);
+    return res.json(orders);
   }
 
   async getActiveOrder(req: Request, res: Response) {

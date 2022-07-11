@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import {
-  Modal, Button,
+  Modal,
+  Button,
+  Form,
 } from 'react-bootstrap';
 import { IModalProps } from '../../types/types';
 
 interface ConfirmationProps extends IModalProps {
   header?: string;
   body?: string;
-  onConfirmFunc?: () => void;
+  onConfirmFunc?: (args?: any[]) => void;
 }
 
 function Confirmation({
@@ -17,7 +19,8 @@ function Confirmation({
   body,
   onConfirmFunc,
 }: ConfirmationProps) {
-  const onOk = () => {
+  const onOk = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (onConfirmFunc) {
       onConfirmFunc();
     }
@@ -38,9 +41,11 @@ function Confirmation({
         {body}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onOk}>
-          OK
-        </Button>
+        <Form onSubmit={onOk}>
+          <Button type="submit">
+            OK
+          </Button>
+        </Form>
         {onConfirmFunc && (
           <Button onClick={onHide}>
             Cancel

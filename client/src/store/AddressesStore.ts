@@ -14,6 +14,10 @@ export default class UserStore {
   }
 
   set(arr: IAddress[]) {
+    const defaultAddress = this.addresses.find((address: IAddress) => address.isDefault);
+    if (defaultAddress) {
+      this.setDefault(defaultAddress);
+    }
     this.addresses = arr;
   }
 
@@ -21,11 +25,11 @@ export default class UserStore {
     this.addresses = [];
   }
 
-  setDefault(obj :IAddress) {
+  setDefault(obj :IAddress | undefined) {
     this.defaultAddress = obj;
   }
 
-  add(obj: IAddress) {
+  addAddress(obj: IAddress) {
     this.addresses = [...this.addresses, obj];
   }
 

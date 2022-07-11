@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors';
 import cors from 'cors';
 import path from 'path';
 import fileUpload from 'express-fileupload';

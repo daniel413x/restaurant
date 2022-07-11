@@ -15,7 +15,7 @@ import Context from '../context/context';
 import {
   IFoodCategory,
   IFoodItem,
-  QueryRequestMenuFoodItem,
+  QueryReqMenuFoodItem,
 } from '../types/types';
 import {
   green,
@@ -92,7 +92,7 @@ function FoodItemForm({
       );
       return;
     }
-    const updatedFoodItem: QueryRequestMenuFoodItem = {
+    const updatedFoodItem: QueryReqMenuFoodItem = {
       name,
       discount,
       price,

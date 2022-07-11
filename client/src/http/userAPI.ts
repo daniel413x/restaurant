@@ -1,12 +1,13 @@
 import jwt_decode from 'jwt-decode';
 import {
   IUser,
-  IRegistrationResponse,
+  QueryResUserRegistration,
   ICart,
+  QueryReqUserRegistration,
 } from '../types/types';
 import { $authHost, $host } from './index';
 
-export const registration = async (email: string, password: string): Promise<IRegistrationResponse> => {
+export const registration = async (email: string, password: string): Promise<QueryResUserRegistration> => {
   const { data } = await $host.post('api/user/registration', { email, password });
   localStorage.setItem('token', data.token);
   const newUser = jwt_decode(data.token) as IUser;
@@ -16,6 +17,12 @@ export const registration = async (email: string, password: string): Promise<IRe
 
 export const login = async (email: string, password: string): Promise<IUser> => {
   const { data } = await $host.post('api/user/login', { email, password });
+  localStorage.setItem('token', data.token);
+  return jwt_decode(data.token);
+};
+
+export const editUser = async (obj: QueryReqUserRegistration | FormData): Promise<IUser> => {
+  const { data } = await $authHost.put('api/user', obj);
   localStorage.setItem('token', data.token);
   return jwt_decode(data.token);
 };

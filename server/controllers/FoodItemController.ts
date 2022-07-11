@@ -38,26 +38,8 @@ class FoodItemController {
 
   async edit(req: Request, res: Response) {
     const { id } = req.params;
-    const {
-      name,
-      discount,
-      price,
-      image,
-      ingredients,
-      serves,
-      time,
-      CategoryId,
-    } = req.body;
-    await FoodItemInMenu.update({
-      name,
-      discount,
-      price,
-      image,
-      ingredients,
-      serves,
-      time,
-      CategoryId,
-    }, { where: { id } });
+    const updates = req.body;
+    await FoodItemInMenu.update(updates, { where: { id } });
     return res.status(204).end();
   }
 

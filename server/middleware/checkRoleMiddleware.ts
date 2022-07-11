@@ -13,7 +13,7 @@ export default function (role: string) {
         return next(ApiError.badRequest('Unauthorized'));
       }
       const decoded = jwt.verify(token, process.env.S_KEY!) as JwtPayload;
-      if (decoded.role! !== role) {
+      if (decoded.roles!.indexOf(role) === -1) {
         return next(ApiError.badRequest('Forbidden'));
       }
       res.locals.user = decoded;

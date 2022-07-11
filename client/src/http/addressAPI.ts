@@ -1,4 +1,4 @@
-import { IAddress, QueryNewAddress } from '../types/types';
+import { IAddress, QueryReqAddress } from '../types/types';
 import { $authHost } from './index';
 
 export const fetchAddresses = async (): Promise<IAddress[]> => {
@@ -7,7 +7,7 @@ export const fetchAddresses = async (): Promise<IAddress[]> => {
 };
 
 export const createAddress = async (
-  obj: QueryNewAddress,
+  obj: QueryReqAddress,
 ): Promise<IAddress> => {
   const { data } = await $authHost.post('api/address', obj);
   return data;

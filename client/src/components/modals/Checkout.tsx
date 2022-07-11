@@ -14,7 +14,6 @@ import {
 } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { NavLink } from 'react-router-dom';
-// import { submitOrder } from '../../../http/orderAPI';
 import Context from '../../context/context';
 import SmartInput from '../SmartInput';
 import {
@@ -25,7 +24,6 @@ import {
   shortNotification,
   red,
   ACCOUNT_ROUTE,
-  GUEST,
 } from '../../utils/consts';
 import { submitOrder } from '../../http/orderAPI';
 
@@ -63,7 +61,7 @@ function Checkout({
   const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [confirmation, setConfirmation] = useState<boolean>(false);
-  const [orderNumber, setOrderNumber] = useState<number>(0);
+  const [orderNumber, setOrderNumber] = useState<string>('');
   // const UserId = user.id;
   const requiredFieldsIncomplete = !email || !firstName || !lastName
   || !addressLineOne || !city || !zip
@@ -71,7 +69,6 @@ function Checkout({
   || !cardNumber || !cardExpiration || !cardCVC;
   const action = async () => {
     setPressedSubmit(true);
-
     if (requiredFieldsIncomplete) {
       return notifications.message(
         'Please complete all required fields',
@@ -128,7 +125,7 @@ function Checkout({
     setState(obj.state);
   };
   useEffect(() => {
-    if (user.role !== GUEST) {
+    if (user.isRegistered) {
       setEmail(user.email);
     }
   }, [user.email]);
@@ -153,73 +150,73 @@ function Checkout({
             {' '}
           </Modal.Title>
         </Modal.Header>
-        {confirmation
-          ? (
-            <Modal.Body className="confirmation">
-              {`A copy of your receipt will be sent to ${email}. Your order number is:`}
-              <Col className="order-number">
-                {`Order #${orderNumber}`}
-              </Col>
-              Click &apos;Track my order&apos; to follow your order!
-            </Modal.Body>
-          )
-          : (
-            <Modal.Body>
-              <div className="receipt">
-                <h5>
-                  Receipt
-                </h5>
-                {checkoutItems.map((item) => (
-                  <Row
-                    className="item-price-pair"
-                    key={item.id}
-                  >
-                    <Col className="item">
-                      {' '}
-                      {item.name}
+        <Form onSubmit={action}>
+          {confirmation
+            ? (
+              <Modal.Body className="confirmation">
+                {`A copy of your receipt will be sent to ${email}. Your order number is:`}
+                <Col className="order-number">
+                  {`Order #${orderNumber.slice(0, 7)}`}
+                </Col>
+                Click &apos;Track my order&apos; to follow your order!
+              </Modal.Body>
+            )
+            : (
+              <Modal.Body>
+                <div className="receipt">
+                  <h5>
+                    Receipt
+                  </h5>
+                  {checkoutItems.map((item) => (
+                    <Row
+                      className="item-price-pair"
+                      key={item.id}
+                    >
+                      <Col className="item">
+                        {' '}
+                        {item.name}
+                      </Col>
+                      <Col className="price">
+                        $
+                        {item.price}
+                      </Col>
+                    </Row>
+                  ))}
+                  —
+                  <Row className="item-price-pair">
+                    <Col>
+                      Total
                     </Col>
-                    <Col className="price">
-                      $
-                      {item.price}
+                    <Col>
+                      <strong>
+                        $
+                        {cart.total}
+                      </strong>
                     </Col>
                   </Row>
-                ))}
-                —
-                <Row className="item-price-pair">
-                  <Col>
-                    Total
-                  </Col>
-                  <Col>
-                    <strong>
-                      $
-                      {cart.total}
-                    </strong>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <h5>
-                Shipping &amp; billing
-              </h5>
-              * = required field
-              {addresses.all.length > 0 && (
-              <Dropdown>
-                <Dropdown.Toggle className="btn-secondary">
-                  Saved addresses
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {addresses.all.map((addressObj) => (
-                    <Dropdown.Item
-                      onClick={() => selectFromSavedAddresses(addressObj)}
-                      key={addressObj.id}
-                    >
-                      {addressObj.addressLineOne}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-              )}
-              <Form>
+                </div>
+                <hr />
+                <h5>
+                  Shipping &amp; billing
+                </h5>
+                * = required field
+                {addresses.all.length > 0 && (
+                <Dropdown>
+                  <Dropdown.Toggle>
+                    Saved addresses
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {addresses.all.map((addressObj) => (
+                      <Dropdown.Item
+                        onClick={() => selectFromSavedAddresses(addressObj)}
+                        key={addressObj.id}
+                      >
+                        {addressObj.addressLineOne}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                )}
                 <SmartInput
                   label="Email*"
                   value={email}
@@ -330,17 +327,17 @@ function Checkout({
                     primaryStyle
                   />
                 </div>
-              </Form>
-            </Modal.Body>
-          )}
-        <Modal.Footer>
-          {confirmation ? (
-            <NavLink to={`/${ACCOUNT_ROUTE}`}>
-              <Button>Track my order</Button>
-            </NavLink>
-          )
-            : <Button className={`${requiredFieldsIncomplete && 'disabled-2'}`} onClick={action}>Submit</Button>}
-        </Modal.Footer>
+              </Modal.Body>
+            )}
+          <Modal.Footer>
+            {confirmation ? (
+              <NavLink to={`/${ACCOUNT_ROUTE}`}>
+                <Button>Track my order</Button>
+              </NavLink>
+            )
+              : <Button className={`${requiredFieldsIncomplete && 'disabled-2'}`} type="submit">Submit</Button>}
+          </Modal.Footer>
+        </Form>
       </div>
     </Modal>
   );

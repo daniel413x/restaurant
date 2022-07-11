@@ -13,15 +13,19 @@ import Context from '../context/context';
 import { IOrder, IFoodItem } from '../types/types';
 import FoodItemForm from '../components/FoodItemForm';
 import List from '../components/List';
-import { categoriesPlaceholders, testPreviousOrders } from '../utils/consts';
+import { categoriesPlaceholders } from '../utils/consts';
 import AdminOrder from '../components/AdminOrder';
+import { fetchAllOrders } from '../http/orderAPI';
 
 function AdminOrders() {
   const [editedItem, setEditedItem] = useState<IFoodItem>();
   const { admin, categories } = useContext(Context);
   useEffect(() => {
+    (async () => {
+      const fetchedOrders = await fetchAllOrders();
+      admin.setOrders(fetchedOrders);
+    })();
     categories.setCategories(categoriesPlaceholders);
-    admin.setOrders(testPreviousOrders);
   }, []);
   return (
     <Container id="admin-orders">

@@ -8,7 +8,7 @@ function Orders() {
   const { orders } = useContext(Context);
   const [activeOrder, setActiveOrder] = useState(false);
   useEffect(() => {
-    if (orders.activeOrder.id !== -1) {
+    if (orders.activeOrder.id !== '-1') {
       setActiveOrder(true);
     }
   }, [orders.activeOrder]);
@@ -19,7 +19,7 @@ function Orders() {
           You placed an order
         </h1>
       )}
-      <ActiveOrder />
+      {activeOrder && <ActiveOrder />}
       <PreviousOrders />
     </div>
   );

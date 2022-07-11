@@ -110,7 +110,7 @@ function AuthBox({
             isDefault: true,
             UserId: newUser.id,
           });
-          addresses.add(defaultAddress);
+          addresses.addAddress(defaultAddress);
         }
       }
       onSuccess();

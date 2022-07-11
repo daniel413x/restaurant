@@ -5,14 +5,13 @@ import Context from '../context/context';
 import List from './List';
 import PreviousOrder from './PreviousOrder';
 import { IOrder } from '../types/types';
-import { fetchAllOrders } from '../http/orderAPI';
+import { fetchUserOrders } from '../http/orderAPI';
 
 function PreviousOrders() {
   const { orders } = useContext(Context);
   useEffect(() => {
     (async () => {
-      const previousOrders = await fetchAllOrders();
-      console.log(previousOrders);
+      const previousOrders = await fetchUserOrders();
       orders.setOrders(previousOrders);
     })();
   }, []);

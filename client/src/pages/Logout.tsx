@@ -5,14 +5,13 @@ import {
   FRONT_PAGE_ROUTE,
   green,
   shortNotification,
-  GUEST,
 } from '../utils/consts';
 
 function Logout() {
   const { user, notifications } = useContext(Context);
   const navigate = useNavigate();
   useEffect(() => {
-    if (user.role !== GUEST) {
+    if (user.isRegistered) {
       notifications.message(
         'You have logged out',
         green,

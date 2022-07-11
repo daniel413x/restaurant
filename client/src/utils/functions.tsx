@@ -42,8 +42,8 @@ export function actionTimestamp(string: string) {
   });
 }
 
-export function orderDate() {
-  return new Date().toLocaleTimeString(navigator.language, {
+export function orderDate(string: string) {
+  return new Date(string).toLocaleTimeString(navigator.language, {
     hour: '2-digit',
     minute: '2-digit',
     year: 'numeric',

@@ -2,10 +2,10 @@ import { makeAutoObservable } from 'mobx';
 import {
   IUser, IAddress,
 } from '../types/types';
-import { GUEST } from '../utils/consts';
+import { ADMIN, GUEST, REGISTERED } from '../utils/consts';
 
 export default class UserStore implements IUser {
-  role: string;
+  roles: string[];
 
   id: string;
 
@@ -20,7 +20,7 @@ export default class UserStore implements IUser {
   defaultAddress?: IAddress | null;
 
   constructor() {
-    this.role = 'GUEST';
+    this.roles = ['GUEST'];
     this.id = '-1';
     this.name = 'Admin';
     this.avatar = '';
@@ -65,7 +65,7 @@ export default class UserStore implements IUser {
 
   set(obj: IUser) {
     const {
-      role,
+      roles,
       id,
       name,
       avatar,
@@ -73,7 +73,7 @@ export default class UserStore implements IUser {
       addresses,
       defaultAddress,
     } = obj;
-    this.role = role;
+    this.roles = roles;
     this.id = id;
     this.name = name;
     this.avatar = avatar;
@@ -83,13 +83,25 @@ export default class UserStore implements IUser {
   }
 
   unset() {
-    this.role = GUEST;
+    this.roles = [GUEST];
     this.id = '-1';
     this.name = 'Guest';
     this.avatar = '';
     this.email = '';
     this.addresses = [];
     this.defaultAddress = null;
+  }
+
+  get isGuest() {
+    return this.roles.indexOf(GUEST) >= 0;
+  }
+
+  get isRegistered() {
+    return this.roles.indexOf(REGISTERED) >= 0;
+  }
+
+  get isAdmin() {
+    return this.roles.indexOf(ADMIN) >= 0;
   }
 
   addAddress(obj: IAddress) {

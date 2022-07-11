@@ -10,6 +10,7 @@ import {
   green, red, shortNotification,
 } from '../utils/consts';
 import SmartInput from './SmartInput';
+import { editUser } from '../http/userAPI';
 
 function EditPassword() {
   const { notifications } = useContext(Context);
@@ -17,7 +18,7 @@ function EditPassword() {
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
   const [unlockChangePassword, setUnlockChangePassword] = useState<boolean>(false);
   const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPressedSubmit(true);
     if (!newPassword || !confirmNewPassword) {
@@ -27,11 +28,20 @@ function EditPassword() {
         shortNotification,
       );
     }
-    return notifications.message(
-      'Password updated successfully',
-      green,
-      shortNotification,
-    );
+    try {
+      await editUser({ password: newPassword });
+      return notifications.message(
+        'Password updated successfully',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      return notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
   };
   return (
     <Col id="edit-password">

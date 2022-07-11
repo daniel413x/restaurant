@@ -4,19 +4,21 @@ import React, {
 import {
   Col, Button, Form,
 } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
 import LabeledCheckboxButton from './LabeledCheckboxButton';
 import {
   green, red, shortNotification,
 } from '../utils/consts';
 import SmartInput from './SmartInput';
+import { editUser } from '../http/userAPI';
 
 function EditEmail() {
   const { notifications, user } = useContext(Context);
   const [newEmail, setNewEmail] = useState<string>('');
   const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
   const [unlockChangeEmail, setUnlockChangeEmail] = useState<boolean>(false);
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPressedSubmit(true);
     if (!newEmail) {
@@ -26,12 +28,21 @@ function EditEmail() {
         shortNotification,
       );
     }
-    user.setEmail(newEmail);
-    return notifications.message(
-      'Email updated successfully',
-      green,
-      shortNotification,
-    );
+    try {
+      const { email: updatedEmail } = await editUser({ email: newEmail });
+      user.setEmail(updatedEmail);
+      return notifications.message(
+        'Email updated successfully',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      return notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
   };
   return (
     <Col id="edit-email">
@@ -70,4 +81,4 @@ function EditEmail() {
   );
 }
 
-export default EditEmail;
+export default observer(EditEmail);

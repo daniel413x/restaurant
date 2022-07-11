@@ -6,12 +6,18 @@ import {
 } from 'react-bootstrap';
 import Context from '../context/context';
 import {
+  green,
   red, shortNotification,
 } from '../utils/consts';
 import SmartInput from './SmartInput';
+import { createNewAddress } from '../http/addressesAPI';
 
 function AddNewAddress() {
-  const { notifications, user } = useContext(Context);
+  const {
+    notifications,
+    user,
+    addresses,
+  } = useContext(Context);
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [addressLineOne, setAddressLineOne] = useState<string>('');
@@ -24,7 +30,7 @@ function AddNewAddress() {
   const requiredFieldsIncomplete = !firstName || !lastName
   || !addressLineOne || !city
   || !zip || !state;
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPressedSubmit(true);
     if (requiredFieldsIncomplete) {
@@ -34,22 +40,42 @@ function AddNewAddress() {
         shortNotification,
       );
     }
-    const newAddress = {
-      id: '4', // temp of course
-      firstName,
-      lastName,
-      addressLineOne,
-      addressLineTwo,
-      city,
-      zip,
-      state,
-      UserId: 'TEMP',
-    };
-    // SEND TO SERVER FOR ID
-    if (pressedSaveAsDefault) {
-      user.setDefaultAddress(newAddress);
+    try {
+      const addressForm = {
+        firstName,
+        lastName,
+        addressLineOne,
+        addressLineTwo,
+        city,
+        zip,
+        state,
+        UserId: user.id,
+        isDefault: pressedSaveAsDefault,
+      };
+      const newAddress = await createNewAddress(addressForm);
+      if (pressedSaveAsDefault) {
+        addresses.setDefault(newAddress);
+      }
+      addresses.addAddress(newAddress);
+      setFirstName('');
+      setLastName('');
+      setAddressLineOne('');
+      setAddressLineTwo('');
+      setCity('');
+      setZip('');
+      setState('');
+      return notifications.message(
+        'Address saved successfully',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      return notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
     }
-    return user.addAddress(newAddress);
   };
   return (
     <Col lg={6}>

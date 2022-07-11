@@ -9,7 +9,6 @@ import {
   FRONT_PAGE_ROUTE,
   REGISTRATION_ROUTE,
   LOGIN_ROUTE,
-  GUEST,
   shortNotification,
   green,
 } from '../utils/consts';
@@ -30,7 +29,7 @@ function Auth() {
     navigate(FRONT_PAGE_ROUTE);
   };
   useEffect(() => {
-    if (user.role !== GUEST) {
+    if (user.isRegistered) {
       navigate(FRONT_PAGE_ROUTE);
     }
     if (location.pathname === `/${LOGIN_ROUTE}`) {

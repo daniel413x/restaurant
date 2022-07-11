@@ -1326,6 +1326,23 @@ input.form-control:focus {
   width: 100%;
 }
 
+#checkout .loading-anim {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+#checkout .modal-header {
+  background-color: var(--secondary-red) !important;
+  color: #fff;
+}
+
+#checkout .modal-header .btn-close {
+  background-color: #fff !important;
+}
+
 #cart .checkout-total {
   display: flex;
   flex-direction: column;

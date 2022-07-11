@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useContext,
+  useState, useEffect, useContext, FormEvent,
 } from 'react';
 import {
   Col, Button, Form, Dropdown,
@@ -8,106 +8,139 @@ import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
 import { IAddress } from '../types/types';
 import {
-  green, shortNotification,
+  green,
+  red,
+  shortNotification,
 } from '../utils/consts';
+import { deleteAddress, setDefault } from '../http/addressesAPI';
+import Confirmation from './modals/Confirmation';
 
 function ChooseDefaultAddress() {
-  const { user, notifications } = useContext(Context);
-  const addresses = user.addresses!;
-  const [selectedDefaultAddress, setSelectedDefaultAddress] = useState<IAddress | null>(null);
+  const { notifications, addresses } = useContext(Context);
+  const [selectedAddress, setSelectedAddress] = useState<IAddress | undefined>(undefined);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const userAddresses = addresses.all!;
+  const submitSetDefaultAddress = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await setDefault(selectedAddress!.id);
+      addresses.setDefault(selectedAddress);
+      return notifications.message(
+        'Default address saved successfully',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      return notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
+  };
+  const submitDeleteAddress = async () => {
+    try {
+      await deleteAddress(selectedAddress!.id);
+      const deletedIndex = userAddresses.findIndex((address: IAddress) => address.id === selectedAddress?.id);
+      if (deletedIndex > 0) {
+        setSelectedAddress(userAddresses[deletedIndex - 1]);
+      }
+      if (userAddresses.length > 0 && deletedIndex === 0) {
+        setSelectedAddress(userAddresses[1]);
+      }
+      if (selectedAddress) {
+        addresses.deleteAddress(selectedAddress.id);
+      }
+      if (selectedAddress?.id === addresses.defaultAddress?.id) {
+        addresses.setDefault(undefined);
+      }
+      if (userAddresses.length === 0) {
+        setSelectedAddress(undefined);
+      }
+      notifications.message(
+        'Address deleted',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      console.log(error);
+      notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
+  };
   useEffect(() => {
-    if (user.defaultAddress) {
-      setSelectedDefaultAddress(user.defaultAddress!);
-    } else if (addresses.length > 0 && !selectedDefaultAddress) {
-      setSelectedDefaultAddress(addresses[0]);
+    if (addresses.defaultAddress) {
+      setSelectedAddress(addresses.defaultAddress);
+    } else if (userAddresses.length > 0 && !selectedAddress) {
+      setSelectedAddress(userAddresses[0]);
     }
-  }, [addresses]);
-  const setDefaultAddress = () => {
-    user.setDefaultAddress(selectedDefaultAddress);
-    notifications.message(
-      'Default address saved successfully',
-      green,
-      shortNotification,
-    );
-  };
-  const deleteAddress = () => {
-    const deletedIndex = addresses.findIndex((address: IAddress) => address.id === selectedDefaultAddress?.id);
-    if (deletedIndex > 0) {
-      setSelectedDefaultAddress(addresses[deletedIndex - 1]);
-    }
-    if (addresses.length > 0 && deletedIndex === 0) {
-      setSelectedDefaultAddress(addresses[1]);
-    }
-    if (selectedDefaultAddress) {
-      user.removeAddress(selectedDefaultAddress.id);
-    }
-    if (selectedDefaultAddress?.id === user.defaultAddress!.id) {
-      user.setDefaultAddress(null);
-    }
-    if (addresses.length === 0) {
-      setSelectedDefaultAddress(null);
-    }
-    notifications.message(
-      'Address deleted',
-      green,
-      shortNotification,
-    );
-  };
+  }, [userAddresses]);
   return (
-    <Col className={`${addresses.length === 0 && 'disabled-2'}`} lg={6}>
+    <Col className={`${userAddresses.length === 0 && 'disabled-2'}`} lg={6}>
+      <Confirmation
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        onConfirmFunc={submitDeleteAddress}
+        header="Delete address?"
+      />
       <h4>
         Set default address
       </h4>
       <Dropdown className="dropdown-button">
         <Dropdown.Toggle variant="light">
-          {selectedDefaultAddress ? selectedDefaultAddress.addressLineOne : 'Select default address'}
+          {selectedAddress ? selectedAddress.addressLineOne : 'Select default address'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {addresses.map(((address: IAddress) => (
-            <Dropdown.Item key={address.id}><Button onClick={() => setSelectedDefaultAddress(address)}>{address.addressLineOne}</Button></Dropdown.Item>
+          {userAddresses.map(((address: IAddress) => (
+            <Dropdown.Item key={address.id}><Button onClick={() => setSelectedAddress(address)}>{address.addressLineOne}</Button></Dropdown.Item>
           )))}
         </Dropdown.Menu>
       </Dropdown>
       First name
       <Form.Control
-        value={selectedDefaultAddress?.firstName || ''}
+        value={selectedAddress?.firstName || ''}
         readOnly
       />
       Last name
       <Form.Control
-        value={selectedDefaultAddress?.lastName || ''}
+        value={selectedAddress?.lastName || ''}
         readOnly
       />
       Address Line One
       <Form.Control
-        value={selectedDefaultAddress?.addressLineOne || ''}
+        value={selectedAddress?.addressLineOne || ''}
         readOnly
       />
       Address Line Two
       <Form.Control
-        value={selectedDefaultAddress?.addressLineTwo || ''}
+        value={selectedAddress?.addressLineTwo || ''}
         readOnly
       />
       City/Territory
       <Form.Control
-        value={selectedDefaultAddress?.city || ''}
+        value={selectedAddress?.city || ''}
         readOnly
       />
       State
       <Form.Control
-        value={selectedDefaultAddress?.state || ''}
+        value={selectedAddress?.state || ''}
         readOnly
       />
       Zip
       <Form.Control
-        value={selectedDefaultAddress?.zip || ''}
+        value={selectedAddress?.zip || ''}
         readOnly
       />
       <Col className="button-row">
-        <Button className={`${selectedDefaultAddress?.id === user.defaultAddress?.id && 'disabled-2'}`} onClick={setDefaultAddress}>
-          Set as default
-        </Button>
-        <Button onClick={deleteAddress}>
+        <Form onSubmit={submitSetDefaultAddress}>
+          <Button className={`${selectedAddress?.id === addresses.defaultAddress?.id && 'disabled-2'}`} type="submit">
+            Set as default
+          </Button>
+        </Form>
+        <Button onClick={() => setShowDeleteModal(true)}>
           Delete
         </Button>
       </Col>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, FormEvent } from 'react';
 import {
   Button,
   Form,
@@ -9,23 +9,35 @@ import {
   green,
   shortNotification,
 } from '../utils/consts';
+import { editUser } from '../http/userAPI';
 
 function EditAvatar() {
   const { notifications, user } = useContext(Context);
-  const [selectedFile, setSelectedFile] = useState<Blob | MediaSource>();
-  const submit = () => {
-    user.setAvatar('avatar');
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedFile) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append('imgAvatar', selectedFile);
+    const { avatar } = await editUser(formData);
+    user.setAvatar(avatar);
     notifications.message(
       'Profile picture saved successfully',
       green,
       shortNotification,
     );
   };
+  const selectFile = (e: File) => {
+    setSelectedFile(e);
+  };
   return (
     <Form id="edit-avatar" onSubmit={submit}>
       <UploadImage
-        onChangeSetOutsideFormValue={setSelectedFile}
+        onChangeSetOutsideFormValue={selectFile}
         dimensions={[85, 85]}
+        existingImage={user.avatar ? `${process.env.REACT_APP_API_URL}${user.avatar}` : ''}
       />
       <Button className={`save-button ${!selectedFile && 'disabled-2'}`} type="submit">
         Save

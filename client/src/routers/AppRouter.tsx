@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 import Context from '../context/context';
 import { IRouterRoute } from '../types/types';
-import { GUEST } from '../utils/consts';
 
 interface AppRouterProps {
   authedRoutes?: IRouterRoute[];
@@ -20,7 +19,7 @@ function AppRouter({
   const { user } = useContext(Context);
   return (
     <Routes>
-      {user.role !== GUEST && authedRoutes?.map(({ path, Component }) => (
+      {user.isRegistered && authedRoutes?.map(({ path, Component }) => (
         <Route
           key={path}
           path={path}

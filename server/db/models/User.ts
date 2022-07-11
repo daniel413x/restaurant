@@ -13,7 +13,7 @@ import sequelize from '../connection';
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   id!: CreationOptional<string>;
 
-  role!: CreationOptional<string>;
+  roles!: string[];
 
   name?: CreationOptional<string>;
 
@@ -54,10 +54,10 @@ User.init({
   name: {
     type: DataTypes.STRING,
   },
-  role: {
-    type: DataTypes.STRING,
+  roles: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
-    defaultValue: REGISTERED,
+    defaultValue: [REGISTERED],
   },
   email: {
     type: DataTypes.STRING,

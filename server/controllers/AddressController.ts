@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import Category from '../db/models/Category';
 import AddressInAddressBook from '../db/models/AddressInAddressBook';
 
 class AddressController {
@@ -14,28 +13,8 @@ class AddressController {
   }
 
   async create(req: Request, res: Response) {
-    const {
-      firstName,
-      lastName,
-      addressLineOne,
-      addressLineTwo,
-      city,
-      zip,
-      state,
-      UserId,
-      isDefault,
-    } = req.body;
-    const address = await AddressInAddressBook.create({
-      firstName,
-      lastName,
-      addressLineOne,
-      addressLineTwo,
-      city,
-      zip,
-      state,
-      UserId,
-      isDefault,
-    });
+    const addressForm = req.body;
+    const address = await AddressInAddressBook.create(addressForm);
     return res.json(address);
   }
 
@@ -46,9 +25,20 @@ class AddressController {
     return res.status(204).end();
   }
 
+  async setDefault(req: Request, res: Response) {
+    const { id: UserId } = res.locals.user;
+    const previousDefault = await AddressInAddressBook.findOne({ where: { UserId, isDefault: true } });
+    if (previousDefault) {
+      await previousDefault.update({ isDefault: false });
+    }
+    const id = req.params.id || res.locals.user.id;
+    await AddressInAddressBook.update({ isDefault: true }, { where: { id } });
+    return res.status(204).end();
+  }
+
   async delete(req: Request, res: Response) {
     const { id } = req.params;
-    await Category.destroy({ where: { id } });
+    await AddressInAddressBook.destroy({ where: { id } });
     return res.status(204).end();
   }
 }

@@ -27,10 +27,10 @@ export interface IAddress {
   isDefault?: boolean;
 }
 
-export type QueryNewAddress = PartiallyOptional<IAddress, 'id'>;
+export type QueryReqAddress = PartiallyOptional<IAddress, 'id'>;
 
 export interface IUser {
-  role: string;
+  roles: string[];
   id: string;
   name: string;
   email: string;
@@ -39,20 +39,12 @@ export interface IUser {
   defaultAddress?: IAddress | null;
 }
 
-export type QueryUser = {
-  email: string;
-  password: string;
-};
+export type QueryReqUserRegistration = Partial<Omit<IUser, 'id'>> & { password?: string; };
 
-export interface IRegistrationRequest {
-  user: QueryUser;
-  address?: QueryNewAddress;
-}
-
-export interface IRegistrationResponse {
+export type QueryResUserRegistration = {
   newUser: IUser;
   newCart: ICart;
-}
+};
 
 export interface ITestimonialUser {
   name: string;
@@ -86,11 +78,11 @@ type OrderOrCartFoodItemSpecificProps = {
 
 export type OrderOrCartFoodItem = Omit<IFoodItem, 'image' | 'serves'> & OrderOrCartFoodItemSpecificProps;
 
-export type QueryRequestMenuFoodItem = PartiallyOptional<IFoodItem, 'id'>;
+export type QueryReqMenuFoodItem = PartiallyOptional<IFoodItem, 'id'>;
 
-export type QueryResponseMenuFoodItem = IFoodItem;
+export type QueryResMenuFoodItem = IFoodItem;
 
-export type QueryCartFoodItem = Omit<OrderOrCartFoodItem, 'id'> & { CartId: string };
+export type QueryReqCartFoodItem = Omit<OrderOrCartFoodItem, 'id'> & { CartId: string };
 
 export interface IFoodCategory {
   name: string;
@@ -144,7 +136,7 @@ type QueryOrderAddress = Omit<IAddress, 'id' | 'UserId' | 'isDefault'> & {
   selectedAddressId?: string
 };
 
-export type QuerySubmittedOrder = {
+export type QueryReqSubmitOrder = {
   UserId: string;
   CartId: string;
   address: string | QueryOrderAddress;

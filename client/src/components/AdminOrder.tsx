@@ -24,6 +24,8 @@ import {
   shortNotification,
 } from '../utils/consts';
 import FoodItemOrder from './FoodItemOrder';
+import { orderDate } from '../utils/functions';
+import { updateOrderStatus } from '../http/orderAPI';
 
 interface AdminOrderProps {
   order: IOrder;
@@ -55,8 +57,10 @@ function AdminOrder({
   const orderBeingPrepared = order.status >= 1;
   const orderEnRoute = status >= 2;
   const orderDelivered = status >= 3;
-  const submitUpdateStatus = (e: FormEvent<HTMLFormElement>) => {
+  const formattedDate = orderDate(date);
+  const submitUpdateStatus = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await updateOrderStatus(id);
     admin.setOrderStatus(order, newStatus);
     notifications.message(
       'Order status updated',
@@ -73,11 +77,11 @@ function AdminOrder({
         <Col className="tab-col" md="auto">
           Order
           {' #'}
-          {id}
+          {id.slice(0, 3)}
         </Col>
         <Col className="tab-col second-col" md="auto">
           <span>
-            {date}
+            {formattedDate}
           </span>
           <span className={`completion-label ${orderDelivered && 'secondary-green'}`}>
             {orderDelivered ? 'Complete' : 'Incomplete'}
