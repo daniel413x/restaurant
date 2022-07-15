@@ -11,7 +11,7 @@ import {
   green,
 } from '../../utils/consts';
 import Context from '../../context/context';
-import { removeFoodItem } from '../../http/cartAPI';
+import { removeFoodItem } from '../../http/foodItemInCartAPI';
 
 interface RemoveFromCartProps extends IModalProps {
   itemName: string | undefined;

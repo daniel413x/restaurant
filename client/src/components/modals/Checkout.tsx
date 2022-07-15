@@ -2,6 +2,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  FormEvent,
 } from 'react';
 import {
   Modal,
@@ -67,7 +68,8 @@ function Checkout({
   || !addressLineOne || !city || !zip
   || !state || !cardName
   || !cardNumber || !cardExpiration || !cardCVC;
-  const action = async () => {
+  const action = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setPressedSubmit(true);
     if (requiredFieldsIncomplete) {
       return notifications.message(

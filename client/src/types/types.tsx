@@ -27,7 +27,9 @@ export interface IAddress {
   isDefault?: boolean;
 }
 
-export type QueryReqAddress = PartiallyOptional<IAddress, 'id'>;
+export type QueryPOSTReqAddress = PartiallyOptional<IAddress, 'id'>;
+
+export type QueryPUTReqAddress = Partial<PartiallyOptional<IAddress, 'id'>>;
 
 export interface IUser {
   roles: string[];

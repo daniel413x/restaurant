@@ -10,7 +10,7 @@ import {
   red, shortNotification,
 } from '../utils/consts';
 import SmartInput from './SmartInput';
-import { createNewAddress } from '../http/addressesAPI';
+import { createAddress } from '../http/addressAPI';
 
 function AddNewAddress() {
   const {
@@ -52,7 +52,7 @@ function AddNewAddress() {
         UserId: user.id,
         isDefault: pressedSaveAsDefault,
       };
-      const newAddress = await createNewAddress(addressForm);
+      const newAddress = await createAddress(addressForm);
       if (pressedSaveAsDefault) {
         addresses.setDefault(newAddress);
       }

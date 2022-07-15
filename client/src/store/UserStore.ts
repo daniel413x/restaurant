@@ -117,7 +117,7 @@ export default class UserStore implements IUser {
   }
 
   setAvatar(str: string) {
-    this.email = str;
+    this.avatar = str;
   }
 
   setEmail(str: string) {

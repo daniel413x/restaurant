@@ -23,6 +23,7 @@ export default class UserStore {
 
   unset() {
     this.addresses = [];
+    this.defaultAddress = undefined;
   }
 
   setDefault(obj :IAddress | undefined) {

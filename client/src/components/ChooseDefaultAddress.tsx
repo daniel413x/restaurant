@@ -12,7 +12,7 @@ import {
   red,
   shortNotification,
 } from '../utils/consts';
-import { deleteAddress, setDefault } from '../http/addressesAPI';
+import { deleteAddress, editAddress } from '../http/addressAPI';
 import Confirmation from './modals/Confirmation';
 
 function ChooseDefaultAddress() {
@@ -23,7 +23,7 @@ function ChooseDefaultAddress() {
   const submitSetDefaultAddress = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await setDefault(selectedAddress!.id);
+      await editAddress(selectedAddress!.id, { isDefault: true });
       addresses.setDefault(selectedAddress);
       return notifications.message(
         'Default address saved successfully',
@@ -63,7 +63,6 @@ function ChooseDefaultAddress() {
         shortNotification,
       );
     } catch (error: any) {
-      console.log(error);
       notifications.message(
         error.response.data.message,
         red,

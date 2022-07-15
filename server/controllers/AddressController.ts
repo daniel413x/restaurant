@@ -1,45 +1,61 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import AddressInAddressBook from '../db/models/AddressInAddressBook';
+import ApiError from '../error/ApiError';
+import BaseController from './BaseController';
 
-class AddressController {
-  async get(req: Request, res: Response) {
+const unsetPreviousDefault = async (res: Response) => {
+  const { id: UserId } = res.locals.user;
+  const previousDefault = await AddressInAddressBook.findOne({ where: { UserId, isDefault: true } });
+  if (previousDefault) {
+    await previousDefault.update({ isDefault: false });
+  }
+};
+
+class AddressController extends BaseController<AddressInAddressBook> {
+  constructor() {
+    super(AddressInAddressBook);
+  }
+
+  get(req: Request, res: Response) {
     const { id } = res.locals.user;
-    const addresses = await AddressInAddressBook.findAll({
+    const options = {
       where: {
         UserId: id,
       },
-    });
-    return res.json(addresses);
+    };
+    this.execFindAndCountAll(req, res, options);
   }
 
-  async create(req: Request, res: Response) {
-    const addressForm = req.body;
-    const address = await AddressInAddressBook.create(addressForm);
-    return res.json(address);
-  }
-
-  async edit(req: Request, res: Response) {
-    const { id } = req.params;
-    const updatedVals = req.body;
-    await AddressInAddressBook.update(updatedVals, { where: { id } });
-    return res.status(204).end();
-  }
-
-  async setDefault(req: Request, res: Response) {
-    const { id: UserId } = res.locals.user;
-    const previousDefault = await AddressInAddressBook.findOne({ where: { UserId, isDefault: true } });
-    if (previousDefault) {
-      await previousDefault.update({ isDefault: false });
+  create(req: Request, res: Response, next: NextFunction) {
+    const {
+      firstName,
+      lastName,
+      addressLineOne,
+      addressLineTwo,
+      city,
+      state,
+      zip,
+      isDefault,
+    } = req.body;
+    if (!firstName || !lastName || !addressLineOne || !addressLineTwo || !city || !state || !zip) {
+      return next(ApiError.internal('Incomplete form'));
     }
-    const id = req.params.id || res.locals.user.id;
-    await AddressInAddressBook.update({ isDefault: true }, { where: { id } });
-    return res.status(204).end();
+    if (isDefault) {
+      unsetPreviousDefault(res);
+    }
+    return this.execCreate(req, res);
   }
 
-  async delete(req: Request, res: Response) {
-    const { id } = req.params;
-    await AddressInAddressBook.destroy({ where: { id } });
-    return res.status(204).end();
+  edit(req: Request, res: Response) {
+    const willSetNewDefault = req.body.isDefault;
+    if (willSetNewDefault) {
+      unsetPreviousDefault(res);
+    }
+    this.execUpdate(req, res);
+  }
+
+  delete(req: Request, res: Response) {
+    this.execDestroy(req, res);
   }
 }
 

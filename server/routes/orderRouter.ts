@@ -6,12 +6,40 @@ import { ADMIN } from '../utils/consts';
 
 const router = Router();
 
-router.get('/', authMiddleware, OrderController.get);
-router.get('/all', checkRoleMiddleware(ADMIN), OrderController.getAll);
-router.get('/activeorder', authMiddleware, OrderController.getActiveOrder);
-router.post('/', authMiddleware, OrderController.create);
-router.put('/:id', authMiddleware, OrderController.edit);
-router.put('/changestatus/:id', authMiddleware, OrderController.changeStatus);
-router.delete('/:id', authMiddleware, OrderController.delete);
+router.get(
+  '/',
+  authMiddleware,
+  (req, res) => OrderController.get(req, res),
+);
+router.get(
+  '/all',
+  checkRoleMiddleware(ADMIN),
+  (req, res) => OrderController.getAllForAdmin(req, res),
+);
+router.get(
+  '/activeorder',
+  authMiddleware,
+  (req, res) => OrderController.getActiveOrder(req, res),
+);
+router.post(
+  '/',
+  authMiddleware,
+  (req, res) => OrderController.create(req, res),
+);
+router.put(
+  '/:id',
+  authMiddleware,
+  (req, res) => OrderController.edit(req, res),
+);
+router.put(
+  '/changestatus/:id',
+  authMiddleware,
+  (req, res, next) => OrderController.changeStatus(req, res, next),
+);
+router.delete(
+  '/:id',
+  authMiddleware,
+  (req, res) => OrderController.delete(req, res),
+);
 
 export default router;

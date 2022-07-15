@@ -78,4 +78,9 @@ export default class OrdersStore {
   setActiveOrder(obj: IOrder) {
     this.activeOrder = obj;
   }
+
+  unset() {
+    this.orders = [];
+    this.activeOrder = undefined;
+  }
 }

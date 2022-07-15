@@ -1523,16 +1523,16 @@ input.form-control:focus {
   pointer-events: none;
 }
 
-#active-order .items-delivery-address-col .delivery-address .label {
-  border-bottom: 2px solid var(--primary-red);
-}
-
 #active-order .items-delivery-address-col .delivery-address {
   pointer-events: none;
   margin: auto;
   display: block;
   font-size: 1.224rem;
-  width: max-content;
+  padding: 1rem;
+}
+
+#active-order .items-delivery-address-col .delivery-address .label {
+  border-bottom: 2px solid var(--primary-red);
 }
 
 #active-order .status {

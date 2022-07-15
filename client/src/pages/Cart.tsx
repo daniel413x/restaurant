@@ -14,7 +14,7 @@ import { countItems } from '../utils/functions';
 import RemoveFromCart from '../components/modals/RemoveFromCart';
 import Checkout from '../components/modals/Checkout';
 import Context from '../context/context';
-import { changeQuantity } from '../http/cartAPI';
+import { changeQuantity } from '../http/foodItemInCartAPI';
 
 function Cart() {
   const { cart } = useContext(Context);
@@ -28,8 +28,9 @@ function Cart() {
     setShowDeleteModal(true);
   };
   const changeCartItemQuantity = async (itemId: string, quantity: number, increment?: boolean) => {
-    await changeQuantity(itemId, quantity, increment);
-    cart.changeItemQuantity(itemId, increment ? quantity + 1 : quantity - 1);
+    const newQuantity = increment ? quantity + 1 : quantity - 1;
+    await changeQuantity(itemId, newQuantity);
+    cart.changeItemQuantity(itemId, newQuantity);
   };
   return (
     <Container id="cart">

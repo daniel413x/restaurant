@@ -13,7 +13,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import { autoAuth } from './http/userAPI';
 import { fetchUserCart } from './http/cartAPI';
-import { fetchUserAddress } from './http/addressesAPI';
+import { fetchUserAddress } from './http/addressAPI';
 
 function App() {
   const {

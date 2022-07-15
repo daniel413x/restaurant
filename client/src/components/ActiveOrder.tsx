@@ -38,11 +38,19 @@ function ActiveOrder() {
   useEffect(() => {
     (async () => {
       const activeOrder = await fetchActiveOrder();
-      orders.setActiveOrder(activeOrder);
+      if (activeOrder) {
+        orders.setActiveOrder(activeOrder);
+      }
     })();
   }, []);
+  if (orders.activeOrder.id === '-1') {
+    return null;
+  }
   return (
     <Container id="active-order">
+      <h1>
+        You placed an order
+      </h1>
       <Row className="main-row">
         <Col className="items-delivery-address-col" md={6}>
           <h2>
@@ -95,6 +103,16 @@ function ActiveOrder() {
           </span>
           <OrderProgress currentOrb={currentOrb} />
           <Row className="info-row">
+            <Col className="estimated-time" md={6}>
+              <div className="inner-content">
+                <span className="label">
+                  Estimated time
+                </span>
+                <span className={`figure ${currentOrb === 3 && 'disabled-2'}`}>
+                  {`${min} - ${max} minutes`}
+                </span>
+              </div>
+            </Col>
             <Col className="order-log" md={6}>
               <div className="inner-content">
                 <span className="label">
@@ -112,16 +130,6 @@ function ActiveOrder() {
                     </li>
                   ))}
                 </ul>
-              </div>
-            </Col>
-            <Col className="estimated-time" md={6}>
-              <div className="inner-content">
-                <span className="label">
-                  Estimated time
-                </span>
-                <span className={`figure ${currentOrb === 3 && 'disabled-2'}`}>
-                  {`${min} - ${max} minutes`}
-                </span>
               </div>
             </Col>
           </Row>

@@ -64,6 +64,7 @@ function EditPassword() {
             value={newPassword}
             pressedSubmit={pressedSubmit}
             setPressedSubmit={setPressedSubmit}
+            type="password"
           />
         </Col>
         <Col>
@@ -73,6 +74,7 @@ function EditPassword() {
             value={confirmNewPassword}
             pressedSubmit={pressedSubmit}
             setPressedSubmit={setPressedSubmit}
+            type="password"
           />
         </Col>
         <Col>

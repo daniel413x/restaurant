@@ -6,10 +6,27 @@ import { REGISTERED } from '../utils/consts';
 
 const router = Router();
 
-router.get('/auth', authMiddleware, UserController.auth);
-router.post('/registration', UserController.registration);
-router.post('/login', UserController.login);
-router.put('/', checkRoleMiddleware(REGISTERED), UserController.edit);
-router.delete('/:id', UserController.delete);
+router.get(
+  '/auth',
+  authMiddleware,
+  (req, res) => UserController.auth(req, res),
+);
+router.post(
+  '/registration',
+  (req, res, next) => UserController.registration(req, res, next),
+);
+router.post(
+  '/login',
+  (req, res, next) => UserController.login(req, res, next),
+);
+router.put(
+  '/',
+  checkRoleMiddleware(REGISTERED),
+  (req, res) => UserController.edit(req, res),
+);
+router.delete(
+  '/:id',
+  (req, res) => UserController.delete(req, res),
+);
 
 export default router;

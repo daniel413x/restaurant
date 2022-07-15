@@ -4,9 +4,10 @@ import authMiddleware from '../middleware/authMiddleware';
 
 const router = Router();
 
-router.get('/', authMiddleware, CartController.get);
-router.post('/additem', authMiddleware, CartController.addItem);
-router.put('/changequantity/:id', authMiddleware, CartController.editItemQuantity);
-router.delete('/:id', authMiddleware, CartController.deleteItem);
+router.get(
+  '/',
+  authMiddleware,
+  (req, res) => CartController.get(req, res),
+);
 
 export default router;

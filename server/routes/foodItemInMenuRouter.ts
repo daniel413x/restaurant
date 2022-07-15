@@ -1,28 +1,31 @@
 import Router from 'express';
-import CategoryController from '../controllers/CategoryController';
+import FoodItemInMenuController from '../controllers/FoodItemInMenuController';
 import checkRoleMiddleware from '../middleware/checkRoleMiddleware';
 import { ADMIN } from '../utils/consts';
 
 const router = Router();
 
+/*
 router.get(
-  '/',
-  (req, res) => CategoryController.get(req, res),
+  '/:id',
+  checkRoleMiddleware(ADMIN),
+  (req, res) => FoodItemInMenuController.get(req, res),
 );
+*/
 router.post(
   '/',
   checkRoleMiddleware(ADMIN),
-  (req, res) => CategoryController.create(req, res),
+  (req, res) => FoodItemInMenuController.create(req, res),
 );
 router.put(
   '/:id',
   checkRoleMiddleware(ADMIN),
-  (req, res) => CategoryController.edit(req, res),
+  (req, res) => FoodItemInMenuController.edit(req, res),
 );
 router.delete(
   '/:id',
   checkRoleMiddleware(ADMIN),
-  (req, res) => CategoryController.delete(req, res),
+  (req, res) => FoodItemInMenuController.delete(req, res),
 );
 
 export default router;

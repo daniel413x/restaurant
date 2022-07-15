@@ -5,11 +5,16 @@ import Order from '../db/models/Order';
 import AddressForOrder from '../db/models/AddressForOrder';
 import ApiError from '../error/ApiError';
 import { calcTotal } from '../utils/functions';
+import BaseController from './BaseController';
 
-class OrderController {
-  async get(req: Request, res: Response) {
+class OrderController extends BaseController<Order> {
+  constructor() {
+    super(Order);
+  }
+
+  get(req: Request, res: Response) {
     const { id } = res.locals.user;
-    const order = await Order.findAndCountAll({
+    const options = {
       where: {
         UserId: id,
       },
@@ -17,26 +22,27 @@ class OrderController {
         model: FoodItemInOrder,
         as: 'foodItems',
       },
-    });
-    return res.json(order);
+    };
+    this.execFindAndCountAll(req, res, options);
   }
 
-  async getAll(req: Request, res: Response) {
-    const orders = await Order.findAndCountAll({
+  getAllForAdmin(req: Request, res: Response) {
+    const options = {
       include: [{
         model: FoodItemInOrder,
         as: 'foodItems',
-      }, {
+      },
+      {
         model: AddressForOrder,
         as: 'address',
       }],
-    });
-    return res.json(orders);
+    };
+    this.execFindAndCountAll(req, res, options);
   }
 
-  async getActiveOrder(req: Request, res: Response) {
+  getActiveOrder(req: Request, res: Response) {
     const { id } = res.locals.user;
-    const order = await Order.findOne({
+    const options = {
       where: {
         UserId: id,
         activeOrder: true,
@@ -49,12 +55,11 @@ class OrderController {
         model: AddressForOrder,
         as: 'address',
       }],
-    });
-    return res.json(order);
+    };
+    this.execFindOne(req, res, options);
   }
 
   async create(req: Request, res: Response) {
-    // get cart id, find all fooditemsincart where cartid,
     const {
       UserId,
       CartId,
@@ -128,10 +133,7 @@ class OrderController {
   }
 
   async edit(req: Request, res: Response) {
-    const { id } = req.params;
-    const updatedVals = req.body;
-    await Order.update(updatedVals, { where: { id } });
-    return res.status(204).end();
+    this.execUpdate(req, res);
   }
 
   async changeStatus(req: Request, res: Response, next: NextFunction) {
@@ -151,17 +153,22 @@ class OrderController {
     } else {
       return next(ApiError.conflict('Order status cannot be changed'));
     }
+    req.body = {
+      status,
+      actionLog,
+    };
+    /*
     await Order.update({
       status,
       actionLog,
     }, { where: { id } });
     return res.status(204).end();
+    */
+    return this.execUpdate(req, res);
   }
 
-  async delete(req: Request, res: Response) {
-    const { id } = req.params;
-    await Order.destroy({ where: { id } });
-    return res.status(204).end();
+  delete(req: Request, res: Response) {
+    this.execDestroy(req, res);
   }
 }
 

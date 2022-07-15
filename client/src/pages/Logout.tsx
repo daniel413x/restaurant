@@ -8,7 +8,13 @@ import {
 } from '../utils/consts';
 
 function Logout() {
-  const { user, notifications } = useContext(Context);
+  const {
+    user,
+    cart,
+    addresses,
+    orders,
+    notifications,
+  } = useContext(Context);
   const navigate = useNavigate();
   useEffect(() => {
     if (user.isRegistered) {
@@ -18,6 +24,9 @@ function Logout() {
         shortNotification,
       );
       user.unset();
+      addresses.unset();
+      cart.unset();
+      orders.unset();
     }
     navigate(FRONT_PAGE_ROUTE);
   }, []);

@@ -1,9 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
-import { UploadedFile } from 'express-fileupload';
 import ApiError from '../error/ApiError';
 import { IUser } from '../types/types';
 import { ADMIN, REGISTERED } from '../utils/consts';
@@ -11,6 +8,8 @@ import Cart from '../db/models/Cart';
 import AddressInAddressBook from '../db/models/AddressInAddressBook';
 import User from '../db/models/User';
 import FoodItemInCart from '../db/models/FoodItemInCart';
+import BaseController from './BaseController';
+import { assignBodyAndProcessImages } from '../utils/functions';
 
 const generateJwt = ({
   id,
@@ -30,7 +29,11 @@ const generateJwt = ({
   },
 );
 
-class UserController {
+class UserController extends BaseController<User> {
+  constructor() {
+    super(User);
+  }
+
   async registration(req: Request, res: Response, next: NextFunction) {
     const {
       email,
@@ -118,34 +121,24 @@ class UserController {
   }
 
   async edit(req: Request, res: Response) {
-    const { id } = res.locals.user;
-    const updatedVals = req.body;
+    let updatedVals;
+    if (req.files) {
+      updatedVals = assignBodyAndProcessImages(req);
+    } else {
+      updatedVals = req.body;
+    }
     if ('password' in updatedVals) {
       const hashPassword = await bcrypt.hash(updatedVals.password, 5);
       updatedVals.password = hashPassword;
     }
-    if (req.files) {
-      const filesKeys = Object.keys(req.files);
-      for (let k = 0; k < filesKeys.length; k += 1) {
-        if (/img/.test(filesKeys[k])) {
-          const imgProperty = filesKeys[k].substring(3).replace(/^\D/, (c) => c.toLowerCase());
-          const fileName = `${uuidv4()}.jpg`;
-          updatedVals[imgProperty] = fileName;
-          const img = req.files[filesKeys[k]] as UploadedFile;
-          img.mv(path.resolve(__dirname, '..', 'static', fileName));
-          break;
-        }
-      }
-    }
+    const { id } = res.locals.user;
     const updatedObj = await User.update(updatedVals, { where: { id }, returning: true });
     const token = generateJwt(updatedObj[1][0]);
     return res.json({ token });
   }
 
   async delete(req: Request, res: Response) {
-    const { id } = req.params;
-    await User.destroy({ where: { id } });
-    return res.status(204).end();
+    this.execDestroy(req, res);
   }
 }
 

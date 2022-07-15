@@ -1,58 +1,48 @@
 import { Request, Response } from 'express';
-import { col } from 'sequelize';
 import FoodItemInMenu from '../db/models/FoodItemInMenu';
 import Category from '../db/models/Category';
+import BaseController from './BaseController';
 
-class CategoryController {
-  async get(req: Request, res: Response) {
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 12;
-    const offset = page * limit - limit;
-    const byNewest = req.query.byNewest as string;
-    const publicCategory = req.query.publicCategory as string;
-    const order: any[] = [];
-    const where: { [key: string]: any } = {};
-    const params = {
-      limit,
-      offset,
-      order,
-      where,
+class CategoryController extends BaseController<Category> {
+  constructor() {
+    super(Category);
+  }
+
+  get(req: Request, res: Response) {
+    const options = {
       include: [{
         model: FoodItemInMenu,
         as: 'foodItems',
       }],
     };
-    if (byNewest) {
-      params.order = [[col('createdAt'), 'DESC']];
-    }
-    if (publicCategory) {
-      params.where.publicCategory = true;
-    }
-    const categorys = await Category.findAndCountAll(params);
-    return res.json(categorys);
+    this.execFindAndCountAll(req, res, options);
   }
 
-  async create(req: Request, res: Response) {
-    const { name } = req.body;
-    const category = await Category.create({
-      name,
-      publicCategory: true,
-    });
-    return res.json(category);
+  create(req: Request, res: Response) {
+    this.execCreate(req, res);
   }
 
-  async edit(req: Request, res: Response) {
-    const { id } = req.params;
-    const { name } = req.body;
-    const category = await Category.findOne({ where: { id } });
-    await category?.update({ name }, { where: { id } });
-    return res.status(204).end();
+  edit(req: Request, res: Response) {
+    this.execUpdate(req, res);
   }
 
   async delete(req: Request, res: Response) {
-    const { id } = req.params;
-    await Category.destroy({ where: { id } });
-    return res.status(204).end();
+    const { deletedId } = req.params;
+    const items = await FoodItemInMenu.findAndCountAll({ where: { CategoryId: deletedId } });
+    const uncategorized = await Category.findOne({ where: { name: 'Uncategorized' } });
+    Promise.all(items.rows.map(async (item) => {
+      await item.update(
+        {
+          CategoryId: uncategorized.id,
+        },
+        {
+          where: {
+            CategoryId: deletedId,
+          },
+        },
+      );
+    }));
+    this.execDestroy(req, res);
   }
 }
 

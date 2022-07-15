@@ -15,7 +15,7 @@ import {
 import { IModalProps, IFoodItem } from '../../types/types';
 import FoodItemAuxiliary from '../FoodItemAuxiliary';
 import Context from '../../context/context';
-import { addFoodItem } from '../../http/cartAPI';
+import { addFoodItem } from '../../http/foodItemInCartAPI';
 
 interface AddItemProps extends IModalProps {
   foodItem: IFoodItem;

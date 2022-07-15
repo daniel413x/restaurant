@@ -5,10 +5,25 @@ import { REGISTERED } from '../utils/consts';
 
 const router = Router();
 
-router.get('/', checkRoleMiddleware(REGISTERED), AddressController.get);
-router.post('/', checkRoleMiddleware(REGISTERED), AddressController.create);
-router.put('/:id', checkRoleMiddleware(REGISTERED), AddressController.edit);
-router.put('/setdefault/:id', checkRoleMiddleware(REGISTERED), AddressController.setDefault);
-router.delete('/:id', checkRoleMiddleware(REGISTERED), AddressController.delete);
+router.get(
+  '/',
+  checkRoleMiddleware(REGISTERED),
+  (res, req) => AddressController.get(res, req),
+);
+router.post(
+  '/',
+  checkRoleMiddleware(REGISTERED),
+  (res, req, next) => AddressController.create(res, req, next),
+);
+router.put(
+  '/:id',
+  checkRoleMiddleware(REGISTERED),
+  (res, req) => AddressController.edit(res, req),
+);
+router.delete(
+  '/:id',
+  checkRoleMiddleware(REGISTERED),
+  (res, req) => AddressController.delete(res, req),
+);
 
 export default router;
