@@ -11,7 +11,7 @@ import List from '../components/List';
 import FoodCategory from '../components/FoodCategory';
 import FoodItem from '../components/FoodItem';
 import AddItem from '../components/modals/AddItem';
-import { IFoodItem, IFoodCategory } from '../types/types';
+import { IFoodItem, ICategory } from '../types/types';
 import { makeId } from '../utils/functions';
 import { categoriesPlaceholders } from '../utils/consts';
 
@@ -26,7 +26,7 @@ function CategoryAnchor({ categoryName }: CategoryAnchorProps) {
 
 function Menu() {
   const { categories } = useContext(Context);
-  const [categoryItems, setCategoryItems] = useState<IFoodCategory[]>([]);
+  const [categoryItems, setCategoryItems] = useState<ICategory[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [addedItem, setAddedItem] = useState<IFoodItem>();
   const handleModal = (item: IFoodItem) => {
@@ -65,7 +65,7 @@ function Menu() {
         <Col className="right-col">
           <List
             items={categoryItems}
-            renderList={(category: IFoodCategory) => {
+            renderList={(category: ICategory) => {
               if (category.id === -1 || category.name === 'Uncategorized') {
                 return null;
               }

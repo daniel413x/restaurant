@@ -2,12 +2,12 @@ import React, { ReactNode } from 'react';
 import {
   Col, Row,
 } from 'react-bootstrap';
-import { IFoodItem, IFoodCategory } from '../types/types';
+import { IFoodItem, ICategory } from '../types/types';
 import { makeId } from '../utils/functions';
 
 interface FoodCategoryProps {
   renderItem: (item: IFoodItem) => ReactNode;
-  category: IFoodCategory;
+  category: ICategory;
 }
 
 function FoodCategory({

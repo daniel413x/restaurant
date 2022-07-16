@@ -22,7 +22,7 @@ import {
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import Context from '../context/context';
-import { IFoodCategory, IFoodItem } from '../types/types';
+import { ICategory, IFoodItem } from '../types/types';
 import List from './List';
 import Confirmation from './modals/Confirmation';
 import useOnClickOutside from '../hooks/useOnOutsideClick';
@@ -92,7 +92,7 @@ function FoodItem({
 }
 
 interface CategoryProps {
-  category: IFoodCategory;
+  category: ICategory;
   selectFoodItemToEdit: (obj: IFoodItem) => void;
 }
 

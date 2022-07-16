@@ -10,28 +10,7 @@ export default class OrdersStore {
   activeOrder: IOrder | any;
 
   constructor() {
-    this.orders = [
-      {
-        id: '-1',
-        UserId: '-1',
-        status: -1,
-        actionLog: [],
-        date: '',
-        foodItems: [],
-        address: {
-          id: '',
-          firstName: '',
-          lastName: '',
-          addressLineOne: '',
-          addressLineTwo: '',
-          city: '',
-          zip: '',
-          state: '',
-          UserId: '',
-        },
-        total: 0,
-      },
-    ];
+    this.orders = [];
     this.activeOrder = {
       id: '-1',
       UserId: '-1',

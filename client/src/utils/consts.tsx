@@ -13,7 +13,7 @@ import foodImage from '../assets/about-us-5.png';
 import imageFour from '../assets/about-us-4.png';
 import imageSix from '../assets/about-us-6.png';
 import AdminOrders from '../pages/AdminOrders';
-import { IFoodCategory, IFoodItem } from '../types/types';
+import { ICategory, IFoodItem } from '../types/types';
 
 export const ACCOUNT_INDEX_ROUTE = '/*';
 export const ACCOUNT_ROUTE = 'account/*';
@@ -157,7 +157,7 @@ export const demoFoodItems: IFoodItem[] = [
   },
 ];
 
-export const categoriesPlaceholders: IFoodCategory[] = [
+export const categoriesPlaceholders: ICategory[] = [
   {
     id: 1,
     name: 'Appetizers',

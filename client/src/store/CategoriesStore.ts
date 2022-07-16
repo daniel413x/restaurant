@@ -1,17 +1,17 @@
 import { makeAutoObservable } from 'mobx';
 import {
-  IFoodCategory, IFoodItem,
+  ICategory, IFoodItem,
 } from '../types/types';
 
 export default class UserStore {
-  categories: IFoodCategory[];
+  categories: ICategory[];
 
   constructor() {
     this.categories = [];
     makeAutoObservable(this);
   }
 
-  setCategories(arr: IFoodCategory[]) {
+  setCategories(arr: ICategory[]) {
     this.categories = arr;
   }
 
@@ -26,11 +26,12 @@ export default class UserStore {
     });
   }
 
-  add(obj: IFoodCategory) {
+  add(obj: ICategory) {
+    console.log([...this.categories, obj]);
     this.categories = [...this.categories, obj];
   }
 
-  deleteCategory(obj: IFoodCategory) {
+  deleteCategory(obj: ICategory) {
     const {
       id,
       foodItems,

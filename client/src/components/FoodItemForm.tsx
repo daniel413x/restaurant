@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap';
 import Context from '../context/context';
 import {
-  IFoodCategory,
+  ICategory,
   IFoodItem,
   QueryReqMenuFoodItem,
 } from '../types/types';
@@ -40,7 +40,7 @@ function FoodItemForm({
 }: FoodItemFormProps) {
   const { categories, notifications } = useContext(Context);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [category, setCategory] = useState<Omit<IFoodCategory, 'foodItems'>>(foodItem?.category || { name: 'Uncategorized', id: -1 });
+  const [category, setCategory] = useState<Omit<ICategory, 'foodItems'>>(foodItem?.category || { name: 'Uncategorized', id: -1 });
   const [name, setName] = useState<string>(foodItem?.name || '');
   const [discount, setDiscount] = useState<number>(foodItem?.discount || 0);
   const [price, setPrice] = useState<number>(foodItem?.price || 3);

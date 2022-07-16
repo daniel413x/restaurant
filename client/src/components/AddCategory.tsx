@@ -4,6 +4,7 @@ import React, {
   ChangeEvent,
   useRef,
   useEffect,
+  FormEvent,
 } from 'react';
 import {
   Col,
@@ -21,8 +22,10 @@ import Context from '../context/context';
 import useOnClickOutside from '../hooks/useOnOutsideClick';
 import {
   green,
+  red,
   shortNotification,
 } from '../utils/consts';
+import { createCategory } from '../http/categoryAPI';
 
 function AddCategory() {
   const { categories, notifications } = useContext(Context);
@@ -30,22 +33,31 @@ function AddCategory() {
   const focusRef = useRef<HTMLInputElement>(null);
   const [active, setActive] = useState<boolean>(false);
   const [name, setName] = useState<string>('Add new category');
-  const submitNewName = () => {
-    const newCategory = {
-      name,
-      id: Math.random(),
-      foodItems: [],
-    };
-    categories.add(newCategory);
-    setActive(false);
-    setName('Add new category');
-    notifications.message(
-      'Category created',
-      green,
-      shortNotification,
-    );
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!active) {
+      return null;
+    }
+    try {
+      const newCategory = await createCategory(name);
+      categories.add(newCategory);
+      setActive(false);
+      setName('Add new category');
+      return notifications.message(
+        'Category created',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      return notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
   };
   const toggleEditTitle = () => {
+    console.log(active);
     setActive(!active);
   };
   useEffect(() => {
@@ -59,8 +71,8 @@ function AddCategory() {
   useOnClickOutside(outsideClickRef, () => setActive(false));
   return (
     <div className={`category admin-item ${active && 'active'}`} ref={outsideClickRef}>
-      <Form className="title-buttons-row body">
-        <Col className="title" md="auto">
+      <Form className="title-buttons-row body" onSubmit={submit}>
+        <Col className="tab-col" md="auto">
           <Form.Control
             ref={focusRef}
             value={active ? name : name}
@@ -69,17 +81,18 @@ function AddCategory() {
           />
         </Col>
         <Col className="icon-buttons" md="auto">
+          {!active && (
+            <Button onClick={toggleEditTitle} title="Edit" id="fds">
+              <FontAwesomeIcon icon={faPlus} />
+            </Button>
+          )}
           {active && (
           <Button onClick={() => setActive(false)} title="Cancel">
             <FontAwesomeIcon icon={faBan} />
           </Button>
           )}
-          {!active ? (
-            <Button onClick={toggleEditTitle} title="Edit">
-              <FontAwesomeIcon icon={faPlus} />
-            </Button>
-          ) : (
-            <Button onClick={submitNewName} title="Save">
+          {active && (
+            <Button title="Save" type="submit" id="fds2">
               <FontAwesomeIcon icon={faCheck} />
             </Button>
           )}

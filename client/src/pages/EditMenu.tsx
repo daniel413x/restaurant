@@ -10,7 +10,7 @@ import {
   faAngleLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import Context from '../context/context';
-import { IFoodCategory, IFoodItem } from '../types/types';
+import { ICategory, IFoodItem } from '../types/types';
 import FoodItemForm from '../components/FoodItemForm';
 import EditedCategory from '../components/EditedCategory';
 import List from '../components/List';
@@ -53,7 +53,7 @@ function EditMenu() {
           <List
             className="categories-ul"
             items={categories.all}
-            renderList={(category: IFoodCategory) => {
+            renderList={(category: ICategory) => {
               if (category.id === -1 && category.foodItems.length === 0) {
                 return null;
               }

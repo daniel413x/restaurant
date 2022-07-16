@@ -86,13 +86,13 @@ export type QueryResMenuFoodItem = IFoodItem;
 
 export type QueryReqCartFoodItem = Omit<OrderOrCartFoodItem, 'id'> & { CartId: string };
 
-export interface IFoodCategory {
+export interface ICategory {
   name: string;
   foodItems: IFoodItem[];
   id: number;
 }
 
-type FoodItemCategory = Omit<IFoodCategory, 'foodItems'>;
+type FoodItemCategory = Omit<ICategory, 'foodItems'>;
 
 export interface IModalProps {
   onHide: () => void;

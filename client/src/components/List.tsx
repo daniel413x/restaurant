@@ -15,7 +15,7 @@ function List<T>({
 }: ListProps<T>) {
   return (
     <ul className={`${className}`}>
-      {items.map(renderList)}
+      {items?.map(renderList)}
       {children}
     </ul>
   );

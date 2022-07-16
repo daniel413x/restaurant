@@ -6,8 +6,12 @@ import { ADMIN } from '../utils/consts';
 const router = Router();
 
 router.get(
-  '/',
-  (req, res) => CategoryController.get(req, res),
+  '/public',
+  (req, res) => CategoryController.getPublic(req, res),
+);
+router.get(
+  '/all',
+  (req, res) => CategoryController.getAll(req, res),
 );
 router.post(
   '/',

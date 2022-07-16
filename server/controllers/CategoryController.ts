@@ -8,7 +8,20 @@ class CategoryController extends BaseController<Category> {
     super(Category);
   }
 
-  get(req: Request, res: Response) {
+  getPublic(req: Request, res: Response) {
+    const options = {
+      include: [{
+        model: FoodItemInMenu,
+        as: 'foodItems',
+      }],
+      where: {
+        publicCategory: true,
+      },
+    };
+    this.execFindAndCountAll(req, res, options);
+  }
+
+  getAll(req: Request, res: Response) {
     const options = {
       include: [{
         model: FoodItemInMenu,
