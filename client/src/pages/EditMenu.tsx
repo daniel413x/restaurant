@@ -1,4 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   Container,
   Col,
@@ -14,8 +18,8 @@ import { ICategory, IFoodItem } from '../types/types';
 import FoodItemForm from '../components/FoodItemForm';
 import EditedCategory from '../components/EditedCategory';
 import List from '../components/List';
-import { categoriesPlaceholders } from '../utils/consts';
 import AddCategory from '../components/AddCategory';
+import { fetchAllCategories } from '../http/categoryAPI';
 
 function EditMenu() {
   const [editedItem, setEditedItem] = useState<IFoodItem>();
@@ -25,7 +29,10 @@ function EditMenu() {
     window.scrollTo(0, 0);
   };
   useEffect(() => {
-    categories.setCategories(categoriesPlaceholders);
+    (async () => {
+      const allCategories = await fetchAllCategories();
+      categories.setCategories(allCategories);
+    })();
   }, []);
   return (
     <Container id="edit-menu">
@@ -54,7 +61,7 @@ function EditMenu() {
             className="categories-ul"
             items={categories.all}
             renderList={(category: ICategory) => {
-              if (category.id === -1 && category.foodItems.length === 0) {
+              if (category.name === 'Uncategorized' && category.foodItems.length === 0) {
                 return null;
               }
               return (

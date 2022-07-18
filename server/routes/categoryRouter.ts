@@ -11,6 +11,7 @@ router.get(
 );
 router.get(
   '/all',
+  checkRoleMiddleware(ADMIN),
   (req, res) => CategoryController.getAll(req, res),
 );
 router.post(

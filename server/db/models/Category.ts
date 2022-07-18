@@ -7,6 +7,7 @@ import {
   Model,
 } from 'sequelize';
 import sequelize from '../connection';
+import FoodItemInMenu from './FoodItemInMenu';
 
 // eslint-disable-next-line no-use-before-define
 export class Category extends Model<InferAttributes<Category>, InferCreationAttributes<Category>> {
@@ -19,6 +20,8 @@ export class Category extends Model<InferAttributes<Category>, InferCreationAttr
   createdAt?: CreationOptional<Date>;
 
   updatedAt?: CreationOptional<Date>;
+
+  foodItems?: CreationOptional<FoodItemInMenu[]>;
 
   static associate(models: any) {
     Category.hasMany(models.FoodItemInMenu, {

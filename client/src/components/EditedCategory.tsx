@@ -2,6 +2,7 @@ import React, {
   useContext,
   useState,
   ChangeEvent,
+  FormEvent,
   useRef,
   useEffect,
 } from 'react';
@@ -29,9 +30,12 @@ import useOnClickOutside from '../hooks/useOnOutsideClick';
 import CreateNewFoodItemButton from './CreateNewFoodItemButton';
 import {
   green,
+  red,
   shortNotification,
 } from '../utils/consts';
 import { calcItemPrice } from '../utils/functions';
+import { deleteCategory, editCategory } from '../http/categoryAPI';
+import { deleteFoodItem } from '../http/foodItemInMenuAPI';
 
 interface FoodItemProps {
   foodItem: IFoodItem;
@@ -56,7 +60,7 @@ function FoodItem({
   }
   return (
     <Col className="food-item">
-      <Image src={image} />
+      <Image src={`${process.env.REACT_APP_API_URL}${image}`} />
       <span className="name">
         {name}
       </span>
@@ -114,32 +118,52 @@ function EditedCategory({
   const [showDeleteFoodItemModal, setShowDeleteFoodItemModal] = useState<boolean>(false);
   const [deletedFoodItem, setDeletedFoodItem] = useState<IFoodItem>();
   const [newName, setNewName] = useState<string>(name);
-  const uncategorizedCategory = id === -1;
-  const submitNewName = () => {
+  const uncategorizedCategory = name === 'Uncategorized';
+  const submitNewName = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (newName === category.name) {
       return setActive(false);
     }
-    categories.setNewName(id, newName);
-    setActive(false);
-    return notifications.message(
-      'Category name updated',
-      green,
-      shortNotification,
-    );
+    try {
+      await editCategory(id, newName);
+      categories.setNewName(id, newName);
+      setActive(false);
+      return notifications.message(
+        'Category name updated',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      return notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
   };
-  const submitDeleteCategory = () => {
-    categories.deleteCategory(category);
-    notifications.message(
-      'Category deleted',
-      green,
-      shortNotification,
-    );
+  const submitDeleteCategory = async () => {
+    try {
+      await deleteCategory(id);
+      categories.deleteCategory(category);
+      notifications.message(
+        'Category deleted',
+        green,
+        shortNotification,
+      );
+    } catch (error: any) {
+      notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
   };
   const selectFoodItemToDelete = (foodItem: IFoodItem) => {
     setDeletedFoodItem(foodItem);
     setShowDeleteFoodItemModal(true);
   };
-  const submitDeleteFoodItem = (deletedId: string) => {
+  const submitDeleteFoodItem = async (deletedId: string) => {
+    await deleteFoodItem(deletedId);
     categories.deleteFoodItem(deletedId, category.id);
     notifications.message(
       'Item deleted successfully',
@@ -183,7 +207,7 @@ function EditedCategory({
         body={`Food item "${deletedFoodItem.name}" will be deleted.`}
       />
       )}
-      <Form className="title-buttons-row body">
+      <Form className="title-buttons-row body" onSubmit={submitNewName}>
         <Col className="tab-col" md="auto">
           <Form.Control
             ref={focusRef}
@@ -192,10 +216,9 @@ function EditedCategory({
             className={`${!active && !expand && 'disabled-2'}`}
           />
         </Col>
-
         {active ? (
           <Col className="icon-buttons" md="auto">
-            <Button onClick={submitNewName} title="Save">
+            <Button type="submit" title="Save">
               <FontAwesomeIcon icon={faCheck} />
             </Button>
             <Button onClick={() => setActive(false)} title="Cancel">
@@ -248,7 +271,9 @@ function EditedCategory({
         )}
       >
         <li>
-          <CreateNewFoodItemButton />
+          <CreateNewFoodItemButton
+            categoryId={id}
+          />
         </li>
       </List>
     </div>

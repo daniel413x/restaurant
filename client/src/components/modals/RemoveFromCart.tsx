@@ -9,6 +9,7 @@ import { IModalProps } from '../../types/types';
 import {
   shortNotification,
   green,
+  red,
 } from '../../utils/consts';
 import Context from '../../context/context';
 import { removeFoodItem } from '../../http/foodItemInCartAPI';
@@ -27,14 +28,22 @@ function RemoveFromCart({
   const { notifications, cart } = useContext(Context);
   const action = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await removeFoodItem(itemId!);
-    cart.changeItemQuantity(itemId!, 0);
-    notifications.message(
-      'Item removed from cart',
-      green,
-      shortNotification,
-    );
-    onHide();
+    try {
+      await removeFoodItem(itemId!);
+      cart.changeItemQuantity(itemId!, 0);
+      notifications.message(
+        'Item removed from cart',
+        green,
+        shortNotification,
+      );
+      onHide();
+    } catch (error: any) {
+      notifications.message(
+        error.response.data.message,
+        red,
+        shortNotification,
+      );
+    }
   };
   return (
     <Modal

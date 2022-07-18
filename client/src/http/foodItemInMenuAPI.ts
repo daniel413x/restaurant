@@ -1,17 +1,22 @@
-import { QueryReqMenuFoodItem } from '../types/types';
+import { IFoodItem, QueryReqMenuFoodItem } from '../types/types';
 import { $authHost } from './index';
 
-export const addFoodItem = async (obj: QueryReqMenuFoodItem) => {
+export const getOneFoodItem = async (id: string): Promise<IFoodItem> => {
+  const { data } = await $authHost.get(`api/fooditeminmenu/${id}`);
+  return data;
+};
+
+export const createFoodItem = async (obj: QueryReqMenuFoodItem | FormData): Promise<IFoodItem> => {
   const { data } = await $authHost.post('api/fooditeminmenu', obj);
   return data;
 };
 
-export const changeQuantity = async (id: string, quantity: number) => {
-  const { data } = await $authHost.put(`api/fooditeminmenu/${id}`, { quantity });
+export const editFoodItem = async (id: string, obj: QueryReqMenuFoodItem | FormData) => {
+  const { data } = await $authHost.put(`api/fooditeminmenu/${id}`, obj);
   return data;
 };
 
-export const removeFoodItem = async (id: string) => {
+export const deleteFoodItem = async (id: string) => {
   const { data } = await $authHost.delete(`api/fooditemincart/${id}`);
   return data;
 };

@@ -18,6 +18,9 @@ class CategoryController extends BaseController<Category> {
         publicCategory: true,
       },
     };
+    if (req.query.publicCategory) {
+      delete req.query.publicCategory;
+    }
     this.execFindAndCountAll(req, res, options);
   }
 
@@ -32,7 +35,16 @@ class CategoryController extends BaseController<Category> {
   }
 
   create(req: Request, res: Response) {
-    this.execCreate(req, res);
+    const options = {
+      include: [{
+        model: FoodItemInMenu,
+        as: 'foodItems',
+      }],
+    };
+    if (req.body.name === 'Uncategorized') {
+      req.body.publicCategory = false;
+    }
+    this.execCreate(req, res, options);
   }
 
   edit(req: Request, res: Response) {
@@ -40,21 +52,23 @@ class CategoryController extends BaseController<Category> {
   }
 
   async delete(req: Request, res: Response) {
-    const { deletedId } = req.params;
+    const { id: deletedId } = req.params;
     const items = await FoodItemInMenu.findAndCountAll({ where: { CategoryId: deletedId } });
-    const uncategorized = await Category.findOne({ where: { name: 'Uncategorized' } });
-    Promise.all(items.rows.map(async (item) => {
-      await item.update(
-        {
-          CategoryId: uncategorized.id,
-        },
-        {
-          where: {
-            CategoryId: deletedId,
+    if (items.count > 0) {
+      const uncategorized = await Category.findOne({ where: { name: 'Uncategorized' } });
+      await Promise.all(items.rows.map(async (item) => {
+        await item.update(
+          {
+            CategoryId: uncategorized.id,
           },
-        },
-      );
-    }));
+          {
+            where: {
+              CategoryId: deletedId,
+            },
+          },
+        );
+      }));
+    }
     this.execDestroy(req, res);
   }
 }

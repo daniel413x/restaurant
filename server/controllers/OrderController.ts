@@ -110,7 +110,7 @@ class OrderController extends BaseController<Order> {
       time: [orderMinTime, orderMaxTime],
       activeOrder: true,
     });
-    Promise.all(itemsFromCart.rows.map(async (item) => {
+    await Promise.all(itemsFromCart.rows.map(async (item) => {
       await FoodItemInOrder.create({
         name: item.name,
         price: item.price,

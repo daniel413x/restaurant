@@ -70,7 +70,7 @@ export interface IFoodItem {
   discount: number;
   ingredients: string[];
   // calories?
-  category?: FoodItemCategory;
+  CategoryId: string;
 }
 
 type OrderOrCartFoodItemSpecificProps = {
@@ -80,19 +80,20 @@ type OrderOrCartFoodItemSpecificProps = {
 
 export type OrderOrCartFoodItem = Omit<IFoodItem, 'image' | 'serves'> & OrderOrCartFoodItemSpecificProps;
 
-export type QueryReqMenuFoodItem = PartiallyOptional<IFoodItem, 'id'>;
+export type QueryReqMenuFoodItem = Omit<PartiallyOptional<IFoodItem, 'id'>, 'image' | 'category'> & {
+  image: File;
+  CategoryId: string;
+};
 
 export type QueryResMenuFoodItem = IFoodItem;
 
-export type QueryReqCartFoodItem = Omit<OrderOrCartFoodItem, 'id'> & { CartId: string };
+export type QueryReqCartFoodItem = Omit<OrderOrCartFoodItem, 'id' | 'CategoryId'> & { CartId: string };
 
 export interface ICategory {
   name: string;
   foodItems: IFoodItem[];
-  id: number;
+  id: string;
 }
-
-type FoodItemCategory = Omit<ICategory, 'foodItems'>;
 
 export interface IModalProps {
   onHide: () => void;

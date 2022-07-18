@@ -5,13 +5,11 @@ import { ADMIN } from '../utils/consts';
 
 const router = Router();
 
-/*
 router.get(
   '/:id',
   checkRoleMiddleware(ADMIN),
-  (req, res) => FoodItemInMenuController.get(req, res),
+  (req, res) => FoodItemInMenuController.getOne(req, res),
 );
-*/
 router.post(
   '/',
   checkRoleMiddleware(ADMIN),

@@ -122,10 +122,7 @@ export const demoFoodItems: IFoodItem[] = [
     serves: 1,
     discount: 0.1,
     id: '1',
-    category: {
-      id: 3,
-      name: 'Lunch',
-    },
+    CategoryId: '3',
   },
   {
     name: 'Vegetarian Burger',
@@ -136,10 +133,7 @@ export const demoFoodItems: IFoodItem[] = [
     serves: 1,
     discount: 0.1,
     id: '1',
-    category: {
-      id: 3,
-      name: 'Lunch',
-    },
+    CategoryId: '3',
   },
   {
     name: 'Raspberry Stuffed French Toast',
@@ -150,16 +144,13 @@ export const demoFoodItems: IFoodItem[] = [
     serves: 1,
     discount: 0.1,
     id: '1',
-    category: {
-      id: 3,
-      name: 'Lunch',
-    },
+    CategoryId: '3',
   },
 ];
 
 export const categoriesPlaceholders: ICategory[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Appetizers',
     foodItems: [
       {
@@ -171,10 +162,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '1',
-        category: {
-          id: 1,
-          name: 'Appetizers',
-        },
+        CategoryId: '1',
       },
       {
         name: 'Parsley Tabbuleh',
@@ -185,10 +173,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '2',
-        category: {
-          id: 1,
-          name: 'Appetizers',
-        },
+        CategoryId: '1',
       },
       {
         name: 'Hummus',
@@ -199,10 +184,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '3',
-        category: {
-          id: 1,
-          name: 'Appetizers',
-        },
+        CategoryId: '1',
       },
       {
         name: 'Hummus Platter',
@@ -213,10 +195,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '4',
-        category: {
-          id: 1,
-          name: 'Appetizers',
-        },
+        CategoryId: '1',
       },
       {
         name: 'Fresh Mozzarella Platter',
@@ -227,15 +206,12 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '5',
-        category: {
-          id: 1,
-          name: 'Appetizers',
-        },
+        CategoryId: '1',
       },
     ],
   },
   {
-    id: 2,
+    id: '2',
     name: 'Breakfast',
     foodItems: [
       {
@@ -247,10 +223,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '6',
-        category: {
-          id: 2,
-          name: 'Breakfast',
-        },
+        CategoryId: '2',
       },
       {
         name: 'Parsley Tabbuleh',
@@ -261,10 +234,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '7',
-        category: {
-          id: 2,
-          name: 'Breakfast',
-        },
+        CategoryId: '2',
       },
       {
         name: 'Hummus',
@@ -275,10 +245,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '8',
-        category: {
-          id: 2,
-          name: 'Breakfast',
-        },
+        CategoryId: '2',
       },
       {
         name: 'Hummus Platter',
@@ -289,10 +256,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '9',
-        category: {
-          id: 2,
-          name: 'Breakfast',
-        },
+        CategoryId: '2',
       },
       {
         name: 'Fresh Mozzarella Platter',
@@ -303,15 +267,12 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '10',
-        category: {
-          id: 2,
-          name: 'Breakfast',
-        },
+        CategoryId: '2',
       },
     ],
   },
   {
-    id: 3,
+    id: '3',
     name: 'Lunch',
     foodItems: [
       {
@@ -323,10 +284,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '11',
-        category: {
-          id: 3,
-          name: 'Lunch',
-        },
+        CategoryId: '3',
       },
       {
         name: 'Parsley Tabbuleh',
@@ -337,10 +295,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '12',
-        category: {
-          id: 3,
-          name: 'Lunch',
-        },
+        CategoryId: '3',
       },
       {
         name: 'Hummus',
@@ -351,10 +306,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '13',
-        category: {
-          id: 3,
-          name: 'Lunch',
-        },
+        CategoryId: '3',
       },
       {
         name: 'Hummus Platter',
@@ -365,10 +317,7 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '14',
-        category: {
-          id: 3,
-          name: 'Lunch',
-        },
+        CategoryId: '3',
       },
       {
         name: 'Fresh Mozzarella Platter',
@@ -379,15 +328,12 @@ export const categoriesPlaceholders: ICategory[] = [
         serves: 1,
         discount: 0.1,
         id: '15',
-        category: {
-          id: 3,
-          name: 'Lunch',
-        },
+        CategoryId: '3',
       },
     ],
   },
   {
-    id: -1,
+    id: '-1',
     name: 'Uncategorized',
     foodItems: [],
   },

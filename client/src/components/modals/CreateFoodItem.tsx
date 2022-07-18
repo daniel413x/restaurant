@@ -5,10 +5,15 @@ import {
 import { IModalProps } from '../../types/types';
 import FoodItemForm from '../FoodItemForm';
 
+interface CreateFoodItemProps extends IModalProps {
+  categoryId?: string;
+}
+
 function CreateFoodItem({
   onHide,
   show,
-}: IModalProps) {
+  categoryId,
+}: CreateFoodItemProps) {
   return (
     <Modal
       show={show}
@@ -25,6 +30,7 @@ function CreateFoodItem({
       <Modal.Body>
         <FoodItemForm
           closeModalOnSubmit={onHide}
+          creatingForCategoryId={categoryId}
         />
       </Modal.Body>
       <Modal.Footer>
@@ -33,5 +39,9 @@ function CreateFoodItem({
     </Modal>
   );
 }
+
+CreateFoodItem.defaultProps = {
+  categoryId: false,
+};
 
 export default CreateFoodItem;

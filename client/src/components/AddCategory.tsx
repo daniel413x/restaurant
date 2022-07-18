@@ -57,7 +57,6 @@ function AddCategory() {
     }
   };
   const toggleEditTitle = () => {
-    console.log(active);
     setActive(!active);
   };
   useEffect(() => {

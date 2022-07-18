@@ -66,7 +66,7 @@ function Menu() {
           <List
             items={categoryItems}
             renderList={(category: ICategory) => {
-              if (category.id === -1 || category.name === 'Uncategorized') {
+              if (category.name === 'Uncategorized') {
                 return null;
               }
               return (

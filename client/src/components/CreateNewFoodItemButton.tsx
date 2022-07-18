@@ -10,12 +10,17 @@ import {
 import CreateFoodItem from './modals/CreateFoodItem';
 import createNewFoodItem from '../assets/create-new-food-item.png';
 
-function EditedCategory() {
+interface CreateNewFoodItemButtonProps {
+  categoryId: string; // necessary evil to pre-select category in modal dropdown
+}
+
+function CreateNewFoodItemButton({ categoryId }: CreateNewFoodItemButtonProps) {
   const [showCreateFoodItemModal, setShowCreateFoodItemModal] = useState<boolean>(false);
   return (
     <Col className="add-food-item-button food-item">
       <CreateFoodItem
         show={showCreateFoodItemModal}
+        categoryId={categoryId}
         onHide={() => setShowCreateFoodItemModal(false)}
       />
       <Button className="button-wrapper" onClick={() => setShowCreateFoodItemModal(true)} />
@@ -37,4 +42,4 @@ function EditedCategory() {
   );
 }
 
-export default EditedCategory;
+export default CreateNewFoodItemButton;

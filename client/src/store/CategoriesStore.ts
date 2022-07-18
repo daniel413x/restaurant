@@ -15,7 +15,7 @@ export default class UserStore {
     this.categories = arr;
   }
 
-  setNewName(id: number, str: string) {
+  setNewName(id: string, str: string) {
     const updatedCategory = this.categories.find((category) => category.id === id);
     updatedCategory!.name = str;
     this.categories = this.categories.map((category) => {
@@ -27,7 +27,6 @@ export default class UserStore {
   }
 
   add(obj: ICategory) {
-    console.log([...this.categories, obj]);
     this.categories = [...this.categories, obj];
   }
 
@@ -36,10 +35,10 @@ export default class UserStore {
       id,
       foodItems,
     } = obj;
-    const uncategorized = this.categories.find((category) => category.id === -1)!;
+    const uncategorized = this.categories.find((category) => category.name === 'Uncategorized')!;
     uncategorized.foodItems = uncategorized.foodItems.concat(foodItems);
     const newCategories = this.categories.filter((category) => category.id !== id).map((category) => {
-      if (category.id === -1) {
+      if (category.name === 'Uncategorized') {
         return uncategorized;
       }
       return category;
@@ -48,7 +47,7 @@ export default class UserStore {
   }
 
   addFoodItem(obj: IFoodItem) {
-    const updatedCategory = this.categories.find((category) => category.id === obj.category!.id)!;
+    const updatedCategory = this.categories.find((category) => category.id === obj.CategoryId)!;
     updatedCategory.foodItems = [...updatedCategory.foodItems, obj];
     this.categories = this.categories.map((category) => {
       if (category.id === updatedCategory.id) {
@@ -58,7 +57,7 @@ export default class UserStore {
     });
   }
 
-  deleteFoodItem(deletedFoodItemId: string, foodCategoryId: number) {
+  deleteFoodItem(deletedFoodItemId: string, foodCategoryId: string) {
     const updatedCategory = this.categories.find((category) => category.id === foodCategoryId)!;
     updatedCategory.foodItems = updatedCategory?.foodItems.filter((foodItem) => foodItem.id !== deletedFoodItemId);
     this.categories = this.categories.map((category) => {
@@ -69,11 +68,11 @@ export default class UserStore {
     });
   }
 
-  updateFoodItem(updatedFoodItem: IFoodItem, previousCategoryId?: number) {
-    if (previousCategoryId && previousCategoryId >= 0) {
+  updateFoodItem(updatedFoodItem: IFoodItem, previousCategoryId?: string) {
+    if (previousCategoryId) {
       const previousCategory = this.categories.find((category) => category.id === previousCategoryId)!;
       previousCategory.foodItems = previousCategory.foodItems.filter((foodItem) => foodItem.id !== updatedFoodItem.id);
-      const newCategory = this.categories.find((category) => category.id === updatedFoodItem.category!.id)!;
+      const newCategory = this.categories.find((category) => category.id === updatedFoodItem.CategoryId)!;
       newCategory.foodItems = [...newCategory.foodItems, updatedFoodItem];
       this.categories = this.categories.map((category) => {
         if (category.id === previousCategory.id) {
@@ -86,7 +85,7 @@ export default class UserStore {
       });
       return;
     }
-    const itemCategory = this.categories.find((category) => category.id === updatedFoodItem.category!.id)!;
+    const itemCategory = this.categories.find((category) => category.id === updatedFoodItem.CategoryId)!;
     itemCategory.foodItems = itemCategory.foodItems.map((foodItem) => {
       if (foodItem.id === updatedFoodItem.id) {
         return updatedFoodItem;
@@ -102,7 +101,7 @@ export default class UserStore {
   }
 
   get all() {
-    const sortedCategories = this.categories.slice().sort((a, b) => a.id + b.id);
-    return sortedCategories;
+    // const sortedCategories = this.categories.slice().sort((a, b) => a.id + b.id);
+    return this.categories;
   }
 }

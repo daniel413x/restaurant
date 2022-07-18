@@ -7,6 +7,7 @@ import {
   Attributes,
   FindOptions,
 } from 'sequelize';
+import { assignBodyAndProcessImages } from '../utils/functions';
 
 export default abstract class BaseController<M extends Model> {
   model: ModelStatic<Model>;
@@ -15,7 +16,7 @@ export default abstract class BaseController<M extends Model> {
     this.model = model;
   }
 
-  async execFindOne(req: Request, res: Response, options: FindOptions<Attributes<M>>) {
+  async execGetOne(req: Request, res: Response, options?: FindOptions<Attributes<M>>) {
     const params: { [key: string]: any } = {
       ...options,
     };
@@ -23,12 +24,28 @@ export default abstract class BaseController<M extends Model> {
     return res.json(data);
   }
 
-  async execFindAndCountAll(req: Request, res: Response, options: Omit<FindAndCountOptions<Attributes<M>>, 'group'>) {
+  async execGetOneByParamsId(req: Request, res: Response, options?: FindOptions<Attributes<M>>) {
+    const params: { [key: string]: any } = {
+      ...options,
+    };
+    const { id } = req.params;
+    const data = await this.model.findByPk(id, params);
+    return res.json(data);
+  }
+
+  async execFindOne(req: Request, res: Response, options?: FindOptions<Attributes<M>>) {
+    const params: { [key: string]: any } = {
+      ...options,
+    };
+    const data = await this.model.findOne(params);
+    return res.json(data);
+  }
+
+  async execFindAndCountAll(req: Request, res: Response, options?: Omit<FindAndCountOptions<Attributes<M>>, 'group'>) {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 12;
     const offset = page * limit - limit;
     const byNewest = req.query.byNewest as string;
-    const publicCategory = req.query.publicCategory as string;
     const order: any[] = [];
     const params: { [key: string]: any } = {
       where: {},
@@ -40,22 +57,28 @@ export default abstract class BaseController<M extends Model> {
     if (byNewest) {
       params.order = [[col('createdAt'), 'DESC']];
     }
-    if (publicCategory) {
-      params.where.publicCategory = true;
-    }
     const data = await this.model.findAndCountAll(params);
     return res.json(data);
   }
 
-  async execCreate(req: Request, res: Response) {
-    const form = req.body;
-    const data = await this.model.create(form);
+  async execCreate(req: Request, res: Response, options?: Omit<FindAndCountOptions<Attributes<M>>, 'group'>) {
+    let form = req.body;
+    if (req.files) {
+      form = assignBodyAndProcessImages(req);
+    }
+    let data = await this.model.create(form);
+    if (options) {
+      data = await this.model.findByPk(data.getDataValue('id'), options);
+    }
     return res.json(data);
   }
 
   async execUpdate(req: Request, res: Response) {
     const { id } = req.params;
-    const form = req.body;
+    let form = req.body;
+    if (req.files) {
+      form = assignBodyAndProcessImages(req);
+    }
     await this.model.update(form, { where: { id } });
     return res.status(204).end();
   }

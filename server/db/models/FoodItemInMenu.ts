@@ -36,7 +36,7 @@ class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreatio
   updatedAt?: CreationOptional<Date>;
 
   static associate(models: any) {
-    FoodItemInMenu.belongsTo(models.Category, { targetKey: 'id' });
+    FoodItemInMenu.belongsTo(models.Category, { targetKey: 'id', foreignKey: 'CategoryId' });
   }
 }
 

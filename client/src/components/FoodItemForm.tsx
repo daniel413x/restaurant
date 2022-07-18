@@ -1,6 +1,7 @@
 import React, {
   useContext,
   useState,
+  useEffect,
   ChangeEvent,
   FormEvent,
 } from 'react';
@@ -15,7 +16,6 @@ import Context from '../context/context';
 import {
   ICategory,
   IFoodItem,
-  QueryReqMenuFoodItem,
 } from '../types/types';
 import {
   green,
@@ -28,27 +28,30 @@ import { calcItemPrice } from '../utils/functions';
 import List from './List';
 import EditedIngredient from './EditedIngredient';
 import SmartInput from './SmartInput';
+import { createFoodItem, editFoodItem, getOneFoodItem } from '../http/foodItemInMenuAPI';
 
 interface FoodItemFormProps {
   foodItem?: IFoodItem,
+  creatingForCategoryId?: string;
   closeModalOnSubmit?: () => void;
 }
 
 function FoodItemForm({
   foodItem,
+  creatingForCategoryId,
   closeModalOnSubmit,
 }: FoodItemFormProps) {
   const { categories, notifications } = useContext(Context);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [category, setCategory] = useState<Omit<ICategory, 'foodItems'>>(foodItem?.category || { name: 'Uncategorized', id: -1 });
+  const [category, setCategory] = useState<Omit<ICategory, 'foodItems'>>();
   const [name, setName] = useState<string>(foodItem?.name || '');
-  const [discount, setDiscount] = useState<number>(foodItem?.discount || 0);
-  const [price, setPrice] = useState<number>(foodItem?.price || 3);
+  const [discount, setDiscount] = useState<number>(Number(foodItem?.discount) || 0);
+  const [price, setPrice] = useState<number>(Number(foodItem?.price) || 3);
   const previousPrice = foodItem?.price || 0;
   const userChangedPrice = !foodItem ? null : Number(calcItemPrice(price, discount)) !== Number(calcItemPrice(previousPrice, foodItem?.discount));
   const showPreviousPrice = userChangedPrice && foodItem;
   // const difference = Number(calcItemPrice(price, discount)) - Number(calcItemPrice(previousPrice, discount));
-  const [image, setImage] = useState<string>();
+  const [image, setImage] = useState<File | string>(foodItem?.image || '');
   const [ingredients, setIngredients] = useState<string[]>(foodItem?.ingredients || []);
   const [newIngredients, setNewIngredients] = useState<string>('');
   const [serves, setServes] = useState<number>(foodItem?.serves || 1);
@@ -80,9 +83,8 @@ function FoodItemForm({
   };
   // const showPercent = (number: number) => number * 100;
   const deleteIngredient = (ingredient: string) => setIngredients(ingredients?.filter((ingredientName) => ingredient !== ingredientName));
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setPressedSubmit(true);
     setPressedSubmit(true);
     if (!name || !image) {
       notifications.message(
@@ -92,65 +94,64 @@ function FoodItemForm({
       );
       return;
     }
-    const updatedFoodItem: QueryReqMenuFoodItem = {
-      name,
-      discount,
-      price,
-      image,
-      ingredients,
-      serves,
-      time,
-      category,
-    };
-    if (foodItem) {
-      updatedFoodItem.id = foodItem.id;
-      // SERVER PUT
-      const foodItemFromServer: IFoodItem = { // TEMP; NO BACKEND
-        name,
-        discount,
-        price,
-        image,
-        ingredients,
-        serves,
-        time,
-        category,
-        id: foodItem.id,
-      };
-      const previousCategoryId = foodItem.category!.id;
-      if (category.id !== previousCategoryId) {
-        categories.updateFoodItem(foodItemFromServer, previousCategoryId);
+    const foodItemForm = new FormData();
+    foodItemForm.append('name', name);
+    foodItemForm.append('CategoryId', category!.id);
+    foodItemForm.append('discount', JSON.stringify(discount));
+    foodItemForm.append('price', JSON.stringify(price));
+    foodItemForm.append('imgImage', image);
+    foodItemForm.append('ingredients', JSON.stringify(ingredients));
+    foodItemForm.append('serves', JSON.stringify(serves));
+    foodItemForm.append('time', JSON.stringify(time));
+    try {
+      if (foodItem) {
+        // PUT
+        await editFoodItem(foodItem.id, foodItemForm);
+        const updatedFoodItem = await getOneFoodItem(foodItem.id);
+        const previousCategoryId = foodItem.CategoryId;
+        if (category!.id !== previousCategoryId) {
+          categories.updateFoodItem(updatedFoodItem, previousCategoryId);
+        } else {
+          categories.updateFoodItem(updatedFoodItem);
+        }
+        notifications.message(
+          'Food item updated successfully',
+          green,
+          shortNotification,
+        );
       } else {
-        categories.updateFoodItem(foodItemFromServer);
+        // POST
+        const newFoodItem = await createFoodItem(foodItemForm);
+        categories.addFoodItem(newFoodItem);
+        notifications.message(
+          'Food item created successfully',
+          green,
+          shortNotification,
+        );
       }
+      if (closeModalOnSubmit) {
+        closeModalOnSubmit();
+      }
+    } catch (error: any) {
       notifications.message(
-        'Food item updated successfully',
-        green,
+        error.response.data.message,
+        red,
         shortNotification,
       );
-    } else {
-      // SERVER POST
-      const foodItemFromServer: IFoodItem = { // TEMP
-        name,
-        discount,
-        price,
-        image: '/static/media/about-us-5.a567a9db1482b99c0fab.png',
-        ingredients,
-        serves,
-        time,
-        category,
-        id: 'idid',
-      };
-      categories.addFoodItem(foodItemFromServer);
-      notifications.message(
-        'Food item created successfully',
-        green,
-        shortNotification,
-      );
-    }
-    if (closeModalOnSubmit) {
-      closeModalOnSubmit();
     }
   };
+  useEffect(() => {
+    const presetCategory = categories.all.find((cat) => {
+      if (foodItem) {
+        return cat.id === foodItem.CategoryId;
+      }
+      if (creatingForCategoryId) {
+        return cat.id === creatingForCategoryId;
+      }
+      return cat.name === 'Uncategorized';
+    });
+    setCategory(presetCategory);
+  }, []);
   return (
     <Col className="food-item-form">
       <Confirmation
@@ -172,7 +173,7 @@ function FoodItemForm({
                   pressedSubmit={pressedSubmit}
                   setPressedSubmit={setPressedSubmit}
                   dimensions={[650, 480]}
-                  existingImage={foodItem?.image || ''}
+                  existingImage={foodItem?.image ? `${process.env.REACT_APP_API_URL}${foodItem.image}` : ''}
                   onChangeSetOutsideFormValue={setImage}
                   outsideFormValue={image}
                 />
@@ -345,6 +346,7 @@ function FoodItemForm({
 
 FoodItemForm.defaultProps = {
   foodItem: false,
+  creatingForCategoryId: false,
   closeModalOnSubmit: false,
 };
 
