@@ -13,7 +13,7 @@ import FoodItem from '../components/FoodItem';
 import AddItem from '../components/modals/AddItem';
 import { IFoodItem, ICategory } from '../types/types';
 import { makeId } from '../utils/functions';
-import { categoriesPlaceholders } from '../utils/consts';
+import { fetchPublicCategories } from '../http/categoryAPI';
 
 interface CategoryAnchorProps {
   categoryName: string;
@@ -34,8 +34,11 @@ function Menu() {
     setShowModal(true);
   };
   useEffect(() => {
-    categories.setCategories(categoriesPlaceholders);
-    setCategoryItems(categoriesPlaceholders);
+    (async () => {
+      const publicCategories = await fetchPublicCategories();
+      categories.setCategories(publicCategories);
+      setCategoryItems(publicCategories);
+    })();
   }, []);
   return (
     <Container id="menu">

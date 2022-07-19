@@ -1857,7 +1857,6 @@ input.form-control:focus {
 
 #account .right-col {
   box-shadow: rgba(70, 0, 0, 0.2) 0px 1px 8px;
-  padding: 2rem 0rem;
 }
 
 #account #orders h1 {
@@ -2040,7 +2039,7 @@ input.form-control:focus {
 }
 
 #account #previous-orders h2 {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 #account #previous-orders ul {
@@ -2064,10 +2063,6 @@ input.form-control:focus {
 
 #account #previous-orders .previous-order .food-item-order {
   border: 4px solid var(--secondary-red);
-}
-
-#admin {
-  padding: 0;
 }
 
 #admin .left-col {

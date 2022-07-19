@@ -15,9 +15,9 @@ class FoodItemInOrder extends Model<InferAttributes<FoodItemInOrder>, InferCreat
 
   name!: string;
 
-  price!: number;
+  price!: string;
 
-  discount!: number;
+  discount!: string;
 
   OrderId!: string;
 
@@ -49,10 +49,18 @@ FoodItemInOrder.init({
   price: {
     type: DataTypes.DECIMAL,
     allowNull: false,
+    get() {
+      const value = this.getDataValue('price');
+      return value === null ? null : parseFloat(value);
+    },
   },
   discount: {
     type: DataTypes.DECIMAL,
     allowNull: false,
+    get() {
+      const value = this.getDataValue('discount');
+      return value === null ? null : parseFloat(value);
+    },
   },
   ingredients: {
     type: DataTypes.ARRAY(DataTypes.STRING),

@@ -37,14 +37,14 @@ export interface IUser {
 export interface IFoodItem {
   id: string;
   name: string;
-  price: number;
+  price: string;
 }
 
 export interface IFoodItemInMenu extends IFoodItem {
   image: string;
   time: [number, number];
   serves: number;
-  discount?: number;
+  discount?: string;
   ingredients: string[];
   CategoryId: string;
   category?: ICategory;

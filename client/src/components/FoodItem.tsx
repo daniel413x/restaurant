@@ -46,7 +46,7 @@ function FoodItem({
   const discountedPrice = discount ? calcItemPrice(price!, discount) : null;
   return (
     <Col className="food-item" md={bootstrapWidth}>
-      <Image className="food-image" src={image} />
+      <Image className="food-image" src={`${process.env.REACT_APP_API_URL}${image}`} />
       <Col>
         <span className="name">
           {name}

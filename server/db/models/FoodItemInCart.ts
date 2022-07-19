@@ -15,9 +15,9 @@ class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreatio
 
   name!: string;
 
-  price!: number;
+  price!: string;
 
-  discount!: number;
+  discount!: string;
 
   time!: [number, number];
 
@@ -51,10 +51,18 @@ FoodItemInCart.init({
   price: {
     type: DataTypes.DECIMAL,
     allowNull: false,
+    get() {
+      const value = this.getDataValue('price');
+      return value === null ? null : parseFloat(value);
+    },
   },
   discount: {
     type: DataTypes.DECIMAL,
     allowNull: false,
+    get() {
+      const value = this.getDataValue('discount');
+      return value === null ? null : parseFloat(value);
+    },
   },
   ingredients: {
     type: DataTypes.ARRAY(DataTypes.STRING),

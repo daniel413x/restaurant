@@ -15,7 +15,7 @@ class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreatio
 
   name!: string;
 
-  price!: number;
+  price!: string;
 
   image!: string;
 
@@ -23,7 +23,7 @@ class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreatio
 
   serves!: number;
 
-  discount?: number;
+  discount?: string;
 
   ingredients: string[];
 
@@ -53,9 +53,17 @@ FoodItemInMenu.init({
   price: {
     type: DataTypes.DECIMAL,
     allowNull: false,
+    get() {
+      const value = this.getDataValue('price');
+      return value === null ? null : parseFloat(value);
+    },
   },
   discount: {
     type: DataTypes.DECIMAL,
+    get() {
+      const value = this.getDataValue('discount');
+      return value === null ? null : parseFloat(value);
+    },
   },
   ingredients: {
     type: DataTypes.ARRAY(DataTypes.STRING),
