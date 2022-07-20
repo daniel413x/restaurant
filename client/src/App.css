@@ -185,6 +185,12 @@ a.btn.btn-primary.active, a.btn.btn-primary:hover {
   border: 2px solid var(--secondary-red);
 }
 
+a.btn.btn-secondary.active, a.btn.btn-secondary:hover {
+  background-color:var(--secondary-red);
+  color: #fff;
+  border: 2px solid var(--secondary-red);
+}
+
 .btn.btn-primary {
   background-color: var(--secondary-red);
   border: 2px solid var(--secondary-red);
@@ -2344,15 +2350,16 @@ input.form-control:focus {
   border: 2px solid var(--primary-red);
 }
 
-#admin #edit-menu .return-button {
+#admin #edited-food-item .return-button {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   position: relative;
   padding-left: 2.15rem;
+  border: 2px solid var(--primary-red) !important;
 }
 
-#admin #edit-menu .return-button svg {
+#admin #edited-food-item .return-button svg {
   position: absolute;
   font-size: 1.2rem;
   left: 1.4rem;

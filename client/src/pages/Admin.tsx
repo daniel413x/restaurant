@@ -1,24 +1,39 @@
-import React from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   Container,
   Col,
   Row,
 } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import Context from '../context/context';
+import { fetchAllCategories } from '../http/categoryAPI';
 import {
   adminRoutes,
   ADMIN_ORDERS_ROUTE,
-  ADMIN_INDEX_ROUTE,
+  ADMIN_ROUTE,
   MENU_ROUTE,
 } from '../utils/consts';
 import AppRouter from '../routers/AppRouter';
 
 function Admin() {
-  return (
+  const { categories } = useContext(Context);
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    (async () => {
+      const allCategories = await fetchAllCategories();
+      categories.setCategories(allCategories);
+      return setLoading(false);
+    })();
+  }, []);
+  return loading ? null : (
     <Container id="admin">
       <Row className="col-wrapper">
         <Col className="left-col" md="auto">
-          <NavLink className="btn btn-primary" to={ADMIN_INDEX_ROUTE}>
+          <NavLink className="btn btn-primary" to={ADMIN_ROUTE}>
             Index
           </NavLink>
           <NavLink className="btn btn-primary" to={ADMIN_ORDERS_ROUTE}>

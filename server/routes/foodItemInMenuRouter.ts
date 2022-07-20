@@ -8,7 +8,7 @@ const router = Router();
 router.get(
   '/:id',
   checkRoleMiddleware(ADMIN),
-  (req, res) => FoodItemInMenuController.getOne(req, res),
+  (req, res, next) => FoodItemInMenuController.getOne(req, res, next),
 );
 router.post(
   '/',

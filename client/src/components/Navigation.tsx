@@ -18,7 +18,7 @@ import {
   MENU_ROUTE,
   CART_ROUTE,
   ACCOUNT_ROUTE,
-  ADMIN_ROUTE,
+  ADMIN_INDEX_ROUTE,
   LOGOUT_ROUTE,
   green,
   shortNotification,
@@ -116,7 +116,7 @@ function Navigation() {
                   Main
                 </NavLink>
                 {user.isAdmin && (
-                <NavLink tabIndex={0} role="button" className="nav-link" to={ADMIN_ROUTE} title="Admin" onClick={collapseMenu}>
+                <NavLink tabIndex={0} role="button" className="nav-link" to={ADMIN_INDEX_ROUTE} title="Admin" onClick={collapseMenu}>
                   Admin
                 </NavLink>
                 )}

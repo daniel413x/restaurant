@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import {
   Model,
   ModelStatic,
@@ -7,6 +7,7 @@ import {
   Attributes,
   FindOptions,
 } from 'sequelize';
+import ApiError from '../error/ApiError';
 import { assignBodyAndProcessImages } from '../utils/functions';
 
 export default abstract class BaseController<M extends Model> {
@@ -24,11 +25,14 @@ export default abstract class BaseController<M extends Model> {
     return res.json(data);
   }
 
-  async execGetOneByParamsId(req: Request, res: Response, options?: FindOptions<Attributes<M>>) {
+  async execGetOneByParamsId(req: Request, res: Response, next: NextFunction, options?: FindOptions<Attributes<M>>) {
     const params: { [key: string]: any } = {
       ...options,
     };
     const { id } = req.params;
+    if (!id) {
+      return next(ApiError.internal('Erroneous id'));
+    }
     const data = await this.model.findByPk(id, params);
     return res.json(data);
   }

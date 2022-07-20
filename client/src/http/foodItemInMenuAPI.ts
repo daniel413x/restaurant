@@ -1,7 +1,7 @@
 import { IFoodItem, QueryReqMenuFoodItem } from '../types/types';
 import { $authHost } from './index';
 
-export const getOneFoodItem = async (id: string): Promise<IFoodItem> => {
+export const fetchOneFoodItem = async (id: string): Promise<IFoodItem> => {
   const { data } = await $authHost.get(`api/fooditeminmenu/${id}`);
   return data;
 };

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import FoodItemInMenu from '../db/models/FoodItemInMenu';
 import BaseController from './BaseController';
 
@@ -7,8 +7,8 @@ class FoodItemInMenuController extends BaseController<FoodItemInMenu> {
     super(FoodItemInMenu);
   }
 
-  async getOne(req: Request, res: Response) {
-    this.execGetOneByParamsId(req, res);
+  async getOne(req: Request, res: Response, next: NextFunction) {
+    this.execGetOneByParamsId(req, res, next);
   }
 
   async create(req: Request, res: Response) {

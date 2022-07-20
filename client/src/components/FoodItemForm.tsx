@@ -12,6 +12,7 @@ import {
   Form,
   Dropdown,
 } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
 import {
   ICategory,
@@ -28,7 +29,7 @@ import { calcItemPrice } from '../utils/functions';
 import List from './List';
 import EditedIngredient from './EditedIngredient';
 import SmartInput from './SmartInput';
-import { createFoodItem, editFoodItem, getOneFoodItem } from '../http/foodItemInMenuAPI';
+import { createFoodItem, editFoodItem, fetchOneFoodItem } from '../http/foodItemInMenuAPI';
 
 interface FoodItemFormProps {
   foodItem?: IFoodItem,
@@ -107,7 +108,7 @@ function FoodItemForm({
       if (foodItem) {
         // PUT
         await editFoodItem(foodItem.id, foodItemForm);
-        const updatedFoodItem = await getOneFoodItem(foodItem.id);
+        const updatedFoodItem = await fetchOneFoodItem(foodItem.id);
         const previousCategoryId = foodItem.CategoryId;
         if (category!.id !== previousCategoryId) {
           categories.updateFoodItem(updatedFoodItem, previousCategoryId);
@@ -350,4 +351,4 @@ FoodItemForm.defaultProps = {
   closeModalOnSubmit: false,
 };
 
-export default FoodItemForm;
+export default observer(FoodItemForm);

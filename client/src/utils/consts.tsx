@@ -14,13 +14,14 @@ import imageFour from '../assets/about-us-4.png';
 import imageSix from '../assets/about-us-6.png';
 import AdminOrders from '../pages/AdminOrders';
 import { IFoodItem } from '../types/types';
+import EditedFoodItem from '../pages/EditedFoodItem';
 
 export const ACCOUNT_INDEX_ROUTE = '/*';
 export const ACCOUNT_ROUTE = 'account/*';
 export const ACCOUNT_DETAILS_ROUTE = 'details';
 export const ACCOUNT_ORDERS_ROUTE = 'orders';
-export const ADMIN_ROUTE = 'admin/*';
-export const ADMIN_INDEX_ROUTE = '/admin';
+export const ADMIN_INDEX_ROUTE = 'admin/*';
+export const ADMIN_ROUTE = '/admin';
 export const ADMIN_CATEGORIES_ROUTE = 'categories';
 export const ADMIN_FOOD_ITEMS_ROUTE = 'fooditems';
 export const ADMIN_ORDERS_ROUTE = 'orders';
@@ -42,7 +43,7 @@ export const longNotification = 6000;
 
 export const indexAuthedRoutes = [
   {
-    path: ADMIN_ROUTE,
+    path: ADMIN_INDEX_ROUTE,
     Component: Admin,
   },
   {
@@ -105,6 +106,10 @@ export const adminRoutes = [
   {
     path: MENU_ROUTE,
     Component: EditMenu,
+  },
+  {
+    path: `${MENU_ROUTE}/${ADMIN_FOOD_ITEMS_ROUTE}/:id`,
+    Component: EditedFoodItem,
   },
   {
     path: ACCOUNT_INDEX_ROUTE,

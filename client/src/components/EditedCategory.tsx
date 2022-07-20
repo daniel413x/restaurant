@@ -14,6 +14,7 @@ import {
   Form,
   Dropdown,
 } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -29,6 +30,7 @@ import Confirmation from './modals/Confirmation';
 import useOnClickOutside from '../hooks/useOnOutsideClick';
 import CreateNewFoodItemButton from './CreateNewFoodItemButton';
 import {
+  ADMIN_FOOD_ITEMS_ROUTE,
   green,
   red,
   shortNotification,
@@ -39,13 +41,11 @@ import { deleteFoodItem } from '../http/foodItemInMenuAPI';
 
 interface FoodItemProps {
   foodItem: IFoodItem;
-  selectFoodItemToEdit: (obj: IFoodItem) => void;
   selectFoodItemToDelete: (foodItem: IFoodItem) => void;
 }
 
 function FoodItem({
   foodItem,
-  selectFoodItemToEdit,
   selectFoodItemToDelete,
 }: FoodItemProps) {
   const {
@@ -78,9 +78,12 @@ function FoodItem({
       </Col>
       <Row className="buttons-row">
         <Col>
-          <Button className="btn btn-secondary" onClick={() => selectFoodItemToEdit(foodItem)}>
+          <NavLink
+            className="btn btn-secondary"
+            to={`${ADMIN_FOOD_ITEMS_ROUTE}/${foodItem.id}`}
+          >
             Edit
-          </Button>
+          </NavLink>
         </Col>
         <Col md="auto" className="icon-buttons">
           <Button
@@ -97,12 +100,10 @@ function FoodItem({
 
 interface CategoryProps {
   category: ICategory;
-  selectFoodItemToEdit: (obj: IFoodItem) => void;
 }
 
 function EditedCategory({
   category,
-  selectFoodItemToEdit,
 }: CategoryProps) {
   const {
     name,
@@ -264,7 +265,6 @@ function EditedCategory({
           <li key={foodItem.id}>
             <FoodItem
               foodItem={foodItem}
-              selectFoodItemToEdit={selectFoodItemToEdit}
               selectFoodItemToDelete={selectFoodItemToDelete}
             />
           </li>
