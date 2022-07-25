@@ -13,7 +13,7 @@ import FoodItem from '../components/FoodItem';
 import AddItem from '../components/modals/AddItem';
 import { IFoodItem, ICategory } from '../types/types';
 import { makeId } from '../utils/functions';
-import { fetchPublicCategories } from '../http/categoryAPI';
+import { fetchAndSortCategories } from '../http/categoryAPI';
 
 interface CategoryAnchorProps {
   categoryName: string;
@@ -26,7 +26,6 @@ function CategoryAnchor({ categoryName }: CategoryAnchorProps) {
 
 function Menu() {
   const { categories } = useContext(Context);
-  const [categoryItems, setCategoryItems] = useState<ICategory[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [addedItem, setAddedItem] = useState<IFoodItem>();
   const handleModal = (item: IFoodItem) => {
@@ -35,9 +34,7 @@ function Menu() {
   };
   useEffect(() => {
     (async () => {
-      const publicCategories = await fetchPublicCategories();
-      categories.setCategories(publicCategories);
-      setCategoryItems(publicCategories);
+      await fetchAndSortCategories(categories);
     })();
   }, []);
   return (
@@ -53,7 +50,7 @@ function Menu() {
         <Col className="left-col" md="auto">
           {/* filter by ingredients: any ingredient added to the db such that you can make a checkbox filter list */}
           <List
-            items={categories.all}
+            items={categories.sortedPublic}
             renderList={(category) => (
               <li
                 key={category.id}
@@ -67,7 +64,7 @@ function Menu() {
         </Col>
         <Col className="right-col">
           <List
-            items={categoryItems}
+            items={categories.sortedPublic}
             renderList={(category: ICategory) => {
               if (category.name === 'Uncategorized') {
                 return null;

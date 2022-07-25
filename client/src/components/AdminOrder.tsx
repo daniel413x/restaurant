@@ -72,7 +72,7 @@ function AdminOrder({
     setExpand(!expand);
   };
   return (
-    <div className="admin-order admin-item">
+    <div className="admin-order collapsible-item">
       <div className="title-buttons-row body">
         <Col className="tab-col" md="auto">
           Order

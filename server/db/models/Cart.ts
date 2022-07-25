@@ -31,27 +31,30 @@ class Cart extends Model<InferAttributes<Cart>, InferCreationAttributes<Cart>> {
   }
 }
 
-Cart.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    allowNull: false,
-    primaryKey: true,
-  },
-  UserId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: 'User',
-      key: 'id',
+Cart.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      allowNull: false,
+      primaryKey: true,
     },
+    UserId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'User',
+        key: 'id',
+      },
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'Cart',
-  freezeTableName: true,
-});
+  {
+    sequelize,
+    modelName: 'Cart',
+    freezeTableName: true,
+  },
+);
 
 export default Cart;

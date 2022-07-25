@@ -36,56 +36,59 @@ class FoodItemInOrder extends Model<InferAttributes<FoodItemInOrder>, InferCreat
   }
 }
 
-FoodItemInOrder.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    primaryKey: true,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-    get() {
-      const value = this.getDataValue('price');
-      return value === null ? null : parseFloat(value);
+FoodItemInOrder.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      primaryKey: true,
     },
-  },
-  discount: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-    get() {
-      const value = this.getDataValue('discount');
-      return value === null ? null : parseFloat(value);
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-  },
-  ingredients: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: false,
-  },
-  instructions: {
-    type: DataTypes.STRING,
-  },
-  quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  OrderId: {
-    type: DataTypes.UUID,
-    references: {
-      model: 'Order',
-      key: 'id',
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      get() {
+        const value = this.getDataValue('price');
+        return value === null ? null : parseFloat(value);
+      },
     },
+    discount: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      get() {
+        const value = this.getDataValue('discount');
+        return value === null ? null : parseFloat(value);
+      },
+    },
+    ingredients: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+    },
+    instructions: {
+      type: DataTypes.STRING,
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    OrderId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Order',
+        key: 'id',
+      },
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'FoodItemInOrder',
-  freezeTableName: true,
-});
+  {
+    sequelize,
+    modelName: 'FoodItemInOrder',
+    freezeTableName: true,
+  },
+);
 
 export default FoodItemInOrder;

@@ -34,7 +34,7 @@ export const CART_ROUTE = 'cart';
 export const ORDERS_ROUTE = 'orders';
 export const GUEST_ROUTE = 'guest';
 export const ADMIN = 'ADMIN';
-export const GUEST = 'GUEST'; // must manually change this.role = 'GUEST'; in UserStore
+export const GUEST = 'GUEST';
 export const REGISTERED = 'REGISTERED';
 export const green = 'green';
 export const red = 'red';

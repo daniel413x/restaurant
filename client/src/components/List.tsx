@@ -2,9 +2,9 @@ import React, { ReactNode, ReactElement } from 'react';
 
 interface ListProps<T> {
   items: T[];
-  renderList: (list: T) => ReactNode;
+  renderList: (list: T, index?: number) => ReactNode;
   className?: string;
-  children?: ReactElement;
+  children?: ReactElement | ReactElement[];
 }
 
 function List<T>({

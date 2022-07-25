@@ -1,13 +1,25 @@
 import { makeAutoObservable } from 'mobx';
 import {
-  ICategory, IFoodItem,
+  ICategory, IFoodItem, ICategoriesSorter,
 } from '../types/types';
 
-export default class UserStore {
+export default class CategoriesStore {
   categories: ICategory[];
+
+  sorter: ICategoriesSorter;
+
+  sortingMode: boolean;
+
+  draggedId: string;
 
   constructor() {
     this.categories = [];
+    this.sorter = {
+      id: '-1',
+      array: [],
+    };
+    this.sortingMode = false;
+    this.draggedId = '';
     makeAutoObservable(this);
   }
 
@@ -15,9 +27,31 @@ export default class UserStore {
     this.categories = arr;
   }
 
+  setSorter(obj: ICategoriesSorter | string[]) {
+    if (Array.isArray(obj)) {
+      this.sorter.array = obj;
+    } else {
+      this.sorter = obj;
+    }
+  }
+
+  setSortingMode(bool: boolean) {
+    this.sortingMode = bool;
+  }
+
+  setDraggedId(str: string) {
+    this.draggedId = str;
+  }
+
   setNewName(id: string, str: string) {
     const updatedCategory = this.categories.find((category) => category.id === id);
     updatedCategory!.name = str;
+    this.sorter.array = this.sorter.array.map((categoryName) => {
+      if (categoryName === str) {
+        return str;
+      }
+      return categoryName;
+    });
     this.categories = this.categories.map((category) => {
       if (category.id === updatedCategory?.id) {
         return updatedCategory;
@@ -27,6 +61,7 @@ export default class UserStore {
   }
 
   add(obj: ICategory) {
+    this.sorter.array = this.sorter.array.concat(obj.name);
     this.categories = [...this.categories, obj];
   }
 
@@ -100,8 +135,24 @@ export default class UserStore {
     });
   }
 
+  get sortedPublic() {
+    const sortingArray = this.sorter.array;
+    return this.categories.filter((cat) => cat.publicCategory)
+      .sort((a, b) => {
+        const aIndex = sortingArray.indexOf(a.name);
+        const bIndex = sortingArray.indexOf(b.name);
+        if (bIndex > aIndex) {
+          return -1;
+        }
+        return 1;
+      });
+  }
+
   get all() {
     // const sortedCategories = this.categories.slice().sort((a, b) => a.id + b.id);
+    // const sortedCategories = [this.categories]
+    // .sort((a, b) => {
+    // });
     return this.categories;
   }
 }

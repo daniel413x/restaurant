@@ -38,53 +38,56 @@ class AddressForOrder extends Model<InferAttributes<AddressForOrder>, InferCreat
   }
 }
 
-AddressForOrder.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    allowNull: false,
-    primaryKey: true,
-  },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  addressLineOne: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  addressLineTwo: {
-    type: DataTypes.STRING,
-  },
-  city: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  zip: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  state: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  OrderId: {
-    type: DataTypes.UUID,
-    references: {
-      model: 'Order',
-      key: 'id',
+AddressForOrder.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      allowNull: false,
+      primaryKey: true,
     },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    addressLineOne: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    addressLineTwo: {
+      type: DataTypes.STRING,
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    zip: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    OrderId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Order',
+        key: 'id',
+      },
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'AddressForOrder',
-  freezeTableName: true,
-});
+  {
+    sequelize,
+    modelName: 'AddressForOrder',
+    freezeTableName: true,
+  },
+);
 
 export default AddressForOrder;

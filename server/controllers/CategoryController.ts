@@ -69,7 +69,8 @@ class CategoryController extends BaseController<Category> {
         );
       }));
     }
-    this.execDestroy(req, res);
+    const options = { individualHooks: true };
+    this.execDestroy(req, res, options);
   }
 }
 

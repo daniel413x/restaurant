@@ -40,60 +40,63 @@ class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreatio
   }
 }
 
-FoodItemInMenu.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    primaryKey: true,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-    get() {
-      const value = this.getDataValue('price');
-      return value === null ? null : parseFloat(value);
+FoodItemInMenu.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      primaryKey: true,
     },
-  },
-  discount: {
-    type: DataTypes.DECIMAL,
-    get() {
-      const value = this.getDataValue('discount');
-      return value === null ? null : parseFloat(value);
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-  },
-  ingredients: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: false,
-  },
-  serves: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  image: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  time: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: false,
-  },
-  CategoryId: {
-    type: DataTypes.UUID,
-    references: {
-      model: 'Category',
-      key: 'id',
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      get() {
+        const value = this.getDataValue('price');
+        return value === null ? null : parseFloat(value);
+      },
     },
+    discount: {
+      type: DataTypes.DECIMAL,
+      get() {
+        const value = this.getDataValue('discount');
+        return value === null ? null : parseFloat(value);
+      },
+    },
+    ingredients: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+    },
+    serves: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    time: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+    },
+    CategoryId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Category',
+        key: 'id',
+      },
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'FoodItemInMenu',
-  freezeTableName: true,
-});
+  {
+    sequelize,
+    modelName: 'FoodItemInMenu',
+    freezeTableName: true,
+  },
+);
 
 export default FoodItemInMenu;

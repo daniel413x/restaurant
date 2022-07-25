@@ -27,6 +27,7 @@ import {
   ACCOUNT_ROUTE,
 } from '../../utils/consts';
 import { submitOrder } from '../../http/orderAPI';
+import { calcItemPrice } from '../../utils/functions';
 
 interface CheckoutProps {
   onHide: () => void;
@@ -176,11 +177,12 @@ function Checkout({
                     >
                       <Col className="item">
                         {' '}
+                        {item.quantity > 1 && `(${item.quantity}) `}
                         {item.name}
                       </Col>
                       <Col className="price">
                         $
-                        {item.price}
+                        {calcItemPrice(item.price, item.discount)}
                       </Col>
                     </Row>
                   ))}

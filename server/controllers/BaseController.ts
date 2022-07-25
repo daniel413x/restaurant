@@ -6,6 +6,7 @@ import {
   FindAndCountOptions,
   Attributes,
   FindOptions,
+  DestroyOptions,
 } from 'sequelize';
 import ApiError from '../error/ApiError';
 import { assignBodyAndProcessImages } from '../utils/functions';
@@ -87,9 +88,9 @@ export default abstract class BaseController<M extends Model> {
     return res.status(204).end();
   }
 
-  async execDestroy(req: Request, res: Response) {
+  async execDestroy(req: Request, res: Response, options?: DestroyOptions<Attributes<M>>) {
     const { id } = req.params;
-    this.model.destroy({ where: { id } });
+    this.model.destroy({ ...options, where: { ...options.where, id } });
     return res.status(204).end();
   }
 }

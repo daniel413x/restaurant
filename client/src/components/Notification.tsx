@@ -28,7 +28,10 @@ function Notification({
   return (
     <div className={`notification ${color} ${classes}`}>
       {image && (
-        <Image roundedCircle src={image} />
+      <Image
+        roundedCircle
+        src={`${process.env.REACT_APP_API_URL}${image}`}
+      />
       )}
       <div className="body">
         {message}

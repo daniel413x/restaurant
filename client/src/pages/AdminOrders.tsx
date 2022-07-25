@@ -49,7 +49,7 @@ function AdminOrders() {
             Orders
           </h2>
           <List
-            className="categories-ul"
+            className="collapsible-items-ul"
             items={admin.allOrders}
             renderList={(order: IOrder) => (
               <li key={order.id}>

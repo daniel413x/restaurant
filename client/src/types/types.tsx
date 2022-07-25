@@ -93,6 +93,7 @@ export interface ICategory {
   name: string;
   foodItems: IFoodItem[];
   id: string;
+  publicCategory: boolean;
 }
 
 export interface IModalProps {
@@ -143,4 +144,17 @@ export type QueryReqSubmitOrder = {
   UserId: string;
   CartId: string;
   address: string | QueryOrderAddress;
+};
+
+export interface ICategoriesSorter { // related to backend Options model, meant to handle categories sorting and maybe sorting of other things like front page elements
+  id: string;
+  array: string[];
+}
+
+export type QueryReqUpdateOptions = {
+  name?: string;
+  array?: string[];
+  number?: number;
+  string?: string;
+  boolean?: boolean;
 };

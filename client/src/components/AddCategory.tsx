@@ -69,7 +69,7 @@ function AddCategory() {
   }, [active]);
   useOnClickOutside(outsideClickRef, () => setActive(false));
   return (
-    <div className={`category admin-item ${active && 'active'}`} ref={outsideClickRef}>
+    <div className={`category collapsible-item ${active && 'active-or-expanded'}`} ref={outsideClickRef}>
       <Form className="title-buttons-row body" onSubmit={submit}>
         <Col className="tab-col" md="auto">
           <Form.Control

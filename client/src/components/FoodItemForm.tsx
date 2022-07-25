@@ -44,7 +44,7 @@ function FoodItemForm({
 }: FoodItemFormProps) {
   const { categories, notifications } = useContext(Context);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [category, setCategory] = useState<Omit<ICategory, 'foodItems'>>();
+  const [category, setCategory] = useState<Omit<ICategory, 'foodItems' | 'publicCategory'>>();
   const [name, setName] = useState<string>(foodItem?.name || '');
   const [discount, setDiscount] = useState<number>(Number(foodItem?.discount) || 0);
   const [price, setPrice] = useState<number>(Number(foodItem?.price) || 3);

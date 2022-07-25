@@ -1,7 +1,9 @@
+import CategoriesStore from '../store/CategoriesStore';
 import {
   ICategory,
 } from '../types/types';
 import { $authHost, $host } from './index';
+import { fetchOptionsByName } from './optionsAPI';
 
 export const fetchPublicCategories = async (): Promise<ICategory[]> => {
   const { data } = await $host.get('api/category/public');
@@ -31,4 +33,11 @@ export const editCategory = async (id: string, name: string): Promise<ICategory>
 export const deleteCategory = async (id: string): Promise<any> => {
   const { data } = await $authHost.delete(`api/category/${id}`);
   return data.token;
+};
+
+export const fetchAndSortCategories = async (categories: CategoriesStore): Promise<any> => {
+  const sortingOptions = await fetchOptionsByName('categoriesSorting');
+  categories.setSorter(sortingOptions);
+  const allCategories = await fetchAllCategories();
+  categories.setCategories(allCategories);
 };

@@ -38,60 +38,63 @@ class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreatio
   }
 }
 
-FoodItemInCart.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    primaryKey: true,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-    get() {
-      const value = this.getDataValue('price');
-      return value === null ? null : parseFloat(value);
+FoodItemInCart.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      primaryKey: true,
     },
-  },
-  discount: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-    get() {
-      const value = this.getDataValue('discount');
-      return value === null ? null : parseFloat(value);
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-  },
-  ingredients: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: false,
-  },
-  time: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: false,
-  },
-  quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  instructions: {
-    type: DataTypes.STRING,
-  },
-  CartId: {
-    type: DataTypes.UUID,
-    references: {
-      model: 'Cart',
-      key: 'id',
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      get() {
+        const value = this.getDataValue('price');
+        return value === null ? null : parseFloat(value);
+      },
     },
+    discount: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      get() {
+        const value = this.getDataValue('discount');
+        return value === null ? null : parseFloat(value);
+      },
+    },
+    ingredients: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+    },
+    time: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    instructions: {
+      type: DataTypes.STRING,
+    },
+    CartId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Cart',
+        key: 'id',
+      },
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'FoodItemInCart',
-  freezeTableName: true,
-});
+  {
+    sequelize,
+    modelName: 'FoodItemInCart',
+    freezeTableName: true,
+  },
+);
 
 export default FoodItemInCart;

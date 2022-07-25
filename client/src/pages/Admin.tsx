@@ -10,23 +10,34 @@ import {
 } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Context from '../context/context';
-import { fetchAllCategories } from '../http/categoryAPI';
+import { fetchAndSortCategories } from '../http/categoryAPI';
 import {
   adminRoutes,
   ADMIN_ORDERS_ROUTE,
   ADMIN_ROUTE,
   MENU_ROUTE,
+  red,
+  shortNotification,
 } from '../utils/consts';
 import AppRouter from '../routers/AppRouter';
 
 function Admin() {
-  const { categories } = useContext(Context);
+  const { categories, notifications } = useContext(Context);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     (async () => {
-      const allCategories = await fetchAllCategories();
-      categories.setCategories(allCategories);
-      return setLoading(false);
+      try {
+        await fetchAndSortCategories(categories);
+        setLoading(false);
+      } catch (error: any) {
+        notifications.message(
+          error.response.data.message,
+          red,
+          shortNotification,
+        );
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
   return loading ? null : (

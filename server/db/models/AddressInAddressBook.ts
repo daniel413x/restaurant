@@ -40,56 +40,59 @@ class AddressInAddressBook extends Model<InferAttributes<AddressInAddressBook>, 
   }
 }
 
-AddressInAddressBook.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    allowNull: false,
-    primaryKey: true,
-  },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  addressLineOne: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  addressLineTwo: {
-    type: DataTypes.STRING,
-  },
-  city: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  zip: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  state: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  UserId: {
-    type: DataTypes.UUID,
-    references: {
-      model: 'User',
-      key: 'id',
+AddressInAddressBook.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      allowNull: false,
+      primaryKey: true,
     },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    addressLineOne: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    addressLineTwo: {
+      type: DataTypes.STRING,
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    zip: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    UserId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'User',
+        key: 'id',
+      },
+    },
+    isDefault: {
+      type: DataTypes.BOOLEAN,
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  isDefault: {
-    type: DataTypes.BOOLEAN,
+  {
+    sequelize,
+    modelName: 'AddressInAddressBook',
+    freezeTableName: true,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'AddressInAddressBook',
-  freezeTableName: true,
-});
+);
 
 export default AddressInAddressBook;

@@ -1866,7 +1866,7 @@ input.form-control:focus {
 }
 
 #account #orders h1 {
-  padding-left: 24px;
+  padding-left: 0;
 }
 
 @media (max-width: 991px) {
@@ -2124,34 +2124,44 @@ input.form-control:focus {
   color: var(--primary-red);
 }
 
-#admin .admin-item {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 8px;
-  margin-top: 1rem;
+#admin .collapsible-items-ul>* { /* a must for react-beautiful-dnd or animation issues */
+  padding: 0 0 1rem;
 }
 
-#admin .admin-item .title-buttons-row {
+#admin .collapsible-items-ul .more-box-shadow {
+  box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 20px;
+}
+
+#admin .collapsible-item {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 8px;
+  background-color: #fff;
+}
+
+#admin .collapsible-item .title-buttons-row {
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
 }
 
-#admin .admin-item .icon-buttons {
+#admin .collapsible-item .icon-buttons {
   display: flex;
   flex-direction: row;
 }
 
-#admin .admin-item .icon-buttons>.btn.btn-primary {
+#admin .collapsible-item .icon-buttons>.btn.btn-primary {
   padding: 1.375rem !important;
   border-radius: 25%;
 }
 
-#admin .admin-item .tab-col {
+#admin .collapsible-item .tab-col {
   display: flex;
   align-items: center;
   color: var(--primary-red);
   font-size: 1.1rem;
   font-weight: bold;
   width: max-content;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 
 #admin .category {
@@ -2160,24 +2170,24 @@ input.form-control:focus {
   justify-content: center;
 }
 
-#admin .admin-item .body {
+#admin .collapsible-item .body {
   padding: 1.05rem 1.5rem;
   padding-left: 1.05rem;
 }
 
-#admin .admin-item .dropdown-toggle {
+#admin .collapsible-item .dropdown-toggle {
   background-color: #fff;
   border: 0;
   box-shadow: 0;
   position: relative;
 }
 
-#admin .admin-item .dropdown-toggle:hover {
+#admin .collapsible-item .dropdown-toggle:hover {
   color: #fff;;
   border: 0;
 }
 
-#admin .admin-item .dropdown svg {
+#admin .collapsible-item .dropdown svg {
   color: var(--primary-red);
   position: absolute;
   top: 50%;
@@ -2186,45 +2196,42 @@ input.form-control:focus {
   font-size: 1.25rem;
 }
 
-#admin .admin-item .ellipsis-menu {
+#admin .collapsible-item .ellipsis-menu {
   width: max-content;
   display: flex;
   align-items: center;
 }
 
-#admin .admin-item .ellipsis-menu .show>.btn-primary {
+#admin .collapsible-item .ellipsis-menu .show>.btn-primary {
   color: #fff !important;
 }
 
-#admin .admin-item .dropdown-menu {
+#admin .collapsible-item .dropdown-menu {
   padding: 0;
 }
 
-#admin .admin-item .dropdown-item {
+#admin .collapsible-item .dropdown-item {
   padding: 0;
 }
 
-#admin .admin-item .dropdown-menu button {
+#admin .collapsible-item .dropdown-menu button {
   width: 100%;
 }
 
-#admin .admin-item .ellipses-menu {
+#admin .collapsible-item .ellipses-menu {
   height: 40px;
 }
 
-#admin .admin-item .divider {
+#admin .collapsible-item .divider {
   border: 1px dotted var(--primary-red);
   opacity: 0.35;
   width: 100%;
   margin: 0rem auto 0.65rem;
 }
 
-#admin #edit-menu .category .tab-col {
-  padding-left: initial;
-}
-
 #admin #edit-menu .category form .form-control {
   border: none;
+  padding-left: 0;
 }
 
 #admin #edit-menu .category form .form-control:focus {
@@ -2237,9 +2244,8 @@ input.form-control:focus {
   font-weight: bold;
 }
 
-#admin #edit-menu .category.active {
-  box-shadow: rgba(110, 0, 0, 0.4) 0px 1px 8px;
-  transition: .2s ease-in-out;
+#admin #edit-menu .category.active-or-expanded {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 8px;
 }
 
 #admin #edit-menu .category .food-items-list {

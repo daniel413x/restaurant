@@ -98,28 +98,30 @@ function FoodItem({
   );
 }
 
-interface CategoryProps {
+interface EditedCategoryProps {
   category: ICategory;
 }
 
 function EditedCategory({
   category,
-}: CategoryProps) {
+}: EditedCategoryProps) {
   const {
     name,
     foodItems,
     id,
   } = category;
   const { categories, notifications } = useContext(Context);
+  const { sortingMode, draggedId } = categories;
   const [expand, setExpand] = useState(false);
-  const outsideClickRef = useRef<HTMLDivElement>(null);
-  const focusRef = useRef<HTMLInputElement>(null);
   const [active, setActive] = useState<boolean>(false);
   const [showDeleteCategoryModal, setShowDeleteCategoryModal] = useState<boolean>(false);
   const [showDeleteFoodItemModal, setShowDeleteFoodItemModal] = useState<boolean>(false);
   const [deletedFoodItem, setDeletedFoodItem] = useState<IFoodItem>();
   const [newName, setNewName] = useState<string>(name);
+  const outsideClickRef = useRef<HTMLDivElement>(null);
+  const focusRef = useRef<HTMLInputElement>(null);
   const uncategorizedCategory = name === 'Uncategorized';
+  const activeOrExpanded = active || expand;
   const submitNewName = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newName === category.name) {
@@ -181,6 +183,15 @@ function EditedCategory({
       setExpand(false);
     }
   };
+  const renderName = () => {
+    if (active) {
+      return newName;
+    }
+    if (foodItems.length > 0 && !sortingMode) {
+      return `${name} (${foodItems.length})`;
+    }
+    return name;
+  };
   useEffect(() => {
     if (active) {
       focusRef.current?.focus();
@@ -189,9 +200,15 @@ function EditedCategory({
       setNewName(name);
     }
   }, [active]);
+  useEffect(() => {
+    if (sortingMode) {
+      setActive(false);
+      setExpand(false);
+    }
+  }, [sortingMode]);
   useOnClickOutside(outsideClickRef, () => setActive(false));
   return (
-    <div className={`category admin-item ${active && 'active'}`} ref={outsideClickRef}>
+    <div className={`category collapsible-item ${activeOrExpanded && 'active-or-expanded'} ${id === draggedId && 'more-box-shadow'}`} ref={outsideClickRef}>
       <Confirmation
         show={showDeleteCategoryModal}
         onHide={() => setShowDeleteCategoryModal(false)}
@@ -212,7 +229,7 @@ function EditedCategory({
         <Col className="tab-col" md="auto">
           <Form.Control
             ref={focusRef}
-            value={active ? newName : name}
+            value={renderName()}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
             className={`${!active && !expand && 'disabled-2'}`}
           />
@@ -227,7 +244,7 @@ function EditedCategory({
             </Button>
           </Col>
         ) : (
-          <Col className="ellipsis-menu" md="auto">
+          <Col className={`ellipsis-menu ${sortingMode && 'disabled-2'}`} md="auto">
             <Dropdown autoClose>
               <Dropdown.Toggle>
                 <FontAwesomeIcon icon={faEllipsisVertical} />
@@ -242,6 +259,13 @@ function EditedCategory({
                 <Dropdown.Item>
                   <Button onClick={toggleEditTitle}>
                     Re-title
+                  </Button>
+                </Dropdown.Item>
+                )}
+                {!uncategorizedCategory && (
+                <Dropdown.Item>
+                  <Button onClick={() => categories.setSortingMode(true)}>
+                    Re-order
                   </Button>
                 </Dropdown.Item>
                 )}
