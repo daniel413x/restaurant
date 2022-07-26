@@ -24,7 +24,7 @@ import {
   shortNotification,
 } from '../utils/consts';
 import FoodItemOrder from './FoodItemOrder';
-import { orderDate } from '../utils/functions';
+import { calcItemPrice, orderDate } from '../utils/functions';
 import { updateOrderStatus } from '../http/orderAPI';
 
 interface AdminOrderProps {
@@ -90,7 +90,7 @@ function AdminOrder({
         <Col className="tab-col" md="auto">
           Total
           {' $'}
-          {total}
+          {calcItemPrice(Number(total))}
         </Col>
         <Col className="ellipsis-menu" md="auto">
           <Dropdown autoClose>

@@ -26,12 +26,14 @@ function Time({ time }: { time: [number, number] | undefined }) {
 
 interface FoodItemProps {
   foodItem: IFoodItem;
+  demo?: boolean;
   bootstrapWidth?: number | boolean;
 }
 
 function FoodItem({
   foodItem,
   bootstrapWidth,
+  demo,
 }: FoodItemProps) {
   const {
     image,
@@ -46,7 +48,7 @@ function FoodItem({
   const discountedPrice = discount ? calcItemPrice(price!, discount) : null;
   return (
     <Col className="food-item" md={bootstrapWidth}>
-      <Image className="food-image" src={`${process.env.REACT_APP_API_URL}${image}`} />
+      <Image className="food-image" src={`${demo ? '' : process.env.REACT_APP_API_URL}${image}`} />
       <Col>
         <span className="name">
           {name}
@@ -85,6 +87,7 @@ function FoodItem({
 
 FoodItem.defaultProps = {
   bootstrapWidth: false,
+  demo: false,
 };
 
 export default FoodItem;

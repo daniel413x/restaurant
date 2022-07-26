@@ -2,7 +2,6 @@ import { makeAutoObservable } from 'mobx';
 import {
   IOrder,
 } from '../types/types';
-import { calcTotal } from '../utils/functions';
 
 export default class OrdersStore {
   orders: IOrder[];
@@ -40,10 +39,6 @@ export default class OrdersStore {
 
   get getActiveOrder() {
     return this.activeOrder;
-  }
-
-  get total() {
-    return this.orders.map((order) => calcTotal(order.foodItems)).reduce((a, b) => a + b);
   }
 
   addOrder(obj: IOrder) {

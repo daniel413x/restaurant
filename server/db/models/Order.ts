@@ -6,8 +6,9 @@ import {
   Model,
   CreationOptional,
 } from 'sequelize';
-import { IAddressForOrder, IFoodItem, IOrder } from '../../types/types';
+import { IAddressForOrder, IOrder } from '../../types/types';
 import sequelize from '../connection';
+import FoodItemInOrder from './FoodItemInOrder';
 
 // eslint-disable-next-line no-use-before-define
 class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>> implements IOrder {
@@ -21,7 +22,7 @@ class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>
 
   time!: [number, number];
 
-  foodItems?: IFoodItem[];
+  foodItems?: FoodItemInOrder[];
 
   status!: number;
 
@@ -52,55 +53,58 @@ class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>
   }
 }
 
-Order.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
-    allowNull: false,
-    primaryKey: true,
-  },
-  UserId: {
-    type: DataTypes.UUID,
-    references: {
-      model: 'User',
-      key: 'id',
+Order.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      allowNull: false,
+      primaryKey: true,
     },
-    allowNull: false,
+    UserId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'User',
+        key: 'id',
+      },
+      allowNull: false,
+    },
+    AddressForOrderId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    time: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    total: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+    },
+    date: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    activeOrder: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    actionLog: {
+      type: DataTypes.ARRAY(DataTypes.ARRAY),
+      allowNull: false,
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  AddressForOrderId: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  {
+    sequelize,
+    modelName: 'Order',
+    freezeTableName: true,
   },
-  time: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: false,
-  },
-  status: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  total: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-  },
-  date: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  activeOrder: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  actionLog: {
-    type: DataTypes.ARRAY(DataTypes.ARRAY),
-    allowNull: false,
-  },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'Order',
-  freezeTableName: true,
-});
+);
 
 export default Order;

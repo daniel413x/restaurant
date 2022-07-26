@@ -24,7 +24,7 @@ export function calcTotal(foodItems: OrderOrCartFoodItem[]) {
     const itemTotal = calcItemPrice(price! * quantity!, discount);
     total += Number(itemTotal) * 1000;
   });
-  return total * 0.001;
+  return (total * 0.001).toFixed(2);
 }
 
 export function countItems(arr: OrderOrCartFoodItem[]) {

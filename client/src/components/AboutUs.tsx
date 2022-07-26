@@ -23,6 +23,7 @@ function ExploreOurFoods() {
           <li key={foodItem.name}>
             <FoodItem
               foodItem={foodItem}
+              demo
             />
           </li>
         ))}
