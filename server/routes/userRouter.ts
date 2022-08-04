@@ -1,7 +1,7 @@
 import Router from 'express';
 import UserController from '../controllers/UserController';
-import authMiddleware from '../middleware/authMiddleware';
 import checkRoleMiddleware from '../middleware/checkRoleMiddleware';
+import authMiddleware from '../middleware/authMiddleware';
 import { REGISTERED } from '../utils/consts';
 
 const router = Router();
@@ -10,6 +10,10 @@ router.get(
   '/auth',
   authMiddleware,
   (req, res) => UserController.auth(req, res),
+);
+router.post(
+  '/guesttoken',
+  (req, res) => UserController.createGuestToken(req, res),
 );
 router.post(
   '/registration',

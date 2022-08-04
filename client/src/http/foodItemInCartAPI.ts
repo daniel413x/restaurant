@@ -1,4 +1,8 @@
-import { ICart, QueryReqCartFoodItem } from '../types/types';
+import {
+  ICart,
+  QueryReqCartFoodItem,
+  OrderOrCartFoodItem,
+} from '../types/types';
 import { $authHost } from './index';
 
 export const fetchUserCart = async (): Promise<ICart> => {
@@ -6,7 +10,7 @@ export const fetchUserCart = async (): Promise<ICart> => {
   return data;
 };
 
-export const addFoodItem = async (obj: QueryReqCartFoodItem) => {
+export const addFoodItem = async (obj: QueryReqCartFoodItem): Promise<OrderOrCartFoodItem> => {
   const { data } = await $authHost.post('api/fooditemincart', obj);
   return data;
 };

@@ -1,4 +1,8 @@
-import { IOrder, QueryReqSubmitOrder } from '../types/types';
+import {
+  IOrder,
+  QueryReqSubmitOrder,
+  QueryReqSubmitGuestOrder,
+} from '../types/types';
 import { $authHost } from './index';
 
 export const fetchUserOrders = async (): Promise<IOrder[]> => {
@@ -21,7 +25,17 @@ export const submitOrder = async (obj: QueryReqSubmitOrder) => {
   return data;
 };
 
-export const updateOrderStatus = async (id: string) => {
-  const { data } = await $authHost.put(`api/order/changestatus/${id}`);
+export const updateOrderStatus = async (id: string, status: number) => {
+  const { data } = await $authHost.put(`api/order/changestatus/${id}`, { status });
+  return data;
+};
+
+export const submitGuestOrder = async (obj: QueryReqSubmitGuestOrder) => {
+  const { data } = await $authHost.post('api/order/guest', obj);
+  return data;
+};
+
+export const fetchActiveGuestOrder = async (): Promise<IOrder> => {
+  const { data } = await $authHost.get('api/order/guest/activeorder');
   return data;
 };

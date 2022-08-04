@@ -94,8 +94,13 @@ function AuthBox({
         user.set(fetchedUser);
         cart.set(fetchedCart);
       } else {
-        const { newUser, newCart } = await registration(email, password);
+        const guestCartItems = cart.foodItems.length > 0;
+        const guestId = localStorage.getItem('guestId');
+        const { newUser, newCart } = await registration(email, password, guestId!, guestCartItems ? cart.foodItems : undefined);
         user.set(newUser);
+        if (guestCartItems) {
+          localStorage.removeItem('guestCartItems');
+        }
         cart.set(newCart);
         let defaultAddress;
         if (saveDefaultAddress) {

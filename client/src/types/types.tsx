@@ -41,7 +41,7 @@ export interface IUser {
   defaultAddress?: IAddress | null;
 }
 
-export type QueryReqUserRegistration = Partial<Omit<IUser, 'id'>> & { password?: string; };
+export type QueryReqEditUser = Partial<Omit<IUser, 'id'>> & { password?: string; };
 
 export type QueryResUserRegistration = {
   newUser: IUser;
@@ -78,7 +78,7 @@ type OrderOrCartFoodItemSpecificProps = {
   instructions?: string;
 };
 
-export type OrderOrCartFoodItem = Omit<IFoodItem, 'image' | 'serves'> & OrderOrCartFoodItemSpecificProps;
+export type OrderOrCartFoodItem = Omit<IFoodItem, 'image' | 'serves' | 'CategoryId'> & OrderOrCartFoodItemSpecificProps;
 
 export type QueryReqMenuFoodItem = Omit<PartiallyOptional<IFoodItem, 'id'>, 'image' | 'category'> & {
   image: File;
@@ -87,13 +87,17 @@ export type QueryReqMenuFoodItem = Omit<PartiallyOptional<IFoodItem, 'id'>, 'ima
 
 export type QueryResMenuFoodItem = IFoodItem;
 
-export type QueryReqCartFoodItem = Omit<OrderOrCartFoodItem, 'id' | 'CategoryId'> & { CartId: string };
+export type QueryReqCartFoodItem = Omit<OrderOrCartFoodItem, 'id' | 'CategoryId'> & {
+  CartId: string
+};
+
+export type QueryReqCartFoodItemForGuest = Omit<OrderOrCartFoodItem, 'id' | 'CategoryId'>;
 
 export interface ICategory {
   name: string;
   foodItems: IFoodItem[];
   id: string;
-  publicCategory: boolean;
+  public: boolean;
 }
 
 export interface IModalProps {
@@ -144,6 +148,12 @@ export type QueryReqSubmitOrder = {
   UserId: string;
   CartId: string;
   address: string | QueryOrderAddress;
+};
+
+export type QueryReqSubmitGuestOrder = {
+  foodItems: QueryReqCartFoodItemForGuest[];
+  address: string | QueryOrderAddress;
+  guestId: string;
 };
 
 export interface ICategoriesSorter { // related to backend Options model, meant to handle categories sorting and maybe sorting of other things like front page elements

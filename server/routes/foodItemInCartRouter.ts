@@ -1,22 +1,23 @@
 import Router from 'express';
 import FoodItemInCartController from '../controllers/FoodItemInCartController';
-import authMiddleware from '../middleware/authMiddleware';
+import checkRoleMiddleware from '../middleware/checkRoleMiddleware';
+import { REGISTERED } from '../utils/consts';
 
 const router = Router();
 
 router.post(
   '/',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => FoodItemInCartController.create(req, res),
 );
 router.put(
   '/:id',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => FoodItemInCartController.edit(req, res),
 );
 router.delete(
   '/:id',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => FoodItemInCartController.deleteItem(req, res),
 );
 

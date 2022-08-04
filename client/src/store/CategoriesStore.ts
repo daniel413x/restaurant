@@ -137,7 +137,7 @@ export default class CategoriesStore {
 
   get sortedPublic() {
     const sortingArray = this.sorter.array;
-    return this.categories.filter((cat) => cat.publicCategory)
+    return this.categories.filter((cat) => cat.public)
       .sort((a, b) => {
         const aIndex = sortingArray.indexOf(a.name);
         const bIndex = sortingArray.indexOf(b.name);
@@ -149,10 +149,6 @@ export default class CategoriesStore {
   }
 
   get all() {
-    // const sortedCategories = this.categories.slice().sort((a, b) => a.id + b.id);
-    // const sortedCategories = [this.categories]
-    // .sort((a, b) => {
-    // });
     return this.categories;
   }
 }

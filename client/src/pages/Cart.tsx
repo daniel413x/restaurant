@@ -15,6 +15,7 @@ import RemoveFromCart from '../components/modals/RemoveFromCart';
 import Checkout from '../components/modals/Checkout';
 import Context from '../context/context';
 import { changeQuantity } from '../http/foodItemInCartAPI';
+import { GUEST } from '../utils/consts';
 
 function Cart() {
   const { cart } = useContext(Context);
@@ -29,7 +30,17 @@ function Cart() {
   };
   const changeCartItemQuantity = async (itemId: string, quantity: number, increment?: boolean) => {
     const newQuantity = increment ? quantity + 1 : quantity - 1;
-    await changeQuantity(itemId, newQuantity);
+    if (cart.id === GUEST) {
+      const guestCartItems = JSON.parse(localStorage.getItem('guestCartItems')!);
+      localStorage.setItem('guestCartItems', JSON.stringify(guestCartItems.map((item: OrderOrCartFoodItem) => {
+        if (item.id === itemId) {
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      })));
+    } else {
+      await changeQuantity(itemId, newQuantity);
+    }
     cart.changeItemQuantity(itemId, newQuantity);
   };
   return (

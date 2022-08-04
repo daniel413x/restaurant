@@ -60,7 +60,7 @@ function AdminOrder({
   const formattedDate = orderDate(date);
   const submitUpdateStatus = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await updateOrderStatus(id);
+    await updateOrderStatus(id, newStatus);
     admin.setOrderStatus(order, newStatus);
     notifications.message(
       'Order status updated',

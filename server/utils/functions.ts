@@ -4,6 +4,7 @@ import path from 'path';
 import { UploadedFile } from 'express-fileupload';
 import FoodItemInCart from '../db/models/FoodItemInCart';
 import FoodItemInOrder from '../db/models/FoodItemInOrder';
+import { FoodItemInGuestCart } from '../types/types';
 
 export function assignBodyAndProcessImages(req: Request) {
   const { body, files } = req;
@@ -30,7 +31,7 @@ export function calcItemPrice(price: number, discount?: number) {
   return returnedPrice.toFixed(2);
 }
 
-export function calcTotal(arr: FoodItemInOrder[] | FoodItemInCart[]) {
+export function calcTotal(arr: FoodItemInOrder[] | FoodItemInCart[] | FoodItemInGuestCart[]) {
   let total = 0;
   if (arr.length === 0) {
     return total;

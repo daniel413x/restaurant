@@ -21,8 +21,8 @@ export default class UserStore implements IUser {
 
   constructor() {
     this.roles = ['GUEST'];
-    this.id = '-1';
-    this.name = 'Admin';
+    this.id = 'GUEST';
+    this.name = 'Guest';
     this.avatar = '';
     this.email = '';
     this.addresses = [
@@ -84,7 +84,7 @@ export default class UserStore implements IUser {
 
   unset() {
     this.roles = [GUEST];
-    this.id = '-1';
+    this.id = localStorage.getItem('guestId')!;
     this.name = 'Guest';
     this.avatar = '';
     this.email = '';
@@ -114,6 +114,10 @@ export default class UserStore implements IUser {
 
   setDefaultAddress(obj: IAddress | null) {
     this.defaultAddress = obj;
+  }
+
+  setId(str: string) {
+    this.id = str;
   }
 
   setAvatar(str: string) {

@@ -34,7 +34,7 @@ function Menu() {
   };
   useEffect(() => {
     (async () => {
-      await fetchAndSortCategories(categories);
+      await fetchAndSortCategories(categories, true);
     })();
   }, []);
   return (

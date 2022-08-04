@@ -14,7 +14,9 @@ import FoodItemInOrder from './FoodItemInOrder';
 class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>> implements IOrder {
   id!: string;
 
-  UserId!: string;
+  UserId?: CreationOptional<string>;
+
+  guestId?: CreationOptional<string>;
 
   AddressForOrderId!: string;
 
@@ -67,7 +69,9 @@ Order.init(
         model: 'User',
         key: 'id',
       },
-      allowNull: false,
+    },
+    guestId: {
+      type: DataTypes.STRING,
     },
     AddressForOrderId: {
       type: DataTypes.STRING,

@@ -78,7 +78,7 @@ export const indexPublicRoutes = [
     Component: Menu,
   },
   {
-    path: `${GUEST_ROUTE}/${ORDERS_ROUTE}/:id`,
+    path: `${GUEST_ROUTE}/${ORDERS_ROUTE}`,
     Component: GuestOrder,
   },
 ];

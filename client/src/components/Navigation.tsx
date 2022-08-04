@@ -65,7 +65,7 @@ function Navigation() {
     }
   };
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('registeredToken');
     user.unset();
     cart.unset();
     addresses.unset();

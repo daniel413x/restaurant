@@ -14,7 +14,7 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Context from '../../context/context';
 import SmartInput from '../SmartInput';
 import {
@@ -25,8 +25,10 @@ import {
   shortNotification,
   red,
   ACCOUNT_ROUTE,
+  GUEST_ROUTE,
+  ORDERS_ROUTE,
 } from '../../utils/consts';
-import { submitOrder } from '../../http/orderAPI';
+import { submitGuestOrder, submitOrder } from '../../http/orderAPI';
 import { calcItemPrice } from '../../utils/functions';
 
 interface CheckoutProps {
@@ -44,10 +46,8 @@ function Checkout({
     notifications,
     cart,
     user,
-    // orders,
     addresses,
   } = useContext(Context);
-  // const { cart /* user */ } = useContext(Context);
   const [email, setEmail] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -64,6 +64,7 @@ function Checkout({
   const [loading, setLoading] = useState<boolean>(false);
   const [confirmation, setConfirmation] = useState<boolean>(false);
   const [orderNumber, setOrderNumber] = useState<string>('');
+  const navigate = useNavigate();
   // const UserId = user.id;
   const requiredFieldsIncomplete = !email || !firstName || !lastName
   || !addressLineOne || !city || !zip
@@ -89,23 +90,41 @@ function Checkout({
     }
     setLoading(true);
     try {
-      const UserId = user.id;
+      const address = {
+        firstName,
+        lastName,
+        addressLineOne,
+        addressLineTwo,
+        city,
+        zip,
+        state,
+      };
       const CartId = cart.id;
-      const order = await submitOrder({
-        UserId,
-        CartId,
-        address: {
-          firstName,
-          lastName,
-          addressLineOne,
-          addressLineTwo,
-          city,
-          zip,
-          state,
-        },
-      });
+      let order;
+      if (user.isGuest) {
+        const {
+          foodItems,
+        } = cart;
+        order = await submitGuestOrder({
+          address,
+          foodItems,
+          guestId: user.id,
+        });
+        localStorage.removeItem('guestCartItems');
+      } else {
+        const UserId = user.id;
+        order = await submitOrder({
+          UserId,
+          CartId,
+          address,
+        });
+      }
       // orders.addOrder(order);
       cart.clearItems();
+      return navigate(
+        user.isGuest ? `/${GUEST_ROUTE}/${ORDERS_ROUTE}`
+          : `/${ACCOUNT_ROUTE}`,
+      );
       setConfirmation(true);
       return setOrderNumber(order.id);
     } catch (error: any) {
@@ -177,8 +196,9 @@ function Checkout({
                     >
                       <Col className="item">
                         {' '}
-                        {item.quantity > 1 && `(${item.quantity}) `}
                         {item.name}
+                        {' '}
+                        {item.quantity > 1 && `(${item.quantity}) `}
                       </Col>
                       <Col className="price">
                         $

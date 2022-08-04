@@ -48,7 +48,7 @@ export default abstract class BaseController<M extends Model> {
 
   async execFindAndCountAll(req: Request, res: Response, options?: Omit<FindAndCountOptions<Attributes<M>>, 'group'>) {
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 12;
+    const limit = Number(req.query.limit) || 22;
     const offset = page * limit - limit;
     const byNewest = req.query.byNewest as string;
     const order: any[] = [];

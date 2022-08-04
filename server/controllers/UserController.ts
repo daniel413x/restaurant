@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 import ApiError from '../error/ApiError';
 import { IUser } from '../types/types';
 import { ADMIN, REGISTERED } from '../utils/consts';
@@ -10,13 +11,14 @@ import User from '../db/models/User';
 import FoodItemInCart from '../db/models/FoodItemInCart';
 import BaseController from './BaseController';
 import { assignBodyAndProcessImages } from '../utils/functions';
+import Order from '../db/models/Order';
 
 const generateJwt = ({
   id,
   email,
   roles,
   avatar,
-}: IUser) => jwt.sign(
+}: any, expiresIn?: string) => jwt.sign(
   {
     id,
     email,
@@ -25,7 +27,7 @@ const generateJwt = ({
   },
   process.env.S_KEY!,
   {
-    expiresIn: '24h',
+    expiresIn,
   },
 );
 
@@ -38,6 +40,8 @@ class UserController extends BaseController<User> {
     const {
       email,
       password,
+      foodItems,
+      guestId,
     } = req.body;
     const incompleteForm = !email || !password;
     if (incompleteForm) {
@@ -68,8 +72,19 @@ class UserController extends BaseController<User> {
       roles: [REGISTERED, ADMIN],
     });
     const UserId = user.id;
-    await Cart.create({ UserId });
-    const cart = await Cart.findOne({
+    let cart = await Cart.create({ UserId });
+    // guest accreditations
+    if (foodItems) {
+      await Promise.all(foodItems.map(async (item) => {
+        await FoodItemInCart.create({
+          ...item,
+          id: uuidv4(),
+          CartId: cart.id,
+        });
+      }));
+    }
+    await Order.update({ UserId, guestId: null }, { where: { guestId } });
+    cart = await Cart.findOne({
       where: {
         UserId,
       },
@@ -78,7 +93,7 @@ class UserController extends BaseController<User> {
         as: 'foodItems',
       },
     });
-    const token = generateJwt(user);
+    const token = generateJwt(user, '24h');
     return res.json({ token, cart });
   }
 
@@ -110,13 +125,19 @@ class UserController extends BaseController<User> {
     if (!comparePassword) {
       return next(ApiError.internal('Incorrect password'));
     }
-    const token = generateJwt(user);
+    const token = generateJwt(user, '24h');
     return res.json({ token });
   }
 
   async auth(req: Request, res: Response) {
     const { user } = res.locals;
-    const token = generateJwt(user);
+    const token = generateJwt(user, '24h');
+    return res.json({ token });
+  }
+
+  async createGuestToken(req: Request, res: Response) {
+    const id = uuidv4();
+    const token = generateJwt({ id }, '365d');
     return res.json({ token });
   }
 

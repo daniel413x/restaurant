@@ -2,6 +2,7 @@ import React from 'react';
 import { OrderOrCartFoodItem, IOrder } from '../types/types';
 import List from './List';
 import FoodItemOrder from './FoodItemOrder';
+import { orderDate } from '../utils/functions';
 
 interface FoodItemOrderProps {
   order: IOrder;
@@ -10,10 +11,11 @@ interface FoodItemOrderProps {
 function PreviousOrder({
   order,
 }: FoodItemOrderProps) {
+  const formattedDate = orderDate(order.date);
   return (
     <div className="previous-order">
       <div className="date">
-        {order.date}
+        {formattedDate}
       </div>
       <List
         items={order?.foodItems}

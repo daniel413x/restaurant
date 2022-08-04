@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babel": "babel db --extensions \".ts,.js\" --out-dir ./lib/db && babel ./utils --extensions \".ts,.js\" --out-dir ./lib/utils && babel ./migrations --extensions \".ts,.js\" --out-dir ./lib/migrations",
-    "migrate": "npm run babel && npx sequelize-cli db:migrate",
-    "migrate:undo": "npx sequelize-cli db:migrate:undo"
+    "babel": "babel db --extensions \".ts,.js\" --out-dir ./lib/db && babel ./utils --extensions \".ts,.js\" --out-dir ./lib/utils && babel ./migrations --extensions \".ts,.js\" --out-dir ./lib/migrations && babel ./seeders --extensions \".ts,.js\" --out-dir ./lib/seeders",
+    "migrate": "npm run babel && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "migrate:undo:all": "npx sequelize-cli db:migrate:undo:all"
   },
   "keywords": [],
   "author": "",

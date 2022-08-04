@@ -16,7 +16,7 @@ export class Category extends Model<InferAttributes<Category>, InferCreationAttr
 
   name!: string;
 
-  publicCategory!: CreationOptional<boolean>;
+  public!: CreationOptional<boolean>;
 
   createdAt?: CreationOptional<Date>;
 
@@ -45,7 +45,7 @@ Category.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    publicCategory: {
+    public: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
@@ -57,12 +57,18 @@ Category.init(
     hooks: {
       // eslint-disable-next-line no-unused-vars
       afterCreate: async (category, options) => {
+        if (category.name === 'Uncategorized') {
+          return;
+        }
         const categoriesSorting = await Options.findOne({ where: { name: 'categoriesSorting' } });
         categoriesSorting.array = categoriesSorting.array.concat(category.name);
         await categoriesSorting.save();
       },
       // eslint-disable-next-line no-unused-vars
       afterUpdate: async (updatedCategory, options) => {
+        if (updatedCategory.name === 'Uncategorized') {
+          return;
+        }
         const categoriesSorting = await Options.findOne({ where: { name: 'categoriesSorting' } });
         categoriesSorting.array = categoriesSorting.array.map((categoryName) => {
           if (categoryName === updatedCategory.name) {

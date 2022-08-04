@@ -1,7 +1,7 @@
 export interface ICategory {
   id: string;
   name: string;
-  publicCategory: boolean;
+  public: boolean;
 }
 
 export interface IAddress {
@@ -34,10 +34,22 @@ export interface IUser {
   addresses?: IAddressInAddressBook[];
 }
 
+export interface IGuest {
+  id: string;
+}
+
 export interface IFoodItem {
   id: string;
   name: string;
   price: string;
+}
+
+export type FoodItemInGuestCart = IFoodItem & {
+  discount: string;
+  time: [number, number];
+  ingredients: string[];
+  quantity: number;
+  instructions: string;
 }
 
 export interface IFoodItemInMenu extends IFoodItem {
@@ -50,9 +62,14 @@ export interface IFoodItemInMenu extends IFoodItem {
   category?: ICategory;
 }
 
+export type FoodItemInOrderCreationAttributes = Omit<FoodItemInGuestCart, 'id'> & {
+  OrderId: string;
+};
+
 export interface IOrder {
   id: string;
-  UserId: string;
+  UserId?: string;
+  guestId?: string;
   AddressForOrderId: string;
   address?: IAddressForOrder;
   time: [number, number];
@@ -63,6 +80,11 @@ export interface IOrder {
   total: number;
   actionLog: [string, string][];
 }
+
+export interface IRegisteredOrder {
+}
+
+export type OrderCreationAttributes = Omit<IOrder, 'id' | 'address' | 'foodItems'>;
 
 export interface ICart {
   id?: string;

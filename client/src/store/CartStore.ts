@@ -12,8 +12,8 @@ export default class CartStore implements ICart {
   foodItems: OrderOrCartFoodItem[];
 
   constructor() {
-    this.id = '-1';
-    this.UserId = '-1';
+    this.id = 'GUEST';
+    this.UserId = 'GUEST';
     this.foodItems = [];
     makeAutoObservable(this);
   }
@@ -46,11 +46,21 @@ export default class CartStore implements ICart {
     this.id = id;
     this.UserId = UserId;
     this.foodItems = foodItems;
+    localStorage.removeItem('guestCartItems');
+  }
+
+  setItems(arr: OrderOrCartFoodItem[]) {
+    this.foodItems = arr;
+  }
+
+  setId(str: string) {
+    this.id = str;
   }
 
   unset() {
     this.id = '-1';
     this.UserId = '-1';
     this.foodItems = [];
+    localStorage.removeItem('guestCartItems');
   }
 }

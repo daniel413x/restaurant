@@ -11,7 +11,7 @@ import AppRouter from './routers/AppRouter';
 import Notifications from './components/Notifications';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
-import { autoAuth } from './http/userAPI';
+import { autoAuth, createGuestToken } from './http/userAPI';
 import { fetchUserCart } from './http/cartAPI';
 import { fetchUserAddress } from './http/addressAPI';
 
@@ -25,7 +25,9 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        if (localStorage.getItem('token')) {
+        const registeredToken = localStorage.getItem('registeredToken');
+        const guestToken = localStorage.getItem('guestToken');
+        if (registeredToken) {
           const stillAuthed = await autoAuth();
           const userCart = await fetchUserCart();
           const userAddresses = await fetchUserAddress();
@@ -38,6 +40,17 @@ function App() {
               return;
             }
           }
+        } else if (guestToken) {
+          const guestId = localStorage.getItem('guestId');
+          user.setId(guestId!);
+          const guestCartItems = localStorage.getItem('guestCartItems');
+          if (guestCartItems) {
+            cart.setItems(JSON.parse(localStorage.getItem('guestCartItems')!));
+          }
+        } else {
+          const guest = await createGuestToken();
+          user.setId(guest.id);
+          localStorage.setItem('guestId', guest.id);
         }
       } catch (error: any) {
         notifications.message(
@@ -46,7 +59,7 @@ function App() {
           shortNotification,
         );
         if (error.response.status === 401) {
-          localStorage.removeItem('token');
+          localStorage.removeItem('registeredToken');
         }
       }
     })();

@@ -15,11 +15,11 @@ class CategoryController extends BaseController<Category> {
         as: 'foodItems',
       }],
       where: {
-        publicCategory: true,
+        public: true,
       },
     };
-    if (req.query.publicCategory) {
-      delete req.query.publicCategory;
+    if (req.query.public) {
+      delete req.query.public;
     }
     this.execFindAndCountAll(req, res, options);
   }
@@ -42,7 +42,7 @@ class CategoryController extends BaseController<Category> {
       }],
     };
     if (req.body.name === 'Uncategorized') {
-      req.body.publicCategory = false;
+      req.body.public = false;
     }
     this.execCreate(req, res, options);
   }

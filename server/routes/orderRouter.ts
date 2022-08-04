@@ -2,13 +2,13 @@ import Router from 'express';
 import OrderController from '../controllers/OrderController';
 import authMiddleware from '../middleware/authMiddleware';
 import checkRoleMiddleware from '../middleware/checkRoleMiddleware';
-import { ADMIN } from '../utils/consts';
+import { REGISTERED, ADMIN } from '../utils/consts';
 
 const router = Router();
 
 router.get(
   '/',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => OrderController.get(req, res),
 );
 router.get(
@@ -18,27 +18,37 @@ router.get(
 );
 router.get(
   '/activeorder',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => OrderController.getActiveOrder(req, res),
+);
+router.get(
+  '/guest/activeorder',
+  authMiddleware,
+  (req, res) => OrderController.getActiveGuestOrder(req, res),
 );
 router.post(
   '/',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => OrderController.create(req, res),
+);
+router.post(
+  '/guest',
+  authMiddleware,
+  (req, res) => OrderController.guestCreate(req, res),
 );
 router.put(
   '/:id',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => OrderController.edit(req, res),
 );
 router.put(
   '/changestatus/:id',
-  authMiddleware,
-  (req, res, next) => OrderController.changeStatus(req, res, next),
+  checkRoleMiddleware(REGISTERED),
+  (req, res) => OrderController.changeStatus(req, res),
 );
 router.delete(
   '/:id',
-  authMiddleware,
+  checkRoleMiddleware(REGISTERED),
   (req, res) => OrderController.delete(req, res),
 );
 

@@ -5,7 +5,7 @@ import React, {
 import {
   Modal, Button, Form,
 } from 'react-bootstrap';
-import { IModalProps } from '../../types/types';
+import { IModalProps, OrderOrCartFoodItem } from '../../types/types';
 import {
   shortNotification,
   green,
@@ -25,11 +25,16 @@ function RemoveFromCart({
   itemName,
   itemId,
 }: RemoveFromCartProps) {
-  const { notifications, cart } = useContext(Context);
+  const { notifications, cart, user } = useContext(Context);
   const action = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await removeFoodItem(itemId!);
+      if (user.isGuest) {
+        const guestCartItems = JSON.parse(localStorage.getItem('guestCartItems')!).filter((item: OrderOrCartFoodItem) => item.id !== itemId);
+        localStorage.setItem('guestCartItems', JSON.stringify(guestCartItems));
+      } else {
+        await removeFoodItem(itemId!);
+      }
       cart.changeItemQuantity(itemId!, 0);
       notifications.message(
         'Item removed from cart',

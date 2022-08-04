@@ -15,11 +15,6 @@ export const fetchAllCategories = async (): Promise<ICategory[]> => {
   return data.rows;
 };
 
-export const fetchCategories = async (): Promise<ICategory[]> => {
-  const { data } = await $authHost.get('api/category');
-  return data.rows;
-};
-
 export const createCategory = async (name: string): Promise<ICategory> => {
   const { data } = await $authHost.post('api/category', { name });
   return data;
@@ -35,9 +30,14 @@ export const deleteCategory = async (id: string): Promise<any> => {
   return data.token;
 };
 
-export const fetchAndSortCategories = async (categories: CategoriesStore): Promise<any> => {
+export const fetchAndSortCategories = async (categories: CategoriesStore, publicOnly?: boolean): Promise<any> => {
   const sortingOptions = await fetchOptionsByName('categoriesSorting');
   categories.setSorter(sortingOptions);
-  const allCategories = await fetchAllCategories();
-  categories.setCategories(allCategories);
+  let fetchedCategories;
+  if (publicOnly) {
+    fetchedCategories = await fetchPublicCategories();
+  } else {
+    fetchedCategories = await fetchAllCategories();
+  }
+  categories.setCategories(fetchedCategories);
 };
