@@ -69,7 +69,7 @@ class CategoryController extends BaseController<Category> {
         );
       }));
     }
-    const options = { individualHooks: true };
+    const options = { individualHooks: true, where: { id: deletedId } };
     this.execDestroy(req, res, options);
   }
 }

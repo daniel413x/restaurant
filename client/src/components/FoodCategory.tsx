@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import {
-  Col, Row,
+  Col,
 } from 'react-bootstrap';
 import { IFoodItem, ICategory } from '../types/types';
 import { makeId } from '../utils/functions';
@@ -23,11 +23,9 @@ function FoodCategory({
       <div className="label">
         {name}
       </div>
-      <Row>
-        <ul>
-          {foodItems.map(renderItem)}
-        </ul>
-      </Row>
+      <ul>
+        {foodItems.map(renderItem)}
+      </ul>
     </Col>
   );
 }

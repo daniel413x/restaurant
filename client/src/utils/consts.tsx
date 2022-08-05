@@ -142,7 +142,7 @@ export const demoFoodItems: IFoodItem[] = [
   },
   {
     name: 'Raspberry Stuffed French Toast',
-    ingredients: ['rice', 'nuts', 'spices', 'olive oil', 'lemon juice'],
+    ingredients: ['rice', 'nuts', 'spices', 'olive oil', 'lemon juice', 'nuts', 'spices'],
     price: 13.20,
     image: imageSix,
     time: [15, 20],

@@ -22,6 +22,11 @@ export default {
       id: uuidv4(),
       public: true,
     },
+    {
+      name: 'Dessert',
+      id: uuidv4(),
+      public: true,
+    },
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('Category', null, {}),
 };

@@ -49,34 +49,36 @@ function FoodItem({
   return (
     <Col className="food-item" md={bootstrapWidth}>
       <Image className="food-image" src={`${demo ? '' : process.env.REACT_APP_API_URL}${image}`} />
-      <Col>
-        <span className="name">
-          {name}
-        </span>
-        <span className="ingredients">
-          {ingredients?.join(' • ')}
-        </span>
-        <span className="info">
-          <Time time={time} />
-          <span>
-            Serves:
-            {' '}
-            {serves}
+      <Col className="below-image-col">
+        <Col className="info-col">
+          <span className="name">
+            {name}
           </span>
-        </span>
-        <div className="price-row">
-          <span className="current-price">
-            $
-            {discount ? discountedPrice : undiscountedPrice}
-            {' '}
+          <span className="ingredients">
+            {ingredients?.join(' • ')}
           </span>
-          {discount ? (
-            <span className="previous-price">
-              $
-              {undiscountedPrice}
+          <span className="misc-info">
+            <Time time={time} />
+            <span>
+              Serves:
+              {' '}
+              {serves}
             </span>
-          ) : null}
-        </div>
+          </span>
+          <div className="price-row">
+            <span className="current-price">
+              $
+              {discount ? discountedPrice : undiscountedPrice}
+              {' '}
+            </span>
+            {discount ? (
+              <span className="previous-price">
+                $
+                {undiscountedPrice}
+              </span>
+            ) : null}
+          </div>
+        </Col>
         <Col className="order-now-button btn btn-primary">
           Order Now
         </Col>
