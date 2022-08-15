@@ -165,7 +165,7 @@ function Checkout({
       id="checkout"
     >
       {loading && <Spinner animation="grow" className="loading-anim" />}
-      <div className={`${loading && 'disabled-2'} checkout`}>
+      <div className={`${loading && 'blocked'} checkout`}>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             {confirmation ? 'Thank you!' : 'Checkout'}
@@ -242,6 +242,7 @@ function Checkout({
                 </Dropdown>
                 )}
                 <SmartInput
+                  id="email-field"
                   label="Email*"
                   value={email}
                   onChange={setEmail}
@@ -251,6 +252,7 @@ function Checkout({
                 />
                 <div className="name-row">
                   <SmartInput
+                    id="first-name-field"
                     label="First name*"
                     value={firstName}
                     onChange={setFirstName}
@@ -260,6 +262,7 @@ function Checkout({
                   />
                   <SmartInput
                     primaryStyle
+                    id="last-name-field"
                     label="Last name*"
                     value={lastName}
                     onChange={setLastName}
@@ -269,6 +272,7 @@ function Checkout({
                 </div>
                 <SmartInput
                   primaryStyle
+                  id="address-line-one-field"
                   label="Street address*"
                   value={addressLineOne}
                   onChange={setAddressLineOne}
@@ -277,6 +281,7 @@ function Checkout({
                 />
                 <SmartInput
                   label="Street address Line Two"
+                  id="address-line-two-field"
                   value={addressLineTwo}
                   onChange={setAddressLineTwo}
                   pressedSubmit={pressedSubmit}
@@ -288,6 +293,7 @@ function Checkout({
                 <div className="city-row">
                   <SmartInput
                     label="Territory/City*"
+                    id="city-field"
                     value={city}
                     onChange={setCity}
                     pressedSubmit={pressedSubmit}
@@ -297,6 +303,7 @@ function Checkout({
                   />
                   <SmartInput
                     label="State*"
+                    id="state-field"
                     value={state}
                     onChange={setState}
                     pressedSubmit={pressedSubmit}
@@ -305,6 +312,7 @@ function Checkout({
                   />
                   <SmartInput
                     label="Zip address*"
+                    id="zip-field"
                     value={zip}
                     onChange={setZip}
                     pressedSubmit={pressedSubmit}
@@ -318,6 +326,7 @@ function Checkout({
                 </h5>
                 <SmartInput
                   label="Full name on card*"
+                  id="card-name-field"
                   value={cardName}
                   onChange={setCardName}
                   pressedSubmit={pressedSubmit}
@@ -327,6 +336,7 @@ function Checkout({
                 <div className="card-number-row">
                   <SmartInput
                     label="Card number*"
+                    id="card-number-field"
                     value={cardNumber}
                     onChange={setCardNumber}
                     pressedSubmit={pressedSubmit}
@@ -336,6 +346,7 @@ function Checkout({
                   />
                   <SmartInput
                     label="Expir.*"
+                    id="card-expiration-field"
                     value={cardExpiration}
                     onChange={setCardExpiration}
                     pressedSubmit={pressedSubmit}
@@ -344,6 +355,7 @@ function Checkout({
                   />
                   <SmartInput
                     label="CVC*"
+                    id="card-cvc-field"
                     value={cardCVC}
                     onChange={setCardCVC}
                     pressedSubmit={pressedSubmit}
@@ -359,7 +371,7 @@ function Checkout({
                 <Button>Track my order</Button>
               </NavLink>
             )
-              : <Button className={`${requiredFieldsIncomplete && 'disabled-2'}`} type="submit">Submit</Button>}
+              : <Button className={`${requiredFieldsIncomplete && 'blocked'}`} type="submit" id="submit-button">Submit</Button>}
           </Modal.Footer>
         </Form>
       </div>

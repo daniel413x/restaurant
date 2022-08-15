@@ -66,8 +66,10 @@ function RemoveFromCart({
           {itemName}
         </Modal.Body>
         <Modal.Footer>
-          <Button type="submit">Confirm</Button>
-          <Button onClick={onHide}>Back</Button>
+          <Button id="submit-button" type="submit">
+            Confirm
+          </Button>
+          <Button id="cancel-button" onClick={onHide}>Back</Button>
         </Modal.Footer>
       </Form>
     </Modal>

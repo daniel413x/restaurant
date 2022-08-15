@@ -9,10 +9,16 @@ interface LabeledCheckboxButtonProps {
   setBoolean: (boolean: boolean) => void;
   classes?: string;
   light?: boolean;
+  id?: string;
 }
 
 function LabeledCheckboxButton({
-  label, boolean, setBoolean, classes, light,
+  label,
+  boolean,
+  setBoolean,
+  classes,
+  light,
+  id,
 }: LabeledCheckboxButtonProps) {
   const [active, setActive] = useState<boolean>(false);
   const [boxShadow, setBoxShadow] = useState<boolean>(false);
@@ -29,6 +35,7 @@ function LabeledCheckboxButton({
   }
   return (
     <button
+      id={id}
       className={`labeled-checkbox-button ${classes}`}
       ref={ref}
       type="button"
@@ -58,6 +65,7 @@ function LabeledCheckboxButton({
 LabeledCheckboxButton.defaultProps = {
   light: false,
   classes: '',
+  id: '',
 };
 
 export default LabeledCheckboxButton;

@@ -16,6 +16,7 @@ interface SmartInputProps {
   bsWidth?: number | boolean;
   type?: string;
   classes?: string;
+  id?: string;
 }
 
 function SmartInput({
@@ -31,6 +32,7 @@ function SmartInput({
   primaryStyle,
   type,
   classes,
+  id,
 }: SmartInputProps) {
   const [warn, setWarn] = useState<boolean>(false);
   useEffect(() => {
@@ -53,6 +55,7 @@ function SmartInput({
       )}
       {type === 'file' ? (
         <Form.Control
+          id={id}
           placeholder={placeholder}
           type={type}
           onChange={onFileChange}
@@ -66,6 +69,7 @@ function SmartInput({
         />
       ) : (
         <Form.Control
+          id={id}
           placeholder={placeholder}
           type={type}
           value={value}
@@ -90,6 +94,7 @@ SmartInput.defaultProps = {
   label: '',
   type: 'text',
   classes: '',
+  id: '',
 };
 
 export default SmartInput;

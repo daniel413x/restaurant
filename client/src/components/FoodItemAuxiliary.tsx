@@ -18,8 +18,9 @@ function FoodItemAuxiliary({
   decrement,
 }: FoodItemAuxiliaryProps) {
   const { name, ingredients, instructions } = foodItem;
+  const divId = name.split(' ').join('-').toLowerCase();
   return (
-    <div className="food-item-auxiliary">
+    <div className="food-item-auxiliary" id={divId}>
       <div>
         <div className="name">
           {name}

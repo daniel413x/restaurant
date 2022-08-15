@@ -187,20 +187,25 @@ function FoodItemForm({
                 Category
               </Col>
               <Dropdown>
-                <Dropdown.Toggle>
+                <Dropdown.Toggle
+                  id="select-category-dropdown"
+                >
                   {category?.name}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {categories.all.map((categoryItem) => (
                     <Dropdown.Item
-                      onClick={() => setCategory({
-                        name: categoryItem.name,
-                        id: categoryItem.id,
-                      })}
                       key={categoryItem.id}
                     >
-                      {categoryItem.name}
-                      {categoryItem.name === 'Uncategorized' && '/hidden'}
+                      <Button
+                        onClick={() => setCategory({
+                          name: categoryItem.name,
+                          id: categoryItem.id,
+                        })}
+                      >
+                        {categoryItem.name}
+                        {categoryItem.name === 'Uncategorized' && '/hidden'}
+                      </Button>
                     </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
@@ -211,6 +216,7 @@ function FoodItemForm({
                 Name
               </Col>
               <SmartInput
+                id="name-field"
                 pressedSubmit={pressedSubmit}
                 setPressedSubmit={setPressedSubmit}
                 value={name}
@@ -224,6 +230,7 @@ function FoodItemForm({
                     Price
                   </Col>
                   <Form.Control
+                    id="price-field"
                     value={price}
                     type="number"
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}
@@ -235,6 +242,7 @@ function FoodItemForm({
                     Discount
                   </Col>
                   <Form.Control
+                    id="discount-field"
                     value={discount}
                     type="number"
                     max="1"
@@ -266,6 +274,7 @@ function FoodItemForm({
               </Col>
               {ingredients && (
               <List
+                id="ingredients-ul"
                 items={ingredients}
                 renderList={(ingredient) => (
                   <li key={ingredient}>
@@ -280,6 +289,7 @@ function FoodItemForm({
               <Row className="add-ingredient-row">
                 <Col>
                   <Form.Control
+                    id="ingredient-field"
                     value={newIngredients}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setNewIngredients(e.target.value)}
                     placeholder="ingr.1, ingr.2, ..."
@@ -287,6 +297,7 @@ function FoodItemForm({
                 </Col>
                 <Col md="auto">
                   <Button
+                    id="new-ingredient-button"
                     className="btn btn-secondary"
                     onClick={addIngredient}
                   >
@@ -301,6 +312,7 @@ function FoodItemForm({
                   Serves
                 </Col>
                 <Form.Control
+                  id="serves-field"
                   value={serves}
                   type="number"
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setServes(Number(e.target.value))}
@@ -314,6 +326,7 @@ function FoodItemForm({
                 <Row>
                   <Col className="min-col">
                     <Form.Control
+                      id="min-field"
                       className="min"
                       min="0"
                       max={time[1]}
@@ -324,6 +337,7 @@ function FoodItemForm({
                   </Col>
                   <Col className="max-col">
                     <Form.Control
+                      id="max-field"
                       className="max"
                       min={time[0]}
                       value={time[1]}
@@ -335,7 +349,11 @@ function FoodItemForm({
               </Col>
             </Row>
             <Col>
-              <Button className="save-button btn btn-secondary" type="submit" />
+              <Button
+                className="save-button btn btn-secondary"
+                id="submit-button"
+                type="submit"
+              />
               {/* use pseudo selector for label */}
             </Col>
           </Col>

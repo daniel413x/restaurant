@@ -17,6 +17,6 @@ export const editFoodItem = async (id: string, obj: QueryReqMenuFoodItem | FormD
 };
 
 export const deleteFoodItem = async (id: string) => {
-  const { data } = await $authHost.delete(`api/fooditemincart/${id}`);
+  const { data } = await $authHost.delete(`api/fooditeminmenu/${id}`);
   return data;
 };

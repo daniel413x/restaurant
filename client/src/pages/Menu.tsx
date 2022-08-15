@@ -80,7 +80,11 @@ function Menu() {
                         className="food-item-li"
                         key={foodItem.id}
                       >
-                        <button onClick={() => handleModal(foodItem)} type="button">
+                        <button
+                          onClick={() => handleModal(foodItem)}
+                          type="button"
+                          id={`${makeId(foodItem.name)}-button-overlay`}
+                        >
                           <FoodItem
                             foodItem={foodItem}
                           />

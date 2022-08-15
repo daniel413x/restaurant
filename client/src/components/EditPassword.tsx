@@ -7,10 +7,11 @@ import {
 import Context from '../context/context';
 import LabeledCheckboxButton from './LabeledCheckboxButton';
 import {
-  green, red, shortNotification,
+  green, longNotification, red, shortNotification,
 } from '../utils/consts';
 import SmartInput from './SmartInput';
 import { editUser } from '../http/userAPI';
+import { validatePassword } from '../utils/functions';
 
 function EditPassword() {
   const { notifications } = useContext(Context);
@@ -26,6 +27,14 @@ function EditPassword() {
         'Please complete all fields',
         red,
         shortNotification,
+      );
+    }
+    const validPassword = validatePassword(newPassword);
+    if (!validPassword) {
+      return notifications.message(
+        'Please choose a password between 6 and 256 characters',
+        red,
+        longNotification,
       );
     }
     try {
@@ -47,6 +56,7 @@ function EditPassword() {
     <Col id="edit-password">
       <Col>
         <LabeledCheckboxButton
+          id="edit-password-checkbox-button"
           label="Change password"
           boolean={unlockChangePassword}
           setBoolean={setUnlockChangePassword}
@@ -54,12 +64,13 @@ function EditPassword() {
         />
       </Col>
       <Form
-        className={`password-form ${!unlockChangePassword && 'disabled-2'}`}
+        className={`password-form ${!unlockChangePassword && 'blocked'}`}
         onSubmit={submit}
       >
         <Col>
           New password
           <SmartInput
+            id="edit-password-field"
             onChange={setNewPassword}
             value={newPassword}
             pressedSubmit={pressedSubmit}
@@ -70,6 +81,7 @@ function EditPassword() {
         <Col>
           Confirm password
           <SmartInput
+            id="edit-password-confirm-field"
             onChange={setConfirmNewPassword}
             value={confirmNewPassword}
             pressedSubmit={pressedSubmit}
@@ -78,7 +90,11 @@ function EditPassword() {
           />
         </Col>
         <Col>
-          <Button className="save-button" type="submit">
+          <Button
+            className="save-button"
+            type="submit"
+            id="edit-password-save-button"
+          >
             Save
           </Button>
         </Col>

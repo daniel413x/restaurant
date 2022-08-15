@@ -158,40 +158,47 @@ function AdminOrder({
                   label="Order received"
                   name="status"
                   type="radio"
-                  className={`${orderReceived && 'disabled-2'}`}
+                  className={`${orderReceived && 'blocked'}`}
                 />
               </Col>
               <Col>
                 {orderBeingPrepared && <FontAwesomeIcon icon={faCheck} />}
                 <Form.Check
+                  id="status-two-radio-button"
                   label="Order being prepared"
                   name="status"
                   type="radio"
-                  className={`${orderBeingPrepared && 'disabled-2'}`}
+                  className={`${orderBeingPrepared && 'blocked'}`}
                   onClick={() => setNewStatus(1)}
                 />
               </Col>
               <Col>
                 {orderEnRoute && <FontAwesomeIcon icon={faCheck} />}
                 <Form.Check
+                  id="status-three-radio-button"
                   label="Order en route"
                   name="status"
                   type="radio"
-                  className={`${orderEnRoute && 'disabled-2'}`}
+                  className={`${orderEnRoute && 'blocked'}`}
                   onClick={() => setNewStatus(2)}
                 />
               </Col>
               <Col>
                 {orderDelivered && <FontAwesomeIcon icon={faCheck} />}
                 <Form.Check
+                  id="status-four-radio-button"
                   label="Order delivered"
                   name="status"
                   type="radio"
-                  className={`${orderDelivered && 'disabled-2'}`}
+                  className={`${orderDelivered && 'blocked'}`}
                   onClick={() => setNewStatus(3)}
                 />
               </Col>
-              <Button className="submit-button btn btn-secondary" type="submit">
+              <Button
+                id="submit-change-status-button"
+                className="submit-button btn btn-secondary"
+                type="submit"
+              >
                 Update
               </Button>
             </Form>

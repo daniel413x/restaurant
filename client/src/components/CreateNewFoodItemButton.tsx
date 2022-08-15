@@ -9,18 +9,19 @@ import {
 } from 'react-bootstrap';
 import CreateFoodItem from './modals/CreateFoodItem';
 import createNewFoodItem from '../assets/create-new-food-item.png';
+import { ICategory } from '../types/types';
 
 interface CreateNewFoodItemButtonProps {
-  categoryId: string; // necessary evil to pre-select category in modal dropdown
+  category: ICategory;
 }
 
-function CreateNewFoodItemButton({ categoryId }: CreateNewFoodItemButtonProps) {
+function CreateNewFoodItemButton({ category }: CreateNewFoodItemButtonProps) {
   const [showCreateFoodItemModal, setShowCreateFoodItemModal] = useState<boolean>(false);
   return (
-    <Col className="add-food-item-button food-item">
+    <Col className="add-food-item-button food-item" id={`create-item-for-${category.name.toLowerCase()}`}>
       <CreateFoodItem
         show={showCreateFoodItemModal}
-        categoryId={categoryId}
+        categoryId={category.id}
         onHide={() => setShowCreateFoodItemModal(false)}
       />
       <Button className="button-wrapper" onClick={() => setShowCreateFoodItemModal(true)} />

@@ -42,12 +42,12 @@ function Confirmation({
       </Modal.Body>
       <Modal.Footer>
         <Form onSubmit={onOk}>
-          <Button type="submit">
+          <Button id="submit-button" type="submit">
             OK
           </Button>
         </Form>
         {onConfirmFunc && (
-          <Button onClick={onHide}>
+          <Button id="cancel-button" onClick={onHide}>
             Cancel
           </Button>
         )}

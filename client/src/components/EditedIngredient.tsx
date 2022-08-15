@@ -17,13 +17,14 @@ function EditedIngredient({
   deleteIngredient,
 }: EditedIngredientProps) {
   return (
-    <Row className="edited-ingredient">
+    <Row className="edited-ingredient" id={`ingredient-${ingredient}`}>
       <Col className="name" md="auto">
         {ingredient}
       </Col>
       <Col className="spacer" />
       <Col className="icon-buttons" md="auto">
         <Button
+          id={`delete-ingredient-${ingredient}`}
           className="btn btn-secondary"
           onClick={() => deleteIngredient(ingredient)}
         >

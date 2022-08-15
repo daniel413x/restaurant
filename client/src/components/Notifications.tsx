@@ -7,7 +7,7 @@ import Context from '../context/context';
 function Notifications() {
   const { notifications } = useContext(Context);
   return (
-    <div className="notifications-container">
+    <div className="notifications-container" id="notifications-container">
       {notifications.all.map((notification: INotification) => (
         <Notification
           key={notification.id}

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
   indexAuthedRoutes,
@@ -22,6 +22,7 @@ function App() {
     notifications,
     addresses,
   } = useContext(Context);
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     (async () => {
       try {
@@ -60,11 +61,14 @@ function App() {
         );
         if (error.response.status === 401) {
           localStorage.removeItem('registeredToken');
+          localStorage.removeItem('guestToken');
         }
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
-  return (
+  return loading ? null : (
     <Router>
       <Notifications />
       <Navigation />

@@ -60,10 +60,13 @@ function ActiveOrder() {
         <Col className="items-delivery-address-col" md={6}>
           <h2>
             Order #
-            {orders.activeOrder?.id.split('').slice(0, 8).join('')}
+            <span id="displayed-id">
+              {orders.activeOrder?.id.split('').slice(0, 8).join('')}
+            </span>
           </h2>
           <List
             className="items-ul"
+            id="items-ul"
             items={orders.activeOrder?.foodItems!}
             renderList={(foodItem: OrderOrCartFoodItem) => (
               <li key={foodItem.id}>
@@ -113,7 +116,7 @@ function ActiveOrder() {
                 <span className="label">
                   Estimated time
                 </span>
-                <span className={`figure ${currentOrb === 3 && 'disabled-2'}`}>
+                <span className={`figure ${currentOrb === 3 && 'blocked'}`}>
                   {`${min} - ${max} minutes`}
                 </span>
               </div>
@@ -123,7 +126,7 @@ function ActiveOrder() {
                 <span className="label">
                   Order tracker
                 </span>
-                <ul>
+                <ul id="timestamped-action-ul">
                   {orders.activeOrder?.actionLog.map((action: [string, string], index: number) => (
                     <li key={action[1]}>
                       <TimestampedAction

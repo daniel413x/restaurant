@@ -7,6 +7,7 @@ import foodItemInCartRouter from './foodItemInCartRouter';
 import cartRouter from './cartRouter';
 import orderRouter from './orderRouter';
 import optionsRouter from './optionsRouter';
+import testingRouter from './testingRouter';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/fooditemincart', foodItemInCartRouter);
 router.use('/cart', cartRouter);
 router.use('/order', orderRouter);
 router.use('/options', optionsRouter);
+router.use('/testing', testingRouter);
 
 export default router;

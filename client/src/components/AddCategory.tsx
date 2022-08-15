@@ -56,9 +56,6 @@ function AddCategory() {
       );
     }
   };
-  const toggleEditTitle = () => {
-    setActive(!active);
-  };
   useEffect(() => {
     if (active) {
       focusRef.current?.focus();
@@ -73,28 +70,30 @@ function AddCategory() {
       <Form className="title-buttons-row body" onSubmit={submit}>
         <Col className="tab-col" md="auto">
           <Form.Control
+            id="add-category-field"
             ref={focusRef}
             value={active ? name : name}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-            className={`${!active && 'disabled-2'}`}
+            className={`${!active && 'blocked'}`}
           />
         </Col>
         <Col className="icon-buttons" md="auto">
-          {!active && (
-            <Button onClick={toggleEditTitle} title="Edit" id="fds">
-              <FontAwesomeIcon icon={faPlus} />
-            </Button>
-          )}
           {active && (
-          <Button onClick={() => setActive(false)} title="Cancel">
-            <FontAwesomeIcon icon={faBan} />
-          </Button>
-          )}
-          {active && (
-            <Button title="Save" type="submit" id="fds2">
+            <Button
+              title="Save"
+              type="submit"
+              id="submit-add-category-button"
+            >
               <FontAwesomeIcon icon={faCheck} />
             </Button>
           )}
+          <Button
+            onClick={() => setActive(!active)}
+            title={active ? 'Cancel' : 'Edit'}
+            id="toggle-add-category-button"
+          >
+            <FontAwesomeIcon icon={active ? faBan : faPlus} />
+          </Button>
         </Col>
       </Form>
     </div>

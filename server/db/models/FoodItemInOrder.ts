@@ -81,8 +81,14 @@ FoodItemInOrder.init(
         key: 'id',
       },
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
   },
   {
     sequelize,

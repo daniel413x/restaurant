@@ -8,10 +8,11 @@ import { observer } from 'mobx-react-lite';
 import Context from '../context/context';
 import LabeledCheckboxButton from './LabeledCheckboxButton';
 import {
-  green, red, shortNotification,
+  green, longNotification, red, shortNotification,
 } from '../utils/consts';
 import SmartInput from './SmartInput';
 import { editUser } from '../http/userAPI';
+import { validateEmail } from '../utils/functions';
 
 function EditEmail() {
   const { notifications, user } = useContext(Context);
@@ -29,6 +30,14 @@ function EditEmail() {
       );
     }
     try {
+      const validEmail = validateEmail(newEmail);
+      if (!validEmail) {
+        return notifications.message(
+          'Invalid email format',
+          red,
+          longNotification,
+        );
+      }
       const { email: updatedEmail } = await editUser({ email: newEmail });
       user.setEmail(updatedEmail);
       return notifications.message(
@@ -55,15 +64,17 @@ function EditEmail() {
       </Col>
       <Col>
         <LabeledCheckboxButton
+          id="edit-email-checkbox-button"
           label="Change email"
           boolean={unlockChangeEmail}
           setBoolean={setUnlockChangeEmail}
           light
         />
-        <Form className={`${!unlockChangeEmail && 'disabled-2'}`} onSubmit={submit}>
+        <Form className={`${!unlockChangeEmail && 'blocked'}`} onSubmit={submit}>
           <Col>
             New Email
             <SmartInput
+              id="edit-email-field"
               onChange={setNewEmail}
               value={newEmail}
               pressedSubmit={pressedSubmit}
@@ -71,7 +82,12 @@ function EditEmail() {
             />
           </Col>
           <Col>
-            <Button variant="light" className="save-button" type="submit">
+            <Button
+              variant="light"
+              id="edit-email-save-button"
+              className="save-button"
+              type="submit"
+            >
               Save
             </Button>
           </Col>

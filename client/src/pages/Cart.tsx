@@ -94,7 +94,10 @@ function Cart() {
               </div>
             </Col>
             <Col md="auto">
-              <Button onClick={() => setShowCheckoutModal(true)}>
+              <Button
+                id="checkout-button"
+                onClick={() => setShowCheckoutModal(true)}
+              >
                 Checkout
               </Button>
             </Col>

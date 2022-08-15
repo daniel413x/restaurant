@@ -31,6 +31,7 @@ function QuantityButtons({
             className="quantity"
             type="number"
             min="1"
+            id="item-quantity-counter"
             readOnly
           />
         </div>
@@ -41,14 +42,14 @@ function QuantityButtons({
       </div>
       <div className="icon-buttons">
         {handleDeleteModal && (
-        <Button onClick={handleDeleteModal}>
+        <Button id="delete-item-button" onClick={handleDeleteModal}>
           <FontAwesomeIcon icon={faBan} />
         </Button>
         )}
-        <Button className={`${quantity <= 1 && 'disabled-2'}`} onClick={decrement}>
+        <Button id="decrement-item-button" className={`${quantity <= 1 && 'blocked'}`} onClick={decrement}>
           <FontAwesomeIcon icon={faCaretDown} />
         </Button>
-        <Button onClick={increment}>
+        <Button id="increment-item-button" onClick={increment}>
           <FontAwesomeIcon icon={faCaretUp} />
         </Button>
       </div>

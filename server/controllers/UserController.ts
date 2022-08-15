@@ -69,8 +69,11 @@ class UserController extends BaseController<User> {
     const user = await User.create({
       email,
       password: hashPassword,
-      roles: [REGISTERED, ADMIN],
+      roles: [REGISTERED],
     });
+    if (process.env.NODE_ENV !== 'production') {
+      user.roles.push(ADMIN);
+    }
     const UserId = user.id;
     let cart = await Cart.create({ UserId });
     // guest accreditations
@@ -154,7 +157,7 @@ class UserController extends BaseController<User> {
     }
     const { id } = res.locals.user;
     const updatedObj = await User.update(updatedVals, { where: { id }, returning: true });
-    const token = generateJwt(updatedObj[1][0]);
+    const token = generateJwt(updatedObj[1][0], '24h');
     return res.json({ token });
   }
 

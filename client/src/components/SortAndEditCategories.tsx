@@ -94,20 +94,23 @@ function SortAndEditCategories() {
       <Droppable droppableId="list">
         {(providedUl) => (
           <ul
+            id="categories-ul"
             className="collapsible-items-ul"
             ref={providedUl.innerRef}
             /* eslint-disable-next-line react/jsx-props-no-spreading */
             {...providedUl.droppableProps}
+            /* eslint-disable-next-line react/jsx-props-no-spreading */
           >
             {sortedCategories.map((cat, index) => (
               <Draggable
-                draggableId={cat.id}
+                draggableId={`${cat.name.toLowerCase()}-dragger`}
                 index={index}
                 isDragDisabled={!sortingMode}
-                key={cat.id}
+                key={`${cat.name.toLowerCase()}-dragger`}
               >
                 {(providedLi) => (
                   <li
+                    id={cat.name.toLowerCase()}
                     ref={providedLi.innerRef}
                     /* eslint-disable-next-line react/jsx-props-no-spreading */
                     {...providedLi.draggableProps}
@@ -123,14 +126,19 @@ function SortAndEditCategories() {
             ))}
             {providedUl.placeholder}
             {!sortingMode && (
-              <li key={uncategorizedCategory.id}>
+              <li
+                id="uncategorized"
+                key={uncategorizedCategory.id}
+              >
                 <EditedCategory
                   category={uncategorizedCategory}
                 />
               </li>
             )}
             {!sortingMode && (
-              <li key="addCategoryButton">
+              <li
+                key="addCategoryButton"
+              >
                 <AddCategory />
               </li>
             )}
@@ -142,10 +150,10 @@ function SortAndEditCategories() {
                       Save
                     </Col>
                     <Col className="icon-buttons" md="auto">
-                      <Button title="Save" onClick={saveSortingArray}>
+                      <Button id="submit-sorting-button" title="Save" onClick={saveSortingArray}>
                         <FontAwesomeIcon icon={faCheck} />
                       </Button>
-                      <Button title="Cancel" onClick={exitSortingModeWithoutSaving}>
+                      <Button id="cancel-sorting-button" title="Cancel" onClick={exitSortingModeWithoutSaving}>
                         <FontAwesomeIcon icon={faBan} />
                       </Button>
                     </Col>

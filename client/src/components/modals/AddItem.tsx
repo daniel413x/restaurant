@@ -99,14 +99,15 @@ function AddItem({
           />
           Instructions:
           <Form.Control
+            id="instructions-field"
             as="textarea"
             value={instructions}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setInstructions(e.target.value)}
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button type="submit">Add</Button>
-          <Button onClick={onHide}>Back</Button>
+          <Button id="submit-button" type="submit">Add</Button>
+          <Button id="back-button" onClick={onHide}>Back</Button>
         </Modal.Footer>
       </Form>
     </Modal>

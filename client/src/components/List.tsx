@@ -5,6 +5,7 @@ interface ListProps<T> {
   renderList: (list: T, index?: number) => ReactNode;
   className?: string;
   children?: ReactElement | ReactElement[];
+  id?: string;
 }
 
 function List<T>({
@@ -12,9 +13,10 @@ function List<T>({
   renderList,
   className,
   children,
+  id,
 }: ListProps<T>) {
   return (
-    <ul className={`${className}`}>
+    <ul className={`${className}`} id={id}>
       {items?.map(renderList)}
       {children}
     </ul>
@@ -24,6 +26,7 @@ function List<T>({
 List.defaultProps = {
   className: '',
   children: false,
+  id: '',
 };
 
 export default List;

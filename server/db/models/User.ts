@@ -74,8 +74,14 @@ User.init({
   avatar: {
     type: DataTypes.STRING,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date(),
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date(),
+  },
 }, {
   sequelize,
   modelName: 'User',

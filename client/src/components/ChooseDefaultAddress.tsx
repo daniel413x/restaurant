@@ -78,7 +78,7 @@ function ChooseDefaultAddress() {
     }
   }, [userAddresses]);
   return (
-    <Col className={`${userAddresses.length === 0 && 'disabled-2'}`} lg={6}>
+    <Col className={`${userAddresses.length === 0 && 'blocked'}`} lg={6}>
       <Confirmation
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
@@ -88,8 +88,13 @@ function ChooseDefaultAddress() {
       <h4>
         Set default address
       </h4>
-      <Dropdown className="dropdown-button">
-        <Dropdown.Toggle variant="light">
+      <Dropdown
+        className="dropdown-button"
+      >
+        <Dropdown.Toggle
+          variant="light"
+          id="select-default-dropdown"
+        >
           {selectedAddress ? selectedAddress.addressLineOne : 'Select default address'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
@@ -101,45 +106,56 @@ function ChooseDefaultAddress() {
       First name
       <Form.Control
         value={selectedAddress?.firstName || ''}
+        id="default-address-firstname"
         readOnly
       />
       Last name
       <Form.Control
+        id="default-address-lastname"
         value={selectedAddress?.lastName || ''}
         readOnly
       />
       Address Line One
       <Form.Control
+        id="default-address-line-one"
         value={selectedAddress?.addressLineOne || ''}
         readOnly
       />
       Address Line Two
       <Form.Control
+        id="default-address-line-two"
         value={selectedAddress?.addressLineTwo || ''}
         readOnly
       />
       City/Territory
       <Form.Control
+        id="default-address-city"
         value={selectedAddress?.city || ''}
         readOnly
       />
       State
       <Form.Control
+        id="default-address-state"
         value={selectedAddress?.state || ''}
         readOnly
       />
       Zip
       <Form.Control
+        id="default-address-zip"
         value={selectedAddress?.zip || ''}
         readOnly
       />
       <Col className="button-row">
         <Form onSubmit={submitSetDefaultAddress}>
-          <Button className={`${selectedAddress?.id === addresses.defaultAddress?.id && 'disabled-2'}`} type="submit">
+          <Button
+            className={`${selectedAddress?.id === addresses.defaultAddress?.id && 'blocked'}`}
+            type="submit"
+            id="submit-default-button"
+          >
             Set as default
           </Button>
         </Form>
-        <Button onClick={() => setShowDeleteModal(true)}>
+        <Button id="delete-button" onClick={() => setShowDeleteModal(true)}>
           Delete
         </Button>
       </Col>

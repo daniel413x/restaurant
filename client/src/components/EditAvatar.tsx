@@ -39,7 +39,7 @@ function EditAvatar() {
         dimensions={[85, 85]}
         existingImage={user.avatar ? `${process.env.REACT_APP_API_URL}${user.avatar}` : ''}
       />
-      <Button className={`save-button ${!selectedFile && 'disabled-2'}`} type="submit">
+      <Button className={`save-button ${!selectedFile && 'blocked'}`} id="edit-avatar-save-button" type="submit">
         Save
       </Button>
     </Form>

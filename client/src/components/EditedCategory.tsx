@@ -58,6 +58,7 @@ function FoodItem({
   if (discount) {
     discountedPrice = calcItemPrice(price, discount);
   }
+  const idAttributeBase = foodItem.name.split(' ').join('-').toLowerCase();
   return (
     <Col className="food-item">
       <Image src={`${process.env.REACT_APP_API_URL}${image}`} />
@@ -80,6 +81,7 @@ function FoodItem({
         <Col>
           <NavLink
             className="btn btn-secondary"
+            id={`edit-${idAttributeBase}`}
             to={`${ADMIN_FOOD_ITEMS_ROUTE}/${foodItem.id}`}
           >
             Edit
@@ -89,6 +91,7 @@ function FoodItem({
           <Button
             className="btn btn-secondary"
             onClick={() => selectFoodItemToDelete(foodItem)}
+            id={`delete-${idAttributeBase}`}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
           </Button>
@@ -183,7 +186,7 @@ function EditedCategory({
       setExpand(false);
     }
   };
-  const renderName = () => {
+  const namePlusItemCount = () => {
     if (active) {
       return newName;
     }
@@ -208,7 +211,11 @@ function EditedCategory({
   }, [sortingMode]);
   useOnClickOutside(outsideClickRef, () => setActive(false));
   return (
-    <div className={`category collapsible-item ${activeOrExpanded && 'active-or-expanded'} ${id === draggedId && 'more-box-shadow'}`} ref={outsideClickRef}>
+    <div
+      className={`category collapsible-item ${activeOrExpanded && 'active-or-expanded'}
+      ${id === draggedId && 'more-box-shadow'}`}
+      ref={outsideClickRef}
+    >
       <Confirmation
         show={showDeleteCategoryModal}
         onHide={() => setShowDeleteCategoryModal(false)}
@@ -229,14 +236,14 @@ function EditedCategory({
         <Col className="tab-col" md="auto">
           <Form.Control
             ref={focusRef}
-            value={renderName()}
+            value={namePlusItemCount()}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
-            className={`${!active && !expand && 'disabled-2'}`}
+            className={`${!active && !expand && 'blocked'}`}
           />
         </Col>
         {active ? (
           <Col className="icon-buttons" md="auto">
-            <Button type="submit" title="Save">
+            <Button id="submit-button" type="submit" title="Save">
               <FontAwesomeIcon icon={faCheck} />
             </Button>
             <Button onClick={() => setActive(false)} title="Cancel">
@@ -244,34 +251,46 @@ function EditedCategory({
             </Button>
           </Col>
         ) : (
-          <Col className={`ellipsis-menu ${sortingMode && 'disabled-2'}`} md="auto">
+          <Col className={`ellipsis-menu ${sortingMode && 'blocked'}`} md="auto">
             <Dropdown autoClose>
               <Dropdown.Toggle>
                 <FontAwesomeIcon icon={faEllipsisVertical} />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item>
-                  <Button onClick={toggleExpand}>
+                  <Button
+                    id="expand-button"
+                    onClick={toggleExpand}
+                  >
                     {expand ? 'Collapse' : 'Expand'}
                   </Button>
                 </Dropdown.Item>
                 {!uncategorizedCategory && (
                 <Dropdown.Item>
-                  <Button onClick={toggleEditTitle}>
+                  <Button
+                    id="retitle-button"
+                    onClick={toggleEditTitle}
+                  >
                     Re-title
                   </Button>
                 </Dropdown.Item>
                 )}
                 {!uncategorizedCategory && (
                 <Dropdown.Item>
-                  <Button onClick={() => categories.setSortingMode(true)}>
+                  <Button
+                    id="sort-button"
+                    onClick={() => categories.setSortingMode(true)}
+                  >
                     Re-order
                   </Button>
                 </Dropdown.Item>
                 )}
                 {!uncategorizedCategory && (
                 <Dropdown.Item>
-                  <Button onClick={() => setShowDeleteCategoryModal(true)}>
+                  <Button
+                    id="delete-button"
+                    onClick={() => setShowDeleteCategoryModal(true)}
+                  >
                     Delete
                   </Button>
                 </Dropdown.Item>
@@ -283,6 +302,7 @@ function EditedCategory({
       </Form>
       {expand && <div className="divider" />}
       <List
+        id={`${category.name.toLowerCase()}-food-items`}
         className={`food-items-list ${expand && 'expand'}`}
         items={foodItems}
         renderList={(foodItem: IFoodItem) => (
@@ -296,7 +316,7 @@ function EditedCategory({
       >
         <li>
           <CreateNewFoodItemButton
-            categoryId={id}
+            category={category}
           />
         </li>
       </List>

@@ -101,8 +101,14 @@ Order.init(
       type: DataTypes.ARRAY(DataTypes.ARRAY),
       allowNull: false,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
   },
   {
     sequelize,

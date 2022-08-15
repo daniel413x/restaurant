@@ -1,5 +1,7 @@
 import React, {
-  useState, useContext, FormEvent,
+  useState,
+  useContext,
+  FormEvent,
 } from 'react';
 import {
   Col, Button, Form,
@@ -85,6 +87,7 @@ function AddNewAddress() {
       First name
       <Form onSubmit={submit}>
         <SmartInput
+          id="first-name-field"
           onChange={setFirstName}
           value={firstName}
           pressedSubmit={pressedSubmit}
@@ -93,6 +96,7 @@ function AddNewAddress() {
         />
         Last name
         <SmartInput
+          id="last-name-field"
           onChange={setLastName}
           value={lastName}
           pressedSubmit={pressedSubmit}
@@ -101,6 +105,7 @@ function AddNewAddress() {
         />
         Address Line One
         <SmartInput
+          id="address-line-one-field"
           onChange={setAddressLineOne}
           value={addressLineOne}
           pressedSubmit={pressedSubmit}
@@ -109,6 +114,7 @@ function AddNewAddress() {
         />
         Address Line Two
         <SmartInput
+          id="address-line-two-field"
           onChange={setAddressLineTwo}
           value={addressLineTwo}
           pressedSubmit={pressedSubmit}
@@ -118,6 +124,7 @@ function AddNewAddress() {
         />
         City/Territory
         <SmartInput
+          id="city-field"
           onChange={setCity}
           value={city}
           pressedSubmit={pressedSubmit}
@@ -126,6 +133,7 @@ function AddNewAddress() {
         />
         State
         <SmartInput
+          id="state-field"
           onChange={setState}
           value={state}
           pressedSubmit={pressedSubmit}
@@ -134,6 +142,7 @@ function AddNewAddress() {
         />
         Zip
         <SmartInput
+          id="zip-field"
           onChange={setZip}
           value={zip}
           pressedSubmit={pressedSubmit}
@@ -141,10 +150,15 @@ function AddNewAddress() {
           placeholder="Required"
         />
         <Col className="button-row">
-          <Button id="add-new-address-save" type="submit" onClick={() => setPressedSaveAsDefault(false)} className={`${requiredFieldsIncomplete && 'disabled-2'}`}>
+          <Button id="save-address-button" type="submit" onMouseDown={() => setPressedSaveAsDefault(false)} className={`${requiredFieldsIncomplete && 'blocked'}`}>
             Save
           </Button>
-          <Button id="add-new-address-save-as-default" onClick={() => setPressedSaveAsDefault(true)} type="submit" className={`${requiredFieldsIncomplete && 'disabled-2'}`}>
+          <Button
+            id="save-address-as-default-button"
+            onMouseDown={() => setPressedSaveAsDefault(true)}
+            type="submit"
+            className={`${requiredFieldsIncomplete && 'blocked'}`}
+          >
             Save as default
           </Button>
         </Col>

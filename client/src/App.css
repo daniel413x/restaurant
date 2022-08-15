@@ -13,6 +13,7 @@
   /* background-color: rgb(105, 0, 0); */
   --navbar-height: 117px;
   --footer-height: 361px;
+  /* filter:brightness(.7); */
 }
 
 @media (max-width: 650px) {
@@ -38,7 +39,7 @@ body, html {
   visibility: hidden;
 }
 
-.disabled-2 {
+.blocked {
   pointer-events: none;
   opacity: .5;
 }
@@ -2463,14 +2464,16 @@ input.form-control:focus {
   color: #fff;
 }
 
-.food-item-form .category-menu .dropdown-menu {
-  width: 100%;
+.food-item-form .category-menu .dropdown-button {
+  margin: .5rem auto;
 }
 
-.food-item-form .category-menu .dropdown-menu a {
-  font-weight: bold;
-  color: var(--primary-red);
-  padding: 1rem;
+.food-item-form .category-menu .dropdown-menu button {
+  all: inherit;
+}
+
+.food-item-form .category-menu .dropdown-menu {
+  width: 100%;
 }
 
 .food-item-form .category-menu .dropdown-menu a:hover {
@@ -2691,7 +2694,7 @@ input.form-control:focus {
   box-shadow: 0 0 0 .25rem var(--primary-red-box-shadow);
 }
 
-#admin-orders .admin-order .address-status-col .order-status .form-check.disabled-2 .form-check-input:checked {
+#admin-orders .admin-order .address-status-col .order-status .form-check.blocked .form-check-input:checked {
   border: 1px solid rgba(0,0,0,.25);
   background-color: transparent;
 }

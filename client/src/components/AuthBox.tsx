@@ -15,6 +15,7 @@ import Context from '../context/context';
 import { login, registration } from '../http/userAPI';
 import { createAddress } from '../http/addressAPI';
 import { fetchUserCart } from '../http/cartAPI';
+import { validateEmail, validatePassword } from '../utils/functions';
 
 interface AuthBoxProps {
   onSuccess: () => void;
@@ -55,13 +56,7 @@ function AuthBox({
       );
       return;
     }
-    const formattedEmail = ['', ''];
-    email.split('@').forEach((p: string, i: number) => {
-      formattedEmail[i] = p;
-    });
-    const [local, domain] = formattedEmail;
-    const expectedLength = formattedEmail.length === 2;
-    const validEmail = expectedLength && local && domain;
+    const validEmail = validateEmail(email);
     if (!validEmail) {
       notifications.message(
         'Invalid email format',
@@ -70,8 +65,8 @@ function AuthBox({
       );
       return;
     }
-    const validPassword = /(?=^\S{6,256}$)^.+$/i.test(password);
-    if (!validPassword) {
+    const validPassword = validatePassword(password);
+    if (!validPassword && !forLogin) {
       notifications.message(
         'Please choose a password between 6 and 256 characters',
         red,
@@ -131,6 +126,7 @@ function AuthBox({
     <Col className="auth-box">
       <Form onSubmit={(e) => submit(e)}>
         <SmartInput
+          id="email-field"
           label="Email address"
           onChange={setEmail}
           value={email}
@@ -140,6 +136,7 @@ function AuthBox({
           primaryStyle
         />
         <SmartInput
+          id="password-field"
           label="Password"
           type="password"
           onChange={setPassword}
@@ -152,6 +149,7 @@ function AuthBox({
         {forLogin ? <div className="no-shift" /> : (
           <div className="default-address-form">
             <LabeledCheckboxButton
+              id="save-default-address-button"
               label="Save a default delivery address (optional)"
               boolean={saveDefaultAddress}
               setBoolean={setSaveDefaultAddress}
@@ -161,6 +159,7 @@ function AuthBox({
               <div>
                 <Row>
                   <SmartInput
+                    id="first-name-field"
                     label="First name"
                     onChange={setFirstName}
                     value={firstName}
@@ -171,7 +170,8 @@ function AuthBox({
                   />
                   <SmartInput
                     label="Middle name"
-                    classes="disabled-2"
+                    id="middle-name-field"
+                    classes="blocked"
                     onChange={setMiddleName}
                     value={middleName}
                     placeholder="Optional"
@@ -183,6 +183,7 @@ function AuthBox({
                 </Row>
                 <SmartInput
                   label="Last name"
+                  id="last-name-field"
                   onChange={setLastName}
                   value={lastName}
                   placeholder="Required"
@@ -192,6 +193,7 @@ function AuthBox({
                 />
                 <SmartInput
                   label="Address line one"
+                  id="address-line-one-field"
                   onChange={setAddressLineOne}
                   value={addressLineOne}
                   placeholder="Required"
@@ -200,6 +202,7 @@ function AuthBox({
                   primaryStyle
                 />
                 <SmartInput
+                  id="address-line-two-field"
                   label="Address line two"
                   onChange={setAddressLineTwo}
                   value={addressLineTwo}
@@ -211,6 +214,7 @@ function AuthBox({
                 />
                 <Row className="city-state-row">
                   <SmartInput
+                    id="city-field"
                     label="City"
                     onChange={setCity}
                     value={city}
@@ -221,6 +225,7 @@ function AuthBox({
                   />
                   <SmartInput
                     label="State"
+                    id="state-field"
                     classes="px-1"
                     onChange={setState}
                     value={state}
@@ -231,6 +236,7 @@ function AuthBox({
                   />
                   <SmartInput
                     label="Zip"
+                    id="zip-field"
                     onChange={setZip}
                     value={zip}
                     placeholder="Req."
@@ -244,7 +250,7 @@ function AuthBox({
           </div>
         )}
         <Col md="auto">
-          <Form.Control type="submit" value="Submit" />
+          <Form.Control id="submit-button" type="submit" value="Submit" />
         </Col>
       </Form>
     </Col>

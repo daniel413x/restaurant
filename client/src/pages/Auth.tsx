@@ -47,7 +47,7 @@ function Auth() {
         onSuccess={onSuccess}
         forLogin={forLogin}
       />
-      <NavLink to={`/${forLogin ? REGISTRATION_ROUTE : LOGIN_ROUTE}`}>
+      <NavLink id="switch-link" to={`/${forLogin ? REGISTRATION_ROUTE : LOGIN_ROUTE}`}>
         {forLogin ? 'Register an account' : 'I\'m already registered'}
       </NavLink>
     </Container>
