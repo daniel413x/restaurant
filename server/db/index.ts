@@ -20,6 +20,9 @@ Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
+  if (db[modelName].baseAssociations) {
+    db[modelName].baseAssociations(db, db[modelName]);
+  }
 });
 
 db.sequelize = sequelize;

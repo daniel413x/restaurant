@@ -10,13 +10,6 @@ export default {
     },
     UserId: {
       type: Sequelize.UUID,
-      references: {
-        model: 'User',
-        key: 'id',
-      },
-    },
-    guestId: {
-      type: Sequelize.STRING,
     },
     AddressForOrderId: {
       type: Sequelize.STRING,

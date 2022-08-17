@@ -63,7 +63,7 @@ class OrderController extends BaseController<Order> {
     const { id } = res.locals.user;
     const options = {
       where: {
-        guestId: id,
+        UserId: id,
         activeOrder: true,
       },
       include: [{
@@ -110,11 +110,11 @@ class OrderController extends BaseController<Order> {
     const { guestId } = req.body;
     const orderProperties = this.generateDependantOrderProperties(foodItems);
     const date = new Date().toString();
-    await this.nullPreviousActiveOrder({ guestId });
+    await this.nullPreviousActiveOrder({ UserId: guestId });
     const order = await Order.create({
       ...orderProperties,
       date,
-      guestId,
+      UserId: guestId,
       AddressForOrderId: address.id,
       status: 0,
       actionLog: [[new Date().toString(), 'Order received']],

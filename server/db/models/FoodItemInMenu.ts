@@ -1,22 +1,13 @@
 import {
-  CreationOptional,
-  InferAttributes,
-  InferCreationAttributes,
   DataTypes,
   UUIDV4,
-  Model,
 } from 'sequelize';
 import { ICategory, IFoodItemInMenu } from '../../types/types';
 import sequelize from '../connection';
+import BaseFoodItem from './BaseFoodItem';
 
 // eslint-disable-next-line no-use-before-define
-class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreationAttributes<FoodItemInMenu>> implements IFoodItemInMenu {
-  id!: CreationOptional<string>;
-
-  name!: string;
-
-  price!: string;
-
+class FoodItemInMenu extends BaseFoodItem<FoodItemInMenu> implements IFoodItemInMenu {
   image!: string;
 
   time!: [number, number];
@@ -31,10 +22,6 @@ class FoodItemInMenu extends Model<InferAttributes<FoodItemInMenu>, InferCreatio
 
   category?: ICategory;
 
-  createdAt?: CreationOptional<Date>;
-
-  updatedAt?: CreationOptional<Date>;
-
   static associate(models: any) {
     FoodItemInMenu.belongsTo(models.Category, { targetKey: 'id', foreignKey: 'CategoryId' });
   }
@@ -45,6 +32,7 @@ FoodItemInMenu.init(
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
+      allowNull: false,
       primaryKey: true,
     },
     name: {
@@ -52,7 +40,7 @@ FoodItemInMenu.init(
       allowNull: false,
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.STRING,
       allowNull: false,
       get() {
         const value = this.getDataValue('price');
@@ -89,14 +77,8 @@ FoodItemInMenu.init(
         key: 'id',
       },
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: new Date(),
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: new Date(),
-    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,

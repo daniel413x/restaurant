@@ -32,10 +32,6 @@ class AddressForOrder extends Model<InferAttributes<AddressForOrder>, InferCreat
   createdAt?: CreationOptional<Date>;
 
   updatedAt?: CreationOptional<Date>;
-
-  static associate(models: any) {
-    AddressForOrder.belongsTo(models.Order, { targetKey: 'id' });
-  }
 }
 
 AddressForOrder.init(
@@ -75,10 +71,6 @@ AddressForOrder.init(
     },
     OrderId: {
       type: DataTypes.UUID,
-      references: {
-        model: 'Order',
-        key: 'id',
-      },
     },
     createdAt: {
       type: DataTypes.DATE,

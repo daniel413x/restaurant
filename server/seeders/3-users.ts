@@ -7,7 +7,7 @@ const hashPassword = async () => {
   return returned;
 };
 
-export const user = uuidv4();
+export const user = 'da1cefe8-5d73-4174-9543-3e6d8b47218a';
 
 export default {
   up: async (queryInterface) => queryInterface.bulkInsert('User', [

@@ -379,7 +379,7 @@ describe('restaurant app', () => {
             .should('have.length', 1);
         });
       });
-      it('acreddits the order to the user upon registration', () => {
+      it('accredits the order to the user upon registration', () => {
         cy.visit(`${clientUrl}/registration`);
         cy.enterValidRegistrationForm();
         cy.get('#submit-button')
@@ -888,7 +888,7 @@ describe('restaurant app', () => {
       beforeEach(() => {
         cy.visit(`${clientUrl}/admin/menu/fooditems/bece6c76-ea23-4472-8bba-94a50a907c74`);
       });
-      it.only('updates the food item upon submission of a complete form', () => {
+      it('updates the food item upon submission of a complete form', () => {
         cy.get('#select-category-dropdown')
           .click({ force: true });
         cy.get('.dropdown-item')

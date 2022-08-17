@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development nodemon index.ts",
+    "test": "cross-env NODE_ENV=test nodemon index.ts",
     "babel": "babel db --extensions \".ts,.js\" --out-dir ./lib/db && babel ./utils --extensions \".ts,.js\" --out-dir ./lib/utils && babel ./migrations --extensions \".ts,.js\" --out-dir ./lib/migrations && babel ./seeders --extensions \".ts,.js\" --out-dir ./lib/seeders",
-    "migrate": "npm run babel && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "migrate:undo": "npx sequelize-cli db:migrate:undo",
-    "migrate:undo:all": "npx sequelize-cli db:migrate:undo:all",
-    "start:test": "cross-env NODE_ENV=test nodemon index.ts"
+    "babel:test": "babel db --extensions \".ts,.js\" --out-dir ./lib/db && babel ./utils --extensions \".ts,.js\" --out-dir ./lib/utils && babel ./migrations --extensions \".ts,.js\" --out-dir ./lib/migrations && babel ./seeders_test --extensions \".ts,.js\" --out-dir ./lib/seeders_test",
+    "dev:migrate": "npm run babel && npx cross-env NODE_ENV=development sequelize-cli db:migrate && npx cross-env NODE_ENV=development sequelize-cli db:seed:all",
+    "dev:migrate:undo": "npx cross-env NODE_ENV=development sequelize-cli db:migrate:undo",
+    "dev:migrate:undo:all": "npx cross-env NODE_ENV=development sequelize-cli db:migrate:undo:all",
+    "test:migrate": "npm run babel:test && npx cross-env NODE_ENV=test sequelize-cli db:migrate && npx cross-env NODE_ENV=test sequelize-cli db:seed:all",
+    "test:migrate:undo": "npx cross-env NODE_ENV=test sequelize-cli db:migrate:undo",
+    "test:migrate:undo:all": "npx cross-env NODE_ENV=test sequelize-cli db:migrate:undo:all"
   },
   "keywords": [],
   "author": "",

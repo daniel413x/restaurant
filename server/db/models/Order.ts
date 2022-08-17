@@ -16,8 +16,6 @@ class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>
 
   UserId?: CreationOptional<string>;
 
-  guestId?: CreationOptional<string>;
-
   AddressForOrderId!: string;
 
   address?: IAddressForOrder;
@@ -65,13 +63,6 @@ Order.init(
     },
     UserId: {
       type: DataTypes.UUID,
-      references: {
-        model: 'User',
-        key: 'id',
-      },
-    },
-    guestId: {
-      type: DataTypes.STRING,
     },
     AddressForOrderId: {
       type: DataTypes.STRING,

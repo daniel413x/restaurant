@@ -1,22 +1,13 @@
 import {
-  CreationOptional,
-  InferAttributes,
   DataTypes,
   UUIDV4,
-  InferCreationAttributes,
-  Model,
 } from 'sequelize';
 import { IFoodItem } from '../../types/types';
 import sequelize from '../connection';
+import BaseFoodItem from './BaseFoodItem';
 
 // eslint-disable-next-line no-use-before-define
-class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreationAttributes<FoodItemInCart>> implements IFoodItem {
-  id!: CreationOptional<string>;
-
-  name!: string;
-
-  price!: string;
-
+class FoodItemInCart extends BaseFoodItem<FoodItemInCart> implements IFoodItem {
   discount!: string;
 
   time!: [number, number];
@@ -28,10 +19,6 @@ class FoodItemInCart extends Model<InferAttributes<FoodItemInCart>, InferCreatio
   instructions?: string;
 
   quantity!: number;
-
-  createdAt?: CreationOptional<Date>;
-
-  updatedAt?: CreationOptional<Date>;
 
   static associate(models: any) {
     FoodItemInCart.belongsTo(models.Cart, { targetKey: 'id' });

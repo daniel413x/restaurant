@@ -2056,6 +2056,8 @@ input.form-control:focus {
 }
 
 #account #previous-orders ul {
+  display: flex;
+  flex-direction: column-reverse;
   list-style-type: none;
   padding: 0;
 }

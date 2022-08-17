@@ -28,7 +28,7 @@ import {
   GUEST_ROUTE,
   ORDERS_ROUTE,
 } from '../../utils/consts';
-import { submitGuestOrder, submitOrder } from '../../http/orderAPI';
+import { submitOrder, submitGuestOrder } from '../../http/orderAPI';
 import { calcItemPrice } from '../../utils/functions';
 
 interface CheckoutProps {

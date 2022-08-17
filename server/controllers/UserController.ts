@@ -11,7 +11,6 @@ import User from '../db/models/User';
 import FoodItemInCart from '../db/models/FoodItemInCart';
 import BaseController from './BaseController';
 import { assignBodyAndProcessImages } from '../utils/functions';
-import Order from '../db/models/Order';
 
 const generateJwt = ({
   id,
@@ -67,6 +66,7 @@ class UserController extends BaseController<User> {
     }
     const hashPassword = await bcrypt.hash(password, 5);
     const user = await User.create({
+      id: guestId || uuidv4(),
       email,
       password: hashPassword,
       roles: [REGISTERED],
@@ -86,7 +86,6 @@ class UserController extends BaseController<User> {
         });
       }));
     }
-    await Order.update({ UserId, guestId: null }, { where: { guestId } });
     cart = await Cart.findOne({
       where: {
         UserId,

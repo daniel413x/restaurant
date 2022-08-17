@@ -62,6 +62,15 @@ export interface IFoodItemInMenu extends IFoodItem {
   category?: ICategory;
 }
 
+export interface IFoodItemInCart extends IFoodItem {
+  time: [number, number];
+  discount?: string;
+  ingredients: string[];
+  CartId: string;
+  instructions?: string;
+  quantity: number;
+}
+
 export type FoodItemInOrderCreationAttributes = Omit<FoodItemInGuestCart, 'id'> & {
   OrderId: string;
 };
@@ -69,7 +78,6 @@ export type FoodItemInOrderCreationAttributes = Omit<FoodItemInGuestCart, 'id'> 
 export interface IOrder {
   id: string;
   UserId?: string;
-  guestId?: string;
   AddressForOrderId: string;
   address?: IAddressForOrder;
   time: [number, number];
