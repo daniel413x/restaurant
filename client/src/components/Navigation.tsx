@@ -6,9 +6,9 @@ import React, {
   useRef,
 } from 'react';
 import {
-  Container, Navbar, Nav, Image, NavDropdown,
+  Container, Navbar, Nav, Image, NavDropdown, Button,
 } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import Logo from '../assets/logo2.png';
 import {
@@ -18,8 +18,7 @@ import {
   MENU_ROUTE,
   CART_ROUTE,
   ACCOUNT_ROUTE,
-  ADMIN_INDEX_ROUTE,
-  LOGOUT_ROUTE,
+  ADMIN_ROUTE,
   green,
   shortNotification,
 } from '../utils/consts';
@@ -29,11 +28,13 @@ import useWindowSize from '../hooks/useWindowSize';
 import useOnClickOutside from '../hooks/useOnOutsideClick';
 
 function Navigation() {
+  const navigate = useNavigate();
   const {
     notifications,
     user,
     cart,
     addresses,
+    orders,
   } = useContext(Context);
   const { md } = useWindowSize();
   const [expandIndex, setExpandIndex] = useState<boolean>(false);
@@ -69,11 +70,13 @@ function Navigation() {
     user.unset();
     cart.unset();
     addresses.unset();
+    orders.unset();
     notifications.message(
       'You were logged out',
       green,
       shortNotification,
     );
+    navigate(FRONT_PAGE_ROUTE);
   };
   useEffect(() => {
     if (md) {
@@ -116,13 +119,13 @@ function Navigation() {
                   Main
                 </NavLink>
                 {user.isAdmin && (
-                <NavLink tabIndex={0} role="button" className="nav-link" to={ADMIN_INDEX_ROUTE} title="Admin" onClick={collapseMenu}>
+                <NavLink tabIndex={0} role="button" className="nav-link" to={ADMIN_ROUTE} title="Admin" onClick={collapseMenu}>
                   Admin
                 </NavLink>
                 )}
-                <NavLink tabIndex={0} role="button" className="nav-link" to={LOGOUT_ROUTE} title="Logout" onClick={logout}>
+                <Button tabIndex={0} role="button" className="nav-link" title="Logout" onClick={logout}>
                   Logout
-                </NavLink>
+                </Button>
               </NavDropdown>
             )}
           </Nav>

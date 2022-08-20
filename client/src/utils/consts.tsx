@@ -2,7 +2,6 @@ import Admin from '../pages/Admin';
 import Orders from '../pages/Orders';
 import Cart from '../pages/Cart';
 import Menu from '../pages/Menu';
-import Logout from '../pages/Logout';
 import Auth from '../pages/Auth';
 import GuestOrder from '../pages/GuestOrder';
 import FrontPage from '../pages/FrontPage';
@@ -16,19 +15,17 @@ import AdminOrders from '../pages/AdminOrders';
 import { IFoodItem } from '../types/types';
 import EditedFoodItem from '../pages/EditedFoodItem';
 
-export const ACCOUNT_INDEX_ROUTE = '/*';
-export const ACCOUNT_ROUTE = 'account/*';
+export const INDEX_ROUTE = '/*';
+export const ACCOUNT_WILDCARD_ROUTE = 'account/*';
+export const ACCOUNT_ROUTE = '/account';
 export const ACCOUNT_DETAILS_ROUTE = 'details';
-export const ACCOUNT_ORDERS_ROUTE = 'orders';
-export const ADMIN_INDEX_ROUTE = 'admin/*';
+export const ADMIN_WILDCARD_ROUTE = 'admin/*';
 export const ADMIN_ROUTE = '/admin';
-export const ADMIN_CATEGORIES_ROUTE = 'categories';
 export const ADMIN_FOOD_ITEMS_ROUTE = 'fooditems';
-export const ADMIN_ORDERS_ROUTE = 'orders';
 export const LOGIN_ROUTE = 'login';
 export const LOGOUT_ROUTE = 'logout';
 export const REGISTRATION_ROUTE = 'registration';
-export const FRONT_PAGE_ROUTE = '/*';
+export const FRONT_PAGE_ROUTE = '/';
 export const MENU_ROUTE = 'menu';
 export const CART_ROUTE = 'cart';
 export const ORDERS_ROUTE = 'orders';
@@ -43,24 +40,16 @@ export const longNotification = 6000;
 
 export const indexAuthedRoutes = [
   {
-    path: ADMIN_INDEX_ROUTE,
+    path: ADMIN_WILDCARD_ROUTE,
     Component: Admin,
   },
   {
-    path: ACCOUNT_ROUTE,
+    path: ACCOUNT_WILDCARD_ROUTE,
     Component: Account,
-  },
-  {
-    path: LOGOUT_ROUTE,
-    Component: Logout,
   },
 ];
 
 export const indexPublicRoutes = [
-  {
-    path: FRONT_PAGE_ROUTE,
-    Component: FrontPage,
-  },
   {
     path: CART_ROUTE,
     Component: Cart,
@@ -81,6 +70,10 @@ export const indexPublicRoutes = [
     path: `${GUEST_ROUTE}/${ORDERS_ROUTE}`,
     Component: GuestOrder,
   },
+  {
+    path: INDEX_ROUTE,
+    Component: FrontPage,
+  },
 ];
 
 export const accountRoutes = [
@@ -89,18 +82,18 @@ export const accountRoutes = [
     Component: AccountDetails,
   },
   {
-    path: ACCOUNT_ORDERS_ROUTE,
+    path: ORDERS_ROUTE,
     Component: Orders,
   },
   {
-    path: ACCOUNT_INDEX_ROUTE,
+    path: INDEX_ROUTE,
     Component: Orders,
   },
 ];
 
 export const adminRoutes = [
   {
-    path: ADMIN_ORDERS_ROUTE,
+    path: ORDERS_ROUTE,
     Component: AdminOrders,
   },
   {
@@ -112,7 +105,7 @@ export const adminRoutes = [
     Component: EditedFoodItem,
   },
   {
-    path: ACCOUNT_INDEX_ROUTE,
+    path: INDEX_ROUTE,
     Component: AdminOrders,
   },
 ];

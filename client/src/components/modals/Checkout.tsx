@@ -123,7 +123,7 @@ function Checkout({
       cart.clearItems();
       return navigate(
         user.isGuest ? `/${GUEST_ROUTE}/${ORDERS_ROUTE}`
-          : `/${ACCOUNT_ROUTE}`,
+          : `${ACCOUNT_ROUTE}`,
       );
       setConfirmation(true);
       return setOrderNumber(order.id);

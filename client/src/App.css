@@ -370,6 +370,13 @@ input.form-control:focus {
   z-index: 10;
 }
 
+#navbar .dropdown-menu button {
+  background-color: inherit;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
 #navbar a, #navbar button {
   color: var(--primary-red);
   font-size: 0.9375rem;

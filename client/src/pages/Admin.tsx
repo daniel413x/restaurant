@@ -13,7 +13,7 @@ import Context from '../context/context';
 import { fetchAndSortCategories } from '../http/categoryAPI';
 import {
   adminRoutes,
-  ADMIN_ORDERS_ROUTE,
+  ORDERS_ROUTE,
   ADMIN_ROUTE,
   MENU_ROUTE,
   red,
@@ -47,8 +47,8 @@ function Admin() {
           <NavLink className="btn btn-primary" to={ADMIN_ROUTE}>
             Index
           </NavLink>
-          <NavLink className="btn btn-primary" to={ADMIN_ORDERS_ROUTE}>
-            Orders (2)
+          <NavLink className="btn btn-primary" to={ORDERS_ROUTE}>
+            Orders
           </NavLink>
           <NavLink className="btn btn-primary" to={MENU_ROUTE}>
             Menu

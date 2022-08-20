@@ -395,7 +395,11 @@ describe('restaurant app', () => {
       cy.visit(`${clientUrl}/`);
     });
     it('can log the user out of their account', () => {
-      cy.contains('Vegetarian Burger');
+      cy.contains('Account')
+        .click({ force: true });
+      cy.contains('Logout')
+        .click({ force: true });
+      cy.contains('You were logged out');
     });
     describe('on /menu', () => {
       beforeEach(() => {
