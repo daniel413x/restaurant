@@ -16,8 +16,6 @@ class Order extends Model<InferAttributes<Order>, InferCreationAttributes<Order>
 
   UserId?: CreationOptional<string>;
 
-  AddressForOrderId!: string;
-
   address?: IAddressForOrder;
 
   time!: [number, number];
@@ -63,10 +61,6 @@ Order.init(
     },
     UserId: {
       type: DataTypes.UUID,
-    },
-    AddressForOrderId: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     time: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),

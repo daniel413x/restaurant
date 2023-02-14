@@ -152,7 +152,7 @@ function FoodItemForm({
       return cat.name === 'Uncategorized';
     });
     setCategory(presetCategory);
-  }, []);
+  }, [foodItem]);
   return (
     <Col className="food-item-form">
       <Confirmation

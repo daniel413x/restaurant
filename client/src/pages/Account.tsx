@@ -8,9 +8,9 @@ import {
 import {
   ACCOUNT_DETAILS_ROUTE,
   ORDERS_ROUTE,
-  accountRoutes,
 } from '../utils/consts';
 import AppRouter from '../routers/AppRouter';
+import { accountRoutes } from '../paths/paths';
 
 function Account() {
   return (

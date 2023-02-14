@@ -26,6 +26,7 @@ function EditedFoodItem() {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const foodItem = await fetchOneFoodItem(id!);
         setEditedFoodItem(foodItem);
         return setLoading(false);
@@ -37,7 +38,7 @@ function EditedFoodItem() {
         );
       }
     })();
-  }, []);
+  }, [id]);
   return loading ? null : (
     <Container id="edited-food-item">
       <Col>

@@ -12,7 +12,6 @@ import { NavLink } from 'react-router-dom';
 import Context from '../context/context';
 import { fetchAndSortCategories } from '../http/categoryAPI';
 import {
-  adminRoutes,
   ORDERS_ROUTE,
   ADMIN_ROUTE,
   MENU_ROUTE,
@@ -20,6 +19,7 @@ import {
   shortNotification,
 } from '../utils/consts';
 import AppRouter from '../routers/AppRouter';
+import { adminRoutes } from '../paths/paths';
 
 function Admin() {
   const { categories, notifications } = useContext(Context);

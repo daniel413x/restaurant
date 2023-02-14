@@ -41,4 +41,10 @@ export const production = {
   database: PROD_DB_NAME,
   host: PROD_DB_HOSTNAME,
   port: Number(PROD_DB_PORT),
+  ssl: true,
+  dialectOptions: {
+    ssl: {
+      require: true,
+    },
+  },
 };

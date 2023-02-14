@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/static/css/main.514a0178.css",
+    "main.js": "/static/js/main.58f93742.js",
+    "static/media/suggest-register-2.png": "/static/media/suggest-register-2.efd47f30fdf1d54c579a.png",
+    "static/media/png3.png": "/static/media/png3.d7cdc79fbd3b2a08aa50.png",
+    "static/media/parallax4mobile.jpg": "/static/media/parallax4mobile.3804c3a165a12f0f4060.jpg",
+    "static/media/about-us-2.png": "/static/media/about-us-2.b810024430d376b6bd6d.png",
+    "static/media/parallax4.jpg": "/static/media/parallax4.a0b518cd1a469351f690.jpg",
+    "static/media/about-us-1.png": "/static/media/about-us-1.91adf8dc0779a423e014.png",
+    "static/media/about-us-6.png": "/static/media/about-us-6.f80c6b93df674b9d8e95.png",
+    "static/media/review-1-temp.jpg": "/static/media/review-1-temp.960ff282036e3c4e63eb.jpg",
+    "static/media/about-us-3.png": "/static/media/about-us-3.8dac9ee9eb3e67760871.png",
+    "static/media/about-us-4.png": "/static/media/about-us-4.1defe43a880022701c8d.png",
+    "static/media/about-us-5.png": "/static/media/about-us-5.a567a9db1482b99c0fab.png",
+    "static/media/logo2.png": "/static/media/logo2.67351db9fd9136bf6ac4.png",
+    "static/media/create-new-food-item.png": "/static/media/create-new-food-item.558a3cb7d9543dd118e6.png",
+    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/index.html",
+    "main.514a0178.css.map": "/static/css/main.514a0178.css.map",
+    "main.58f93742.js.map": "/static/js/main.58f93742.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.514a0178.css",
+    "static/js/main.58f93742.js"
+  ]
+}

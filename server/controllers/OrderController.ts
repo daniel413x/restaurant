@@ -105,7 +105,6 @@ class OrderController extends BaseController<Order> {
   }
 
   async guestCreate(req: Request, res: Response) {
-    const address = await AddressForOrder.create(req.body.address);
     const { foodItems } = req.body;
     const { guestId } = req.body;
     const orderProperties = this.generateDependantOrderProperties(foodItems);
@@ -115,7 +114,6 @@ class OrderController extends BaseController<Order> {
       ...orderProperties,
       date,
       UserId: guestId,
-      AddressForOrderId: address.id,
       status: 0,
       actionLog: [[new Date().toString(), 'Order received']],
       activeOrder: true,
@@ -131,7 +129,8 @@ class OrderController extends BaseController<Order> {
         instructions: item.instructions,
       });
     }));
-    await address.update({
+    await AddressForOrder.create({
+      ...req.body.address,
       OrderId: order.id,
     });
     return res.json(order);
@@ -142,7 +141,6 @@ class OrderController extends BaseController<Order> {
       UserId,
       CartId,
     } = req.body;
-    const address = await AddressForOrder.create(req.body.address);
     const itemsFromCart = await FoodItemInCart.findAndCountAll({
       where: {
         CartId,
@@ -166,7 +164,6 @@ class OrderController extends BaseController<Order> {
       UserId,
       total,
       date,
-      AddressForOrderId: address.id,
       status: 0,
       actionLog: [[new Date().toString(), 'Order received']],
       time: [orderMinTime, orderMaxTime],
@@ -188,7 +185,8 @@ class OrderController extends BaseController<Order> {
         },
       });
     }));
-    await address.update({
+    await AddressForOrder.create({
+      ...req.body.address,
       OrderId: order.id,
     });
     return res.json(order);

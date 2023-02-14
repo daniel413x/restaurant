@@ -10,12 +10,12 @@ export default (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      return ApiError.unauthorized('Unauthorized request');
+      return next(ApiError.unauthorized('Unauthorized request.'));
     }
     const decoded = jwt.verify(token, process.env.S_KEY);
     res.locals.user = decoded;
     return next();
   } catch (e) {
-    return ApiError.unauthorized('Auth token expired. Please re-log in.');
+    return next(ApiError.unauthorized('Auth token expired. Please re-log in.'));
   }
 };

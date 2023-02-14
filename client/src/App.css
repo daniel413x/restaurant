@@ -2245,26 +2245,31 @@ input.form-control:focus {
   margin: 0rem auto 0.65rem;
 }
 
-#admin #edit-menu .category form .form-control {
+#edit-menu.demo>* {
+  max-width: 640px;
+  margin: 2rem auto;
+}
+
+#edit-menu .category form .form-control {
   border: none;
   padding-left: 0;
 }
 
-#admin #edit-menu .category form .form-control:focus {
+#edit-menu .category form .form-control:focus {
   box-shadow: none;
 }
 
-#admin #edit-menu .category form input {
+#edit-menu .category form input {
   font-size: 1.1rem;
   color: var(--primary-red);
   font-weight: bold;
 }
 
-#admin #edit-menu .category.active-or-expanded {
+#edit-menu .category.active-or-expanded {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 8px;
 }
 
-#admin #edit-menu .category .food-items-list {
+#edit-menu .category .food-items-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(90px, 225px)); 
   height: 0px;
@@ -2272,14 +2277,14 @@ input.form-control:focus {
   overflow: hidden;
 }
 
-#admin #edit-menu .category .food-items-list.expand {
+#edit-menu .category .food-items-list.expand {
   margin-top: 1rem;
   margin-bottom: 1rem;
   height: auto;
   overflow: visible;  
 }
 
-#admin #edit-menu .category .food-items-list .food-item {
+#edit-menu .category .food-items-list .food-item {
   overflow: hidden;
   flex: 0 0 200px;
   padding: .5rem;
@@ -2305,7 +2310,7 @@ input.form-control:focus {
   margin: 0;
 }
 
-#admin #edit-menu .category .food-item .name {
+#edit-menu .category .food-item .name {
   color: #000;
   font-size: 1.25rem;
   height: 32px;
@@ -2315,7 +2320,7 @@ input.form-control:focus {
   display: block;
 }
 
-#admin #edit-menu .category .food-item .buttons-row {
+#edit-menu .category .food-item .buttons-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -2323,21 +2328,21 @@ input.form-control:focus {
   padding-right: 0;
 }
 
-#admin #edit-menu .category .food-item .buttons-row .col:first-of-type {
+#edit-menu .category .food-item .buttons-row .col:first-of-type {
   padding: 0;
 }
 
-#admin #edit-menu .category .food-item .buttons-row .icon-buttons {
+#edit-menu .category .food-item .buttons-row .icon-buttons {
   width: max-content;
 }
 
-#admin #edit-menu .category .add-food-item-button {
+#edit-menu .category .add-food-item-button {
   height: 100%;
   padding: 0.5rem;
   position: relative;
 }
 
-#admin #edit-menu .category .add-food-item-button .button-wrapper {
+#edit-menu .category .add-food-item-button .button-wrapper {
   opacity: 0;
   padding: 0;
   border: 0;
@@ -2351,32 +2356,32 @@ input.form-control:focus {
   z-index: 1;
 }
 
-#admin #edit-menu .category .add-food-item-button .name {
+#edit-menu .category .add-food-item-button .name {
   text-align: start;
   color: var(--primary-red);
   text-overflow: initial;
   font-weight: 500;
 }
 
-#admin #edit-menu .category .add-food-item-button .middle-col {
+#edit-menu .category .add-food-item-button .middle-col {
   height: 116px;
   margin: 0;
   font-size: 1.25rem;
 }
 
-#admin #edit-menu .category .add-food-item-button .buttons-row {
+#edit-menu .category .add-food-item-button .buttons-row {
   width: 233px;
   height: 71px;
 }
 
-#admin #edit-menu .category .add-food-item-button .buttons-row .edit-button-outline {
+#edit-menu .category .add-food-item-button .buttons-row .edit-button-outline {
   border: 2px solid var(--primary-red);
   background-color: #fff;
   color: var(--primary-red);
   height: 52px;
 }
 
-#admin #edit-menu .category .add-food-item-button .img-outline {
+#edit-menu .category .add-food-item-button .img-outline {
   margin: 0;
   width: 209px;
   height: 154px;

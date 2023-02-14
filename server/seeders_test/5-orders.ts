@@ -1,8 +1,6 @@
 import {
   userWithOrder,
   userWithCartItemsAndOrder,
-  addressForOrderForUserWithOrder,
-  addressForOrderForUserWithCartItemsAndOrder,
   orderForUserWithOrder,
   orderForUserWithCartItemsAndOrder,
 } from '../utils/consts';
@@ -12,7 +10,6 @@ export default {
     {
       id: orderForUserWithOrder,
       UserId: userWithOrder,
-      AddressForOrderId: addressForOrderForUserWithOrder,
       time: [15, 20],
       status: 0,
       total: 20.19,
@@ -25,7 +22,6 @@ export default {
     {
       id: orderForUserWithCartItemsAndOrder,
       UserId: userWithCartItemsAndOrder,
-      AddressForOrderId: addressForOrderForUserWithCartItemsAndOrder,
       time: [15, 20],
       status: 0,
       total: 20.19,

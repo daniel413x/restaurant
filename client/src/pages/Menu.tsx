@@ -14,6 +14,7 @@ import AddItem from '../components/modals/AddItem';
 import { IFoodItem, ICategory } from '../types/types';
 import { makeId } from '../utils/functions';
 import { fetchAndSortCategories } from '../http/categoryAPI';
+import { red } from '../utils/consts';
 
 interface CategoryAnchorProps {
   categoryName: string;
@@ -25,7 +26,7 @@ function CategoryAnchor({ categoryName }: CategoryAnchorProps) {
 }
 
 function Menu() {
-  const { categories } = useContext(Context);
+  const { categories, notifications } = useContext(Context);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [addedItem, setAddedItem] = useState<IFoodItem>();
   const handleModal = (item: IFoodItem) => {
@@ -34,7 +35,14 @@ function Menu() {
   };
   useEffect(() => {
     (async () => {
-      await fetchAndSortCategories(categories, true);
+      try {
+        await fetchAndSortCategories(categories, true);
+      } catch (error: any) {
+        notifications.message(
+          `${error.response.data.message}`,
+          red,
+        );
+      }
     })();
   }, []);
   return (

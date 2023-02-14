@@ -14,16 +14,21 @@ import {
 import { Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom';
 import Context from '../context/context';
 import { ICategory } from '../types/types';
 import EditedCategory from './EditedCategory';
 import AddCategory from './AddCategory';
 import {
+  DEMO_ROUTE,
+  EDIT_ROUTE,
   green,
+  MENU_ROUTE,
   red,
   shortNotification,
 } from '../utils/consts';
 import { updateOptionsObject } from '../http/optionsAPI';
+import { fetchAndSortCategories } from '../http/categoryAPI';
 
 const reorder = (list: ICategory[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
@@ -33,6 +38,9 @@ const reorder = (list: ICategory[], startIndex: number, endIndex: number) => {
 };
 
 function SortAndEditCategories() {
+  const { pathname } = useLocation();
+  const isDemo = pathname === `/${DEMO_ROUTE}/${EDIT_ROUTE}${MENU_ROUTE}`;
+  const [loading, setLoading] = useState<boolean>(true);
   const { categories, notifications } = useContext(Context);
   const { sortingMode } = categories;
   const [sortedCategories, setSortedCategories] = useState<ICategory[]>(categories.sortedPublic);
@@ -89,7 +97,21 @@ function SortAndEditCategories() {
   useEffect(() => {
     setSortedCategories(categories.sortedPublic);
   }, [categories.all]);
-  return (
+  useEffect(() => {
+    (async () => {
+      try {
+        if (categories.all.length === 0) {
+          await fetchAndSortCategories(categories, isDemo);
+        }
+      } finally {
+        setLoading(false);
+      }
+    })();
+    if (isDemo) {
+      categories.setSortingMode(true);
+    }
+  }, []);
+  return loading ? null : (
     <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <Droppable droppableId="list">
         {(providedUl) => (
@@ -143,7 +165,7 @@ function SortAndEditCategories() {
               </li>
             )}
             {sortingMode && (
-              <li key="saveSortingButton">
+              <li key="saveSortingButton" className={`${isDemo && 'blocked'}`}>
                 <div className="collapsible-item">
                   <div className="title-buttons-row body">
                     <Col className="tab-col" md="auto">

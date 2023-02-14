@@ -78,7 +78,6 @@ export type FoodItemInOrderCreationAttributes = Omit<FoodItemInGuestCart, 'id'> 
 export interface IOrder {
   id: string;
   UserId?: string;
-  AddressForOrderId: string;
   address?: IAddressForOrder;
   time: [number, number];
   foodItems?: IFoodItem[];

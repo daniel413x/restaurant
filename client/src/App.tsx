@@ -1,8 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
-  indexAuthedRoutes,
-  indexPublicRoutes,
   red,
   shortNotification,
 } from './utils/consts';
@@ -14,6 +12,7 @@ import Footer from './components/Footer';
 import { autoAuth, createGuestToken } from './http/userAPI';
 import { fetchUserCart } from './http/cartAPI';
 import { fetchUserAddress } from './http/addressAPI';
+import { indexAuthedRoutes, indexPublicRoutes } from './paths/paths';
 
 function App() {
   const {
