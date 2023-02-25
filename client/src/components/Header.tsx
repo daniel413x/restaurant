@@ -23,7 +23,7 @@ function Header() {
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum amet leo.
           </p>
-          <NavLink className="btn btn-primary" to={MENU_ROUTE}>
+          <NavLink className="order-now-button btn btn-primary" to={MENU_ROUTE}>
             Order Now
             <FontAwesomeIcon icon={faBasketShopping} />
           </NavLink>

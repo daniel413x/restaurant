@@ -44,6 +44,45 @@ body, html {
   opacity: .5;
 }
 
+@keyframes loading {
+  0% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: var(--primary-red); */
+}
+
+.loading-screen .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-screen .loading-logo {
+  animation: loading;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.loading-screen .text {
+  color: var(--primary-red);
+  font-weight: 500;
+  opacity: 0.775;
+}
+
 input[type="text"].primary-style, input[type="password"].primary-style {
   padding: .75rem 1.35rem;
   border: 2px solid var(--primary-red);
@@ -432,7 +471,7 @@ input.form-control:focus {
 }
 
 #header {
-  background: url("./assets/png3.png") no-repeat center center/cover;
+  background: url("./assets/header.jpg") no-repeat center center/cover;
   height: auto;
   overflow: hidden;
   padding: 15px 0px;
@@ -487,7 +526,7 @@ input.form-control:focus {
   width: 170px;
 }
 
-#header .btn .fa-cart-shopping {
+#header .btn .fa-basket-shopping {
   font-size: .9rem;
   position: absolute;
   right: 30px;
@@ -716,6 +755,16 @@ input.form-control:focus {
   #about-us .mission-statement .row:first-of-type {
     margin-bottom: 2rem;
   }
+}
+
+#about-us .mission-statement .lower-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#about-us .mission-statement .lower-col button {
+  width: max-content;
 }
 
 #about-us .mission-statement .row:first-of-type .col-md-5 {

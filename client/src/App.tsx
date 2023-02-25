@@ -13,6 +13,7 @@ import { autoAuth, createGuestToken } from './http/userAPI';
 import { fetchUserCart } from './http/cartAPI';
 import { fetchUserAddress } from './http/addressAPI';
 import { indexAuthedRoutes, indexPublicRoutes } from './paths/paths';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
   const {
@@ -63,11 +64,11 @@ function App() {
           localStorage.removeItem('guestToken');
         }
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 1000);
       }
     })();
   }, []);
-  return loading ? null : (
+  return loading ? <LoadingScreen /> : (
     <Router>
       <Notifications />
       <Navigation />

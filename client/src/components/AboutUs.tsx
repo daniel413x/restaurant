@@ -40,7 +40,7 @@ function MissionStatement() {
           <Col md={7}>
             <Image className="image-one" src={imageOne} />
           </Col>
-          <Col md={5}>
+          <Col className="text-col" md={5}>
             <h2>
               We pride ourselves on making real food from the best ingredients.
             </h2>
@@ -53,7 +53,7 @@ function MissionStatement() {
           </Col>
         </Row>
         <Row>
-          <Col md={5}>
+          <Col className="lower-col" md={5}>
             <h2>
               We make everything by hand with the best possible ingredients.
             </h2>
