@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 
-interface KeyPressProps {
-  keyPressed: boolean;
-}
-
-const useKeyPress = (targetKey: string): KeyPressProps => {
+const useKeyPress = (targetKey: string): boolean => {
   const [keyPressed, setKeyPressed] = useState<boolean>(false);
   function downHandler({ key }: KeyboardEvent) {
     if (key === targetKey) {
@@ -24,7 +20,7 @@ const useKeyPress = (targetKey: string): KeyPressProps => {
       window.removeEventListener('keyup', upHandler);
     };
   });
-  return { keyPressed };
+  return keyPressed;
 };
 
 export default useKeyPress;

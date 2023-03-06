@@ -76,6 +76,7 @@ function EditPassword() {
             pressedSubmit={pressedSubmit}
             setPressedSubmit={setPressedSubmit}
             type="password"
+            tabIndex={!unlockChangePassword ? -1 : 0}
           />
         </Col>
         <Col>
@@ -87,6 +88,7 @@ function EditPassword() {
             pressedSubmit={pressedSubmit}
             setPressedSubmit={setPressedSubmit}
             type="password"
+            tabIndex={!unlockChangePassword ? -1 : 0}
           />
         </Col>
         <Col>
@@ -94,6 +96,7 @@ function EditPassword() {
             className="save-button"
             type="submit"
             id="edit-password-save-button"
+            tabIndex={!unlockChangePassword ? -1 : 0}
           >
             Save
           </Button>

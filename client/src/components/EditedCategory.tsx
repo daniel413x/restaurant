@@ -38,15 +38,19 @@ import {
 import { calcItemPrice } from '../utils/functions';
 import { deleteCategory, editCategory } from '../http/categoryAPI';
 import { deleteFoodItem } from '../http/foodItemInMenuAPI';
+import useActiveElement from '../hooks/useActiveElement';
+import useKeyPress from '../hooks/useKeyPress';
 
 interface FoodItemProps {
   foodItem: IFoodItem;
   selectFoodItemToDelete: (foodItem: IFoodItem) => void;
+  tabIndex: number;
 }
 
 function FoodItem({
   foodItem,
   selectFoodItemToDelete,
+  tabIndex,
 }: FoodItemProps) {
   const {
     image,
@@ -83,6 +87,7 @@ function FoodItem({
             className="btn btn-secondary"
             id={`edit-${idAttributeBase}`}
             to={`${ADMIN_FOOD_ITEMS_ROUTE}/${foodItem.id}`}
+            tabIndex={tabIndex}
           >
             Edit
           </NavLink>
@@ -92,6 +97,7 @@ function FoodItem({
             className="btn btn-secondary"
             onClick={() => selectFoodItemToDelete(foodItem)}
             id={`delete-${idAttributeBase}`}
+            tabIndex={tabIndex}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
           </Button>
@@ -210,6 +216,26 @@ function EditedCategory({
     }
   }, [sortingMode]);
   useOnClickOutside(outsideClickRef, () => setActive(false));
+  const activeElement = useActiveElement();
+  const expandButtonRef = useRef<HTMLElement>(null);
+  const retitleButtonRef = useRef<HTMLElement>(null);
+  const reorderButtonRef = useRef<HTMLElement>(null);
+  const deleteButtonRef = useRef<HTMLElement>(null);
+  const enterPress = useKeyPress('Enter');
+  useEffect(() => {
+    if (enterPress && activeElement === expandButtonRef.current) {
+      toggleExpand();
+    }
+    if (enterPress && activeElement === retitleButtonRef.current) {
+      toggleEditTitle();
+    }
+    if (enterPress && activeElement === reorderButtonRef.current) {
+      categories.setSortingMode(true);
+    }
+    if (enterPress && activeElement === deleteButtonRef.current) {
+      setShowDeleteCategoryModal(true);
+    }
+  }, [enterPress]);
   return (
     <div
       className={`category collapsible-item ${activeOrExpanded && 'active-or-expanded'}
@@ -239,6 +265,7 @@ function EditedCategory({
             value={namePlusItemCount()}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
             className={`${!active && !expand && 'blocked'}`}
+            tabIndex={!active || (expand && !active) ? -1 : 0}
           />
         </Col>
         {active ? (
@@ -253,43 +280,47 @@ function EditedCategory({
         ) : (
           <Col className={`ellipsis-menu ${sortingMode && 'blocked'}`} md="auto">
             <Dropdown autoClose>
-              <Dropdown.Toggle>
+              <Dropdown.Toggle tabIndex={categories.sortingMode ? -1 : 0}>
                 <FontAwesomeIcon icon={faEllipsisVertical} />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item>
+                <Dropdown.Item ref={expandButtonRef}>
                   <Button
                     id="expand-button"
                     onClick={toggleExpand}
+                    tabIndex={-1}
                   >
                     {expand ? 'Collapse' : 'Expand'}
                   </Button>
                 </Dropdown.Item>
                 {!uncategorizedCategory && (
-                <Dropdown.Item>
+                <Dropdown.Item ref={retitleButtonRef}>
                   <Button
                     id="retitle-button"
                     onClick={toggleEditTitle}
+                    tabIndex={-1}
                   >
                     Re-title
                   </Button>
                 </Dropdown.Item>
                 )}
                 {!uncategorizedCategory && (
-                <Dropdown.Item>
+                <Dropdown.Item ref={reorderButtonRef}>
                   <Button
                     id="sort-button"
                     onClick={() => categories.setSortingMode(true)}
+                    tabIndex={-1}
                   >
                     Re-order
                   </Button>
                 </Dropdown.Item>
                 )}
                 {!uncategorizedCategory && (
-                <Dropdown.Item>
+                <Dropdown.Item ref={deleteButtonRef}>
                   <Button
                     id="delete-button"
                     onClick={() => setShowDeleteCategoryModal(true)}
+                    tabIndex={-1}
                   >
                     Delete
                   </Button>
@@ -310,6 +341,7 @@ function EditedCategory({
             <FoodItem
               foodItem={foodItem}
               selectFoodItemToDelete={selectFoodItemToDelete}
+              tabIndex={expand ? 0 : -1}
             />
           </li>
         )}
@@ -317,6 +349,7 @@ function EditedCategory({
         <li>
           <CreateNewFoodItemButton
             category={category}
+            tabIndex={expand ? 0 : -1}
           />
         </li>
       </List>

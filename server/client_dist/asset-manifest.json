@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.f97e9bb6.css",
-    "main.js": "/static/js/main.1fa9f736.js",
-    "static/media/header.jpg": "/static/media/header.a5a14ced99b0045e6906.jpg",
-    "static/media/suggest-register-2.png": "/static/media/suggest-register-2.efd47f30fdf1d54c579a.png",
-    "static/media/parallax4mobile.jpg": "/static/media/parallax4mobile.3804c3a165a12f0f4060.jpg",
-    "static/media/about-us-2.png": "/static/media/about-us-2.b810024430d376b6bd6d.png",
-    "static/media/parallax4.jpg": "/static/media/parallax4.a0b518cd1a469351f690.jpg",
-    "static/media/about-us-1.png": "/static/media/about-us-1.91adf8dc0779a423e014.png",
-    "static/media/about-us-6.png": "/static/media/about-us-6.f80c6b93df674b9d8e95.png",
+    "main.css": "/static/css/main.46cb8595.css",
+    "main.js": "/static/js/main.f7566524.js",
+    "static/media/header.jpg": "/static/media/header.a6f078254e999497a88d.jpg",
+    "static/media/suggest-register-2.png": "/static/media/suggest-register-2.eebdd66bd0d811144db3.png",
+    "static/media/about-us-1.png": "/static/media/about-us-1.0579908ec0e5eb2aeb38.png",
+    "static/media/about-us-2.png": "/static/media/about-us-2.d5208eea26f0efb606d9.png",
+    "static/media/parallax4mobile.jpg": "/static/media/parallax4mobile.1f2ba73d6245ec33f9ab.jpg",
+    "static/media/parallax4.jpg": "/static/media/parallax4.b53a99ceaca36ebba1f1.jpg",
+    "static/media/about-us-6.png": "/static/media/about-us-6.8d999b356c049939c183.png",
     "static/media/review-1-temp.jpg": "/static/media/review-1-temp.960ff282036e3c4e63eb.jpg",
     "static/media/about-us-3.png": "/static/media/about-us-3.8dac9ee9eb3e67760871.png",
     "static/media/about-us-4.png": "/static/media/about-us-4.1defe43a880022701c8d.png",
@@ -20,12 +20,14 @@
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
+    "static/media/ArrowButtons.svg": "/static/media/ArrowButtons.7f9076de4ce39eb973e917093382f2bf.svg",
     "index.html": "/index.html",
-    "main.f97e9bb6.css.map": "/static/css/main.f97e9bb6.css.map",
-    "main.1fa9f736.js.map": "/static/js/main.1fa9f736.js.map"
+    "static/media/Spacebar.svg": "/static/media/Spacebar.2a0d715062b0c2ae97a4bbfd8b06d354.svg",
+    "main.46cb8595.css.map": "/static/css/main.46cb8595.css.map",
+    "main.f7566524.js.map": "/static/js/main.f7566524.js.map"
   },
   "entrypoints": [
-    "static/css/main.f97e9bb6.css",
-    "static/js/main.1fa9f736.js"
+    "static/css/main.46cb8595.css",
+    "static/js/main.f7566524.js"
   ]
 }

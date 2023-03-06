@@ -79,6 +79,7 @@ function EditEmail() {
               value={newEmail}
               pressedSubmit={pressedSubmit}
               setPressedSubmit={setPressedSubmit}
+              tabIndex={!unlockChangeEmail ? -1 : 0}
             />
           </Col>
           <Col>
@@ -87,6 +88,7 @@ function EditEmail() {
               id="edit-email-save-button"
               className="save-button"
               type="submit"
+              tabIndex={!unlockChangeEmail ? -1 : 0}
             >
               Save
             </Button>

@@ -2,6 +2,8 @@ import React, {
   useContext,
   useState,
   FormEvent,
+  useRef,
+  useEffect,
 } from 'react';
 import {
   Row,
@@ -26,6 +28,8 @@ import {
 import FoodItemOrder from './FoodItemOrder';
 import { calcItemPrice, orderDate } from '../utils/functions';
 import { updateOrderStatus } from '../http/orderAPI';
+import useActiveElement from '../hooks/useActiveElement';
+import useKeyPress from '../hooks/useKeyPress';
 
 interface AdminOrderProps {
   order: IOrder;
@@ -71,6 +75,14 @@ function AdminOrder({
   const toggleExpand = () => {
     setExpand(!expand);
   };
+  const activeElement = useActiveElement();
+  const expandButtonRef = useRef<HTMLButtonElement>(null);
+  const enterPress = useKeyPress('Enter');
+  useEffect(() => {
+    if (enterPress && activeElement === expandButtonRef.current) {
+      toggleExpand();
+    }
+  }, [enterPress]);
   return (
     <div className="admin-order collapsible-item">
       <div className="title-buttons-row body">
@@ -98,8 +110,12 @@ function AdminOrder({
               <FontAwesomeIcon icon={faEllipsisVertical} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item>
-                <Button onClick={toggleExpand}>
+              <Dropdown.Item
+                ref={expandButtonRef}
+              >
+                <Button
+                  onClick={toggleExpand}
+                >
                   {expand ? 'Collapse' : 'Expand'}
                 </Button>
               </Dropdown.Item>
@@ -164,39 +180,35 @@ function AdminOrder({
               <Col>
                 {orderBeingPrepared && <FontAwesomeIcon icon={faCheck} />}
                 <Form.Check
-                  id="status-two-radio-button"
                   label="Order being prepared"
                   name="status"
                   type="radio"
-                  className={`${orderBeingPrepared && 'blocked'}`}
+                  className={`status-two-radio-button ${orderBeingPrepared && 'blocked'}`}
                   onClick={() => setNewStatus(1)}
                 />
               </Col>
               <Col>
                 {orderEnRoute && <FontAwesomeIcon icon={faCheck} />}
                 <Form.Check
-                  id="status-three-radio-button"
                   label="Order en route"
                   name="status"
                   type="radio"
-                  className={`${orderEnRoute && 'blocked'}`}
+                  className={`status-three-radio-button ${orderEnRoute && 'blocked'}`}
                   onClick={() => setNewStatus(2)}
                 />
               </Col>
               <Col>
                 {orderDelivered && <FontAwesomeIcon icon={faCheck} />}
                 <Form.Check
-                  id="status-four-radio-button"
                   label="Order delivered"
                   name="status"
                   type="radio"
-                  className={`${orderDelivered && 'blocked'}`}
+                  className={`status-four-radio-button ${orderDelivered && 'blocked'}`}
                   onClick={() => setNewStatus(3)}
                 />
               </Col>
               <Button
-                id="submit-change-status-button"
-                className="submit-button btn btn-secondary"
+                className="submit-change-status-button submit-button btn btn-secondary"
                 type="submit"
               >
                 Update

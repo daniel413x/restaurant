@@ -17,6 +17,7 @@ interface SmartInputProps {
   type?: string;
   classes?: string;
   id?: string;
+  tabIndex?: number | undefined;
 }
 
 function SmartInput({
@@ -33,6 +34,7 @@ function SmartInput({
   type,
   classes,
   id,
+  tabIndex,
 }: SmartInputProps) {
   const [warn, setWarn] = useState<boolean>(false);
   useEffect(() => {
@@ -60,6 +62,7 @@ function SmartInput({
           type={type}
           onChange={onFileChange}
           className={`${warn && 'warn'} ${primaryStyle && 'primary-style'}`}
+          tabIndex={tabIndex}
           onClick={() => {
             if (setPressedSubmit) {
               setWarn(false);
@@ -73,6 +76,7 @@ function SmartInput({
           placeholder={placeholder}
           type={type}
           value={value}
+          tabIndex={tabIndex}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange!(e.target.value)}
           className={`${warn && 'warn'} ${primaryStyle && 'primary-style'}`}
         />
@@ -95,6 +99,7 @@ SmartInput.defaultProps = {
   type: 'text',
   classes: '',
   id: '',
+  tabIndex: undefined,
 };
 
 export default SmartInput;

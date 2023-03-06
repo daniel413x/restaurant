@@ -3,17 +3,18 @@
 :root {
   --primary-red: #ab3550;
   --primary-red-light: #dab9c1;
-  --primary-red-box-shadow: rgba(253, 13, 13, 0.25);
+  --primary-red-box-shadow: 0 0 0 .25rem rgba(253, 13, 13, 0.25);
+  --primary-red-light-box-shadow: 0 0 0 .25rem var(--primary-red-light);
   --secondary-red: #ac2947;
+  --seecondary-red-box-shadow: 0 0 0 .25rem var(--secondary-red);
   --tertiary-red: #43121d;
   --tertiary-red-border: #43121d18;
   --tertiary-red-light-text: #43121da1;
+  --bootstrap-transition: all 0.15s ease-in-out;
   --primary-green: #35ab50;
   --secondary-green: rgb(129, 226, 17);
-  /* background-color: rgb(105, 0, 0); */
   --navbar-height: 117px;
   --footer-height: 361px;
-  /* filter:brightness(.7); */
 }
 
 @media (max-width: 650px) {
@@ -44,6 +45,10 @@ body, html {
   opacity: .5;
 }
 
+.blocked *:focus {
+  box-shadow: none !important;
+}
+
 @keyframes loading {
   0% {
     transform: scale(1.1);
@@ -61,7 +66,6 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: var(--primary-red); */
 }
 
 .loading-screen .wrapper {
@@ -209,6 +213,23 @@ textarea {
   transition: .2s ease-in-out;
 }
 
+a:focus, .btn-close:focus {
+  box-shadow: var(--primary-red-box-shadow) !important;
+  outline: solid !important;
+  transition: var(--bootstrap-transition) !important;
+}
+ 
+.btn-secondary:focus {
+  box-shadow: var(--primary-red-box-shadow) !important;
+  background-color: #fff !important;
+  border: 2px solid var(--primary-red) !important;
+  color: var(--primary-red) !important;
+}
+
+.btn-close:focus {
+  transform: scale(1.15);
+}
+
 a.dropdown-item.active, a.dropdown-item:active {
   color:#fff;
   text-decoration:none;
@@ -261,7 +282,7 @@ a.btn.btn-secondary.active, a.btn.btn-secondary:hover {
 }
 
 .btn-check:focus+.btn, .btn.btn-primary:focus {
-  box-shadow:0 0 0 .25rem rgba(80, 0, 0, 0.25) 
+  box-shadow:0 0 0 .25rem rgba(80, 0, 0, 0.25);
 }
 
 .btn-check:active+.btn-secondary, .btn-check:checked+.btn-secondary, .btn-secondary.active, .btn-secondary:active, .show>.btn-secondary.dropdown-toggle, .show>.btn-primary.dropdown-toggle {
@@ -300,6 +321,12 @@ input.form-control:focus {
   color:#fff;
   background-color:#fd0d0d;
   border-color:#fd0d0d;
+}
+
+.labeled-checkbox-button:focus .checkbox-div {
+  box-shadow: var(--primary-red-box-shadow);
+  transition: var(--bootstrap-transition);
+  outline: solid;
 }
 
 .icon-buttons {
@@ -459,6 +486,7 @@ input.form-control:focus {
   color: #fff;
   padding: .5rem 1.5rem;
   transition: .2s ease-in-out;
+  margin: 0 1rem;
 }
 
 #navbar .phone-num:hover {
@@ -550,6 +578,12 @@ input.form-control:focus {
 #header button:hover {
   background-color: var(--secondary-red);
   color: #fff;
+}
+
+#header button:focus {
+  box-shadow: var(--primary-red-box-shadow);
+  outline: none;
+  transition: var(--bootstrap-transition);
 }
 
 #icon-pitch {
@@ -668,7 +702,6 @@ input.form-control:focus {
 #menu .food-item .below-image-col, #about-us .food-item .below-image-col {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 #menu .food-item .name, #about-us .food-item .name {
@@ -879,6 +912,11 @@ input.form-control:focus {
 #testimonials .slick-dots li {
   margin: auto .25rem;
   padding: 0;
+}
+
+#testimonials .slick-dots li button:focus {
+  transform: scale(1.5);
+  transition: var(--bootstrap-transition);
 }
 
 #testimonials .slick-dots li button::before {
@@ -1155,8 +1193,18 @@ input.form-control:focus {
   margin: 0;
 }
 
-.food-item-li button:focus {
-  outline: 2px double rgb(255, 0, 0);
+@keyframes focus-scale {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.175);
+  }
+}
+
+.food-item-li button:focus, .food-item-li button:hover {
+  transform: scale(1.1);
+  animation: focus-scale 0.1s linear 1;
 }
 
 #menu {
@@ -1229,12 +1277,6 @@ input.form-control:focus {
   justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(90px, 225px)); 
   grid-gap: 3rem 1rem;
-}
-
-
-#menu .food-category li {
-  overflow: hidden;
-  max-width: 295px;
 }
 
 #menu .food-category .header-img {
@@ -1529,11 +1571,6 @@ input.form-control:focus {
 #active-order {
   max-width: 1116px;
   margin-top: 2rem;
-}
-
-@media (max-width: 991px) {
-  #active-order {
-  }
 }
 
 #active-order .main-row {
@@ -2185,12 +2222,12 @@ input.form-control:focus {
 }
 
 #admin .right-col h2 {
-  margin-top: .5rem;
+  margin-top: 2rem 0;
   color: var(--primary-red);
 }
 
 #admin .collapsible-items-ul>* { /* a must for react-beautiful-dnd or animation issues */
-  padding: 0 0 1rem;
+  margin: 0 0 1rem;
 }
 
 #admin .collapsible-items-ul .more-box-shadow {
@@ -2294,9 +2331,48 @@ input.form-control:focus {
   margin: 0rem auto 0.65rem;
 }
 
+#edit-menu .main-col {
+  position: relative;
+}
+
+#edit-menu .main-col .tab-instructions {
+  opacity: 0;
+  position: absolute;
+  top: -5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1.05rem 1.5rem;
+  padding-left: 1.05rem;
+  background-color: var(--primary-red);
+  color: #fff;
+  border-radius: 2px;
+  font-weight: 500;
+  z-index: 999;
+  transition: all 0.25s linear;
+}
+
+#edit-menu .main-col .tab-instructions.show {
+  opacity: 1;
+  top: 0%;
+}
+
+#edit-menu .main-col .tab-instructions.show.end {
+  opacity: 0;
+  top: 5%;
+}
+
+#edit-menu .main-col .tab-instructions svg {
+  margin-right: 0.33rem;
+}
+
 #edit-menu.demo>* {
   max-width: 640px;
   margin: 2rem auto;
+}
+
+#edit-menu .dragged-catagory:focus {
+  box-shadow: 0px 0px 2px 2px red;
+  outline: 0;
 }
 
 #edit-menu .category form .form-control {
@@ -2392,7 +2468,8 @@ input.form-control:focus {
 }
 
 #edit-menu .category .add-food-item-button .button-wrapper {
-  opacity: 0;
+  opacity: 1;
+  background: transparent;
   padding: 0;
   border: 0;
   width: 100%;
@@ -2403,6 +2480,10 @@ input.form-control:focus {
   transform: translate(-50%, -50%);
   max-width: 100%;
   z-index: 1;
+}
+
+#edit-menu .category .add-food-item-button button:focus {
+  border: 2px solid var(--primary-red) !important;
 }
 
 #edit-menu .category .add-food-item-button .name {
@@ -2651,6 +2732,10 @@ input.form-control:focus {
   background-color: var(--primary-red);
 }
 
+#admin-orders .admin-order .title-buttons-row .dropdown-toggle:focus {
+  box-shadow: var(--primary-red-light-box-shadow);
+}
+
 #admin-orders .admin-order .tab-col {
   color: #fff;
   border: 1px dotted #fff;
@@ -2748,13 +2833,13 @@ input.form-control:focus {
   background-color: var(--secondary-red);
   border: 1px solid rgba(255, 0, 0, 0.25);
   box-shadow: 0 0 0 0 #000;
-  box-shadow: 0 0 0 .25rem var(--primary-red-box-shadow);
+  box-shadow: var(--primary-red-box-shadow);
 }
 
 #admin-orders .admin-order .address-status-col .order-status .form-check .form-check-input:checked {
   background-color: var(--secondary-red);
   border: 1px solid rgba(255, 0, 0, 0.25);
-  box-shadow: 0 0 0 .25rem var(--primary-red-box-shadow);
+  box-shadow: var(--primary-red-box-shadow);
 }
 
 #admin-orders .admin-order .address-status-col .order-status .form-check.blocked .form-check-input:checked {

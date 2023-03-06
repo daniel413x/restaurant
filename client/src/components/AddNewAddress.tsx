@@ -150,7 +150,13 @@ function AddNewAddress() {
           placeholder="Required"
         />
         <Col className="button-row">
-          <Button id="save-address-button" type="submit" onMouseDown={() => setPressedSaveAsDefault(false)} className={`${requiredFieldsIncomplete && 'blocked'}`}>
+          <Button
+            id="save-address-button"
+            type="submit"
+            onMouseDown={() => setPressedSaveAsDefault(false)}
+            className={`${requiredFieldsIncomplete && 'blocked'}`}
+            tabIndex={requiredFieldsIncomplete ? -1 : 0}
+          >
             Save
           </Button>
           <Button
@@ -158,6 +164,7 @@ function AddNewAddress() {
             onMouseDown={() => setPressedSaveAsDefault(true)}
             type="submit"
             className={`${requiredFieldsIncomplete && 'blocked'}`}
+            tabIndex={requiredFieldsIncomplete ? -1 : 0}
           >
             Save as default
           </Button>

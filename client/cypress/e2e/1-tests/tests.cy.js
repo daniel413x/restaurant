@@ -647,19 +647,19 @@ describe('restaurant app', () => {
         cy.get('.admin-order')
           .eq(0)
           .as('theOrder')
-          .get('#status-two-radio-button')
+          .get('.status-two-radio-button')
           .click({ force: true });
         cy.get('@theOrder')
-          .find('#submit-change-status-button')
+          .find('.submit-change-status-button')
           .as('submitButton')
           .click({ force: true });
         cy.get('@theOrder')
-          .get('#status-three-radio-button')
+          .get('.status-three-radio-button')
           .click({ force: true });
         cy.get('@submitButton')
           .click({ force: true });
         cy.get('@theOrder')
-          .get('#status-four-radio-button')
+          .get('.status-four-radio-button')
           .click({ force: true });
         cy.get('@submitButton')
           .click({ force: true });
@@ -671,14 +671,14 @@ describe('restaurant app', () => {
         cy.get('.admin-order')
           .eq(0)
           .as('theOrder')
-          .get('#status-three-radio-button')
+          .get('.status-three-radio-button')
           .click({ force: true });
         cy.get('@theOrder')
-          .find('#submit-change-status-button')
+          .find('.submit-change-status-button')
           .as('submitButton')
           .click({ force: true });
         cy.get('@theOrder')
-          .get('#status-four-radio-button')
+          .get('.status-four-radio-button')
           .click({ force: true });
         cy.get('@submitButton')
           .click({ force: true });
@@ -688,10 +688,10 @@ describe('restaurant app', () => {
         cy.get('.admin-order')
           .eq(1)
           .as('theOtherOrder')
-          .find('#status-four-radio-button')
+          .find('.status-four-radio-button')
           .click({ force: true });
         cy.get('@theOtherOrder')
-          .find('#submit-change-status-button')
+          .find('.submit-change-status-button')
           .click({ force: true });
         cy.get('@theOtherOrder')
           .get('span.completion-label')

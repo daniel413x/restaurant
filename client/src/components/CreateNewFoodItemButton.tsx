@@ -13,9 +13,10 @@ import { ICategory } from '../types/types';
 
 interface CreateNewFoodItemButtonProps {
   category: ICategory;
+  tabIndex: number;
 }
 
-function CreateNewFoodItemButton({ category }: CreateNewFoodItemButtonProps) {
+function CreateNewFoodItemButton({ category, tabIndex }: CreateNewFoodItemButtonProps) {
   const [showCreateFoodItemModal, setShowCreateFoodItemModal] = useState<boolean>(false);
   return (
     <Col className="add-food-item-button food-item" id={`create-item-for-${category.name.toLowerCase()}`}>
@@ -24,7 +25,7 @@ function CreateNewFoodItemButton({ category }: CreateNewFoodItemButtonProps) {
         categoryId={category.id}
         onHide={() => setShowCreateFoodItemModal(false)}
       />
-      <Button className="button-wrapper" onClick={() => setShowCreateFoodItemModal(true)} />
+      <Button className="button-wrapper" onClick={() => setShowCreateFoodItemModal(true)} tabIndex={tabIndex} />
       <Image className="img-outline" src={createNewFoodItem} />
       <Col className="middle-col">
         <span className="name">

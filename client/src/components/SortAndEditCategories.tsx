@@ -132,6 +132,7 @@ function SortAndEditCategories() {
               >
                 {(providedLi) => (
                   <li
+                    className="dragged-catagory"
                     id={cat.name.toLowerCase()}
                     ref={providedLi.innerRef}
                     /* eslint-disable-next-line react/jsx-props-no-spreading */
