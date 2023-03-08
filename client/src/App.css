@@ -75,16 +75,13 @@ body, html {
 }
 
 .loading-screen .loading-logo {
-  animation: loading;
-  animation-duration: 1.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  animation: loading 1.5s linear infinite;
 }
 
 .loading-screen .text {
   color: var(--primary-red);
   font-weight: 500;
-  opacity: 0.775;
+  opacity: 0.9;
 }
 
 input[type="text"].primary-style, input[type="password"].primary-style {
@@ -173,6 +170,75 @@ input[type="submit"] {
 
 textarea {
   border: 1px solid #dacece;
+}
+
+@keyframes shown-in-view-anim-one {
+  0% {
+    opacity: 0;
+    transform: translate(-22%, -22%) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0%, 0%) rotate(0deg);
+  }
+}
+
+@keyframes shown-in-view-anim-two {
+  0% {
+    opacity: 0;
+    transform: translate(22%, -22%) rotate(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0%, 0%) rotate(0deg);
+  }
+}
+
+@keyframes shown-in-view-anim-three {
+  0% {
+    opacity: 0;
+    transform: translateX(-22%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes shown-in-view-anim-four {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.shown-in-view {
+  opacity: 0;
+  transition: var(--bootstrap-transition);
+}
+
+.shown-in-view.show {
+  opacity: 1;
+}
+
+.shown-in-view.show.anim-one {
+  animation: shown-in-view-anim-one 0.6s ease-in-out 1;
+}
+
+.shown-in-view.show.anim-two {
+  animation: shown-in-view-anim-two 0.6s ease-in-out 1;
+}
+
+.shown-in-view.show.anim-three {
+  animation: shown-in-view-anim-three 1s ease-in-out 1;
+}
+
+.shown-in-view.show.anim-four {
+  animation: shown-in-view-anim-four 0.3s ease-in-out 1;
 }
 
 /* .left-col is sticky side col used in /admin, /account and /menu */
@@ -513,22 +579,36 @@ input.form-control:focus {
   }
 }
 
-#header .col {
+@keyframes fg-card-appears {
+  0% {
+    top: 1100px;
+  }
+  60% {
+    top: 1100px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+#header .fg-card {
   background-color: rgb(255, 255, 255);
   margin: 60px 10px;
   padding: 7rem 2rem;
   width: 100%;
   max-width: 424px;
+  position: relative;
+  animation: fg-card-appears 1.5s ease-out 1; 
 }
 
 @media (max-width: 768px) {
-  #header .col {
+  #header .fg-card {
     margin: 0px 10px;
     background-color: rgba(255, 255, 255, .9);
   }
 }
 
-#header h2 {
+#header .fg-card h2 {
   color: var(--primary-red);
   font-family: 'Tajawal', sans-serif;
   font-size: 3.1050rem; 
@@ -536,14 +616,14 @@ input.form-control:focus {
   width: 80%;
 }
 
-#header p {
+#header .fg-card p {
   color: rgb(0, 0, 0);
   font-family: 'Tajawal', sans-serif;
   font-size: 1.1rem;
   margin: 15px 0px;
 }
 
-#header .btn {
+#header .fg-card .btn {
   font-size: .9rem;
   font-weight: bold;
   height: 50px;
@@ -554,33 +634,33 @@ input.form-control:focus {
   width: 170px;
 }
 
-#header .btn .fa-basket-shopping {
+#header .fg-card .btn .fa-basket-shopping {
   font-size: .9rem;
   position: absolute;
   right: 30px;
   top: 15px;
 }
 
-#header .btn .fa-chevron-right {
+#header .fg-card .btn .fa-chevron-right {
   font-size: .9rem;
   position: absolute;
   right: 30px;
   top: 18px;
 }
 
-#header button {
+#header .fg-card button {
   background-color: #fff;
   border: none;
   box-shadow: 0px 1px 3px 0px rgba(0,0,0,.25);
   color: var(--secondary-red);
 }
 
-#header button:hover {
+#header .fg-card button:hover {
   background-color: var(--secondary-red);
   color: #fff;
 }
 
-#header button:focus {
+#header .fg-card button:focus {
   box-shadow: var(--primary-red-box-shadow);
   outline: none;
   transition: var(--bootstrap-transition);
@@ -637,7 +717,7 @@ input.form-control:focus {
 
 #about-us {
   font-family: 'Quicksand', sans-serif;
-  margin: 5rem auto;
+  margin: 5rem auto 0;
 }
 
 @media (max-width: 768px) {
@@ -1198,7 +1278,7 @@ input.form-control:focus {
     transform: scale(1);
   }
   100% {
-    transform: scale(1.175);
+    transform: scale(1.16);
   }
 }
 
@@ -1229,13 +1309,14 @@ input.form-control:focus {
 }
 
 #menu .left-col a:hover {
-  color: var(--tertiary-red);
+  color: var(--primary-red-light);
 }
 
 #menu .left-col ul {
   background-color: inherit;
   margin: 1rem auto 0;
   font-size: 1.2rem;
+  font-family: 'Tajawal';
 }
 
 #menu .left-col li {

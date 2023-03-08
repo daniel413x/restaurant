@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactElement } from 'react';
 
 type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -6,6 +6,8 @@ export interface IRouterRoute {
   path: string;
   Component: FC;
 }
+
+export type Children = ReactElement | string | false | undefined | number | (ReactElement | string | false | undefined | number)[];
 
 export interface INavbarRoute {
   route: string;

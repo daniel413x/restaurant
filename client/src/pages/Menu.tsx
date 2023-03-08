@@ -22,7 +22,7 @@ interface CategoryAnchorProps {
 
 function CategoryAnchor({ categoryName }: CategoryAnchorProps) {
   const id = makeId(categoryName);
-  return <a href={`#${id}`}>{categoryName}</a>;
+  return <a className="side-col-menu" href={`#${id}`}>{categoryName}</a>;
 }
 
 function Menu() {

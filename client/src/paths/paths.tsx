@@ -1,3 +1,4 @@
+import * as routes from '../utils/consts';
 import Admin from '../pages/Admin';
 import Orders from '../pages/Orders';
 import Cart from '../pages/Cart';
@@ -10,7 +11,6 @@ import EditMenu from '../pages/EditMenu';
 import AccountDetails from '../pages/AccountDetails';
 import EditedFoodItem from '../pages/EditedFoodItem';
 import AdminOrders from '../pages/AdminOrders';
-import * as routes from '../utils/consts';
 
 export const indexAuthedRoutes = [
   {

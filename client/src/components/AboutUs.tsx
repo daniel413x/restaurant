@@ -11,23 +11,28 @@ import imageTwo from '../assets/about-us-2.png';
 import FoodItem from './FoodItem';
 import { demoFoodItems } from '../utils/consts';
 import { IFoodItem } from '../types/types';
+import ShownInView from './ShownInView';
 
 function ExploreOurFoods() {
   return (
     <Container className="explore-our-foods">
-      <h2>
-        Explore Our Foods
-      </h2>
-      <ul>
-        {demoFoodItems.map((foodItem: IFoodItem) => (
-          <li key={foodItem.name}>
-            <FoodItem
-              foodItem={foodItem}
-              demo
-            />
-          </li>
-        ))}
-      </ul>
+      <ShownInView timeout={2200}>
+        <h2>
+          Explore Our Foods
+        </h2>
+        <ul>
+          {demoFoodItems.map((foodItem: IFoodItem, i) => (
+            <ShownInView timeout={800 * (i + 1)}>
+              <li key={foodItem.name}>
+                <FoodItem
+                  foodItem={foodItem}
+                  demo
+                />
+              </li>
+            </ShownInView>
+          ))}
+        </ul>
+      </ShownInView>
     </Container>
   );
 }
@@ -36,52 +41,60 @@ function MissionStatement() {
   return (
     <Container className="mission-statement">
       <Col>
-        <Row>
-          <Col md={7}>
-            <Image className="image-one" src={imageOne} />
-          </Col>
-          <Col className="text-col" md={5}>
-            <h2>
-              We pride ourselves on making real food from the best ingredients.
-            </h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum in sit amet leo. Mauris feugiat erat tellus.Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
-            </p>
-            <Button>
-              Learn More
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="lower-col" md={5}>
-            <h2>
-              We make everything by hand with the best possible ingredients.
-            </h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum in sit amet leo. Mauris feugiat erat tellus.
-            </p>
-            <ul>
-              <li>
-                <FontAwesomeIcon icon={faWheatAlt} />
-                Etiam sed dolor ac diam volutpat.
-              </li>
-              <li>
-                <FontAwesomeIcon icon={faWheatAlt} />
-                Erat volutpat aliquet imperdiet.
-              </li>
-              <li>
-                <FontAwesomeIcon icon={faWheatAlt} />
-                purus a odio finibus bibendum.
-              </li>
-            </ul>
-            <Button>
-              Learn More
-            </Button>
-          </Col>
-          <Col md={7}>
-            <Image className="image-two" src={imageTwo} />
-          </Col>
-        </Row>
+        <ShownInView>
+          <Row>
+            <Col md={7}>
+              <ShownInView timeout={700}>
+                <Image className="image-one" src={imageOne} />
+              </ShownInView>
+            </Col>
+            <Col className="text-col" md={5}>
+              <h2>
+                We pride ourselves on making real food from the best ingredients.
+              </h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum in sit amet leo. Mauris feugiat erat tellus.Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
+              </p>
+              <Button>
+                Learn More
+              </Button>
+            </Col>
+          </Row>
+        </ShownInView>
+        <ShownInView animation="anim-two">
+          <Row>
+            <Col className="lower-col" md={5}>
+              <h2>
+                We make everything by hand with the best possible ingredients.
+              </h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum in sit amet leo. Mauris feugiat erat tellus.
+              </p>
+              <ul>
+                <li>
+                  <FontAwesomeIcon icon={faWheatAlt} />
+                  Etiam sed dolor ac diam volutpat.
+                </li>
+                <li>
+                  <FontAwesomeIcon icon={faWheatAlt} />
+                  Erat volutpat aliquet imperdiet.
+                </li>
+                <li>
+                  <FontAwesomeIcon icon={faWheatAlt} />
+                  purus a odio finibus bibendum.
+                </li>
+              </ul>
+              <Button>
+                Learn More
+              </Button>
+            </Col>
+            <Col md={7}>
+              <ShownInView timeout={700} animation="anim-two">
+                <Image className="image-two" src={imageTwo} />
+              </ShownInView>
+            </Col>
+          </Row>
+        </ShownInView>
       </Col>
     </Container>
   );
@@ -89,20 +102,22 @@ function MissionStatement() {
 
 function VideoPresentation() {
   return (
-    <Col className="video-presentation">
-      <h2>
-        When one&apos;s stomach is full it makes no
-        difference whether they are rich or poor.
-      </h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio
-        finibus bibendum in sit amet leo. Mauris feugiat erat tellus.
-      </p>
-      <a href="https://www.youtube.com/watch?v=bZx8rPd-PKQ">
-        <FontAwesomeIcon icon={faPlay} />
-        Watch Our Story
-      </a>
-    </Col>
+    <ShownInView animation="anim-three">
+      <Col className="video-presentation">
+        <h2>
+          When one&apos;s stomach is full it makes no
+          difference whether they are rich or poor.
+        </h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio
+          finibus bibendum in sit amet leo. Mauris feugiat erat tellus.
+        </p>
+        <a href="https://www.youtube.com/watch?v=bZx8rPd-PKQ">
+          <FontAwesomeIcon icon={faPlay} />
+          Watch Our Story
+        </a>
+      </Col>
+    </ShownInView>
   );
 }
 

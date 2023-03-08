@@ -3,6 +3,7 @@ import { Image } from 'react-bootstrap';
 import Slider from 'react-slick';
 import { ITestimonial } from '../types/types';
 import reviewImageOne from '../assets/review-1-temp.jpg';
+import ShownInView from './ShownInView';
 
 interface TestimonialProps {
   testimonial: ITestimonial;
@@ -64,20 +65,22 @@ function Testimonials() {
     arrows: false,
   };
   return (
-    <div id="testimonials">
-      <h2>
-        Testimonials
-      </h2>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <Slider {...settings}>
-        {testimonials.map((t) => (
-          <Testimonial
-            testimonial={t}
-            key={t.id}
-          />
-        ))}
-      </Slider>
-    </div>
+    <ShownInView animation="anim-four">
+      <div id="testimonials">
+        <h2>
+          Testimonials
+        </h2>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <Slider {...settings}>
+          {testimonials.map((t) => (
+            <Testimonial
+              testimonial={t}
+              key={t.id}
+            />
+          ))}
+        </Slider>
+      </div>
+    </ShownInView>
   );
 }
 
