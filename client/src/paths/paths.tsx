@@ -1,16 +1,18 @@
+import { lazy } from 'react';
 import * as routes from '../utils/consts';
-import Admin from '../pages/Admin';
-import Orders from '../pages/Orders';
-import Cart from '../pages/Cart';
-import Menu from '../pages/Menu';
-import Auth from '../pages/Auth';
-import GuestOrder from '../pages/GuestOrder';
-import FrontPage from '../pages/FrontPage';
-import Account from '../pages/Account';
-import EditMenu from '../pages/EditMenu';
-import AccountDetails from '../pages/AccountDetails';
-import EditedFoodItem from '../pages/EditedFoodItem';
-import AdminOrders from '../pages/AdminOrders';
+
+const Admin = lazy(() => import('../pages/Admin'));
+const Orders = lazy(() => import('../pages/Orders'));
+const Cart = lazy(() => import('../pages/Cart'));
+const Menu = lazy(() => import('../pages/Menu'));
+const Auth = lazy(() => import('../pages/Auth'));
+const GuestOrder = lazy(() => import('../pages/GuestOrder'));
+const FrontPage = lazy(() => import('../pages/FrontPage'));
+const Account = lazy(() => import('../pages/Account'));
+const EditMenu = lazy(() => import('../pages/EditMenu'));
+const AccountDetails = lazy(() => import('../pages/AccountDetails'));
+const EditedFoodItem = lazy(() => import('../pages/EditedFoodItem'));
+const AdminOrders = lazy(() => import('../pages/AdminOrders'));
 
 export const indexAuthedRoutes = [
   {

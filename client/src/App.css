@@ -68,6 +68,10 @@ body, html {
   align-items: center;
 }
 
+.loading-screen.router {
+  min-height: calc(100vh - var(--footer-height) - var(--navbar-height));
+}
+
 .loading-screen .wrapper {
   display: flex;
   flex-direction: column;
