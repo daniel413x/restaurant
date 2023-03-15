@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, RefObject, useEffect, useRef,
+  forwardRef, RefObject, useRef,
 } from 'react';
 import useFixatedInView from '../hooks/useFixatedInView';
 import { Children } from '../types/types';
@@ -30,9 +30,6 @@ const ShownInView = forwardRef(({
     id,
   });
   const preventPrematureLoad = func && !loaded;
-  useEffect(() => {
-    console.log(ref);
-  }, [fixated]);
   const componentCanShow = (func && loaded) || (!func && fixated);
   return (
     <div
