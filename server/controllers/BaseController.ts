@@ -7,6 +7,7 @@ import {
   Attributes,
   FindOptions,
   DestroyOptions,
+  UpdateOptions,
 } from 'sequelize';
 import ApiError from '../error/ApiError';
 import { assignBodyAndProcessImages } from '../utils/functions';
@@ -43,6 +44,7 @@ export default abstract class BaseController<M extends Model> {
       ...options,
     };
     const data = await this.model.findOne(params);
+    console.log(data);
     return res.json(data);
   }
 
@@ -71,30 +73,26 @@ export default abstract class BaseController<M extends Model> {
     if (req.files) {
       form = assignBodyAndProcessImages(req);
     }
-    let data = await this.model.create(form);
-    if (options) {
+    let data = await this.model.create(form, options);
+    if (options?.include) {
       data = await this.model.findByPk(data.getDataValue('id'), options);
     }
     return res.json(data);
   }
 
-  async execUpdate(req: Request, res: Response) {
+  async execUpdate(req: Request, res: Response, options?: Partial<UpdateOptions>) {
     const { id } = req.params;
     let form = req.body;
     if (req.files) {
       form = assignBodyAndProcessImages(req);
     }
-    await this.model.update(form, { where: { id } });
+    await this.model.update(form, { where: { id }, ...options });
     return res.status(204).end();
   }
 
   async execDestroy(req: Request, res: Response, options?: DestroyOptions<Attributes<M>>) {
-    if (options) {
-      this.model.destroy({ ...options });
-    } else {
-      const { id } = req.params;
-      this.model.destroy({ where: { id } });
-    }
+    const { id } = req.params;
+    await this.model.destroy({ where: { id }, ...options });
     return res.status(204).end();
   }
 }

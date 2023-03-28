@@ -1,7 +1,15 @@
+import { Model, Sequelize } from "sequelize";
+
 export interface ICategory {
   id: string;
   name: string;
   public: boolean;
+}
+
+export interface Db {
+  [key: string]: Model | Sequelize | typeof Sequelize;
+  sequelize: Sequelize;
+  Sequelize: typeof Sequelize;
 }
 
 export interface IAddress {

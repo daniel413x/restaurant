@@ -1,4 +1,4 @@
-import { WhereOptions } from 'sequelize';
+import { Transaction, WhereOptions } from 'sequelize';
 import { Request, Response } from 'express';
 import FoodItemInOrder from '../db/models/FoodItemInOrder';
 import FoodItemInCart from '../db/models/FoodItemInCart';
@@ -6,6 +6,7 @@ import Order from '../db/models/Order';
 import AddressForOrder from '../db/models/AddressForOrder';
 import { calcTotal } from '../utils/functions';
 import BaseController from './BaseController';
+import { sequelize } from '../db';
 
 class OrderController extends BaseController<Order> {
   constructor() {
@@ -97,10 +98,10 @@ class OrderController extends BaseController<Order> {
     };
   }
 
-  private async nullPreviousActiveOrder(obj: WhereOptions<any>) {
-    const previousActiveOrder = await Order.findOne({ where: { activeOrder: true, ...obj } });
+  private async nullPreviousActiveOrder(obj: WhereOptions<any>, transaction: Transaction) {
+    const previousActiveOrder = await Order.findOne({ where: { activeOrder: true, ...obj }, transaction });
     if (previousActiveOrder) {
-      await previousActiveOrder.update({ activeOrder: false });
+      await Order.update({ activeOrder: false }, { transaction, where: { id: previousActiveOrder.id } });
     }
   }
 
@@ -109,31 +110,33 @@ class OrderController extends BaseController<Order> {
     const { guestId } = req.body;
     const orderProperties = this.generateDependantOrderProperties(foodItems);
     const date = new Date().toString();
-    await this.nullPreviousActiveOrder({ UserId: guestId });
-    const order = await Order.create({
-      ...orderProperties,
-      date,
-      UserId: guestId,
-      status: 0,
-      actionLog: [[new Date().toString(), 'Order received']],
-      activeOrder: true,
-    });
-    await Promise.all(foodItems.map(async (item) => {
-      await FoodItemInOrder.create({
-        name: item.name,
-        price: item.price,
-        discount: item.discount,
-        ingredients: item.ingredients,
+    await sequelize.transaction(async (transaction) => {
+      await this.nullPreviousActiveOrder({ UserId: guestId }, transaction);
+      const order = await Order.create({
+        ...orderProperties,
+        date,
+        UserId: guestId,
+        status: 0,
+        actionLog: [[new Date().toString(), 'Order received']],
+        activeOrder: true,
+      }, { transaction });
+      await Promise.all(foodItems.map(async (item) => {
+        await FoodItemInOrder.create({
+          name: item.name,
+          price: item.price,
+          discount: item.discount,
+          ingredients: item.ingredients,
+          OrderId: order.id,
+          quantity: item.quantity,
+          instructions: item.instructions,
+        }, { transaction });
+      }));
+      await AddressForOrder.create({
+        ...req.body.address,
         OrderId: order.id,
-        quantity: item.quantity,
-        instructions: item.instructions,
-      });
-    }));
-    await AddressForOrder.create({
-      ...req.body.address,
-      OrderId: order.id,
+      }, { transaction });
+      return res.json(order);
     });
-    return res.json(order);
   }
 
   async create(req: Request, res: Response) {
@@ -159,37 +162,40 @@ class OrderController extends BaseController<Order> {
         orderMaxTime = itemMaxTime;
       }
     });
-    this.nullPreviousActiveOrder({ UserId });
-    const order = await Order.create({
-      UserId,
-      total,
-      date,
-      status: 0,
-      actionLog: [[new Date().toString(), 'Order received']],
-      time: [orderMinTime, orderMaxTime],
-      activeOrder: true,
-    });
-    await Promise.all(itemsFromCart.rows.map(async (item) => {
-      await FoodItemInOrder.create({
-        name: item.name,
-        price: item.price,
-        discount: item.discount,
-        ingredients: item.ingredients,
+    await sequelize.transaction(async (transaction) => {
+      this.nullPreviousActiveOrder({ UserId }, transaction);
+      const order = await Order.create({
+        UserId,
+        total,
+        date,
+        status: 0,
+        actionLog: [[new Date().toString(), 'Order received']],
+        time: [orderMinTime, orderMaxTime],
+        activeOrder: true,
+      }, { transaction });
+      await Promise.all(itemsFromCart.rows.map(async (item) => {
+        await FoodItemInOrder.create({
+          name: item.name,
+          price: item.price,
+          discount: item.discount,
+          ingredients: item.ingredients,
+          OrderId: order.id,
+          quantity: item.quantity,
+          instructions: item.instructions,
+        }, { transaction });
+        await FoodItemInCart.destroy({
+          where: {
+            id: item.id,
+          },
+          transaction,
+        });
+      }));
+      await AddressForOrder.create({
+        ...req.body.address,
         OrderId: order.id,
-        quantity: item.quantity,
-        instructions: item.instructions,
-      });
-      await FoodItemInCart.destroy({
-        where: {
-          id: item.id,
-        },
-      });
-    }));
-    await AddressForOrder.create({
-      ...req.body.address,
-      OrderId: order.id,
+      }, { transaction });
+      return res.json(order);
     });
-    return res.json(order);
   }
 
   async edit(req: Request, res: Response) {

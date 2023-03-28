@@ -11,6 +11,7 @@ import User from '../db/models/User';
 import FoodItemInCart from '../db/models/FoodItemInCart';
 import BaseController from './BaseController';
 import { assignBodyAndProcessImages } from '../utils/functions';
+import { sequelize } from '../db';
 
 const generateJwt = ({
   id,
@@ -65,35 +66,40 @@ class UserController extends BaseController<User> {
       return next(ApiError.conflict('Account with that email already exists'));
     }
     const hashPassword = await bcrypt.hash(password, 5);
-    const user = await User.create({
-      id: guestId || uuidv4(),
-      email,
-      password: hashPassword,
-      roles: [REGISTERED],
-    });
-    if (process.env.NODE_ENV !== 'production') {
-      user.roles.push(ADMIN);
-    }
-    const UserId = user.id;
-    let cart = await Cart.create({ UserId });
-    // guest accreditations
-    if (foodItems) {
-      await Promise.all(foodItems.map(async (item) => {
-        await FoodItemInCart.create({
-          ...item,
-          id: uuidv4(),
-          CartId: cart.id,
-        });
-      }));
-    }
-    cart = await Cart.findOne({
-      where: {
-        UserId,
-      },
-      include: {
-        model: FoodItemInCart,
-        as: 'foodItems',
-      },
+    let user: User;
+    let cart: Cart;
+    await sequelize.transaction(async (transaction) => {
+      user = await User.create({
+        id: guestId || uuidv4(),
+        email,
+        password: hashPassword,
+        roles: [REGISTERED],
+      }, { transaction });
+      if (process.env.NODE_ENV !== 'production') {
+        user.roles.push(ADMIN);
+      }
+      const UserId = user.id;
+      cart = await Cart.create({ UserId }, { transaction });
+      // guest accreditations
+      if (foodItems) {
+        await Promise.all(foodItems.map(async (item) => {
+          await FoodItemInCart.create({
+            ...item,
+            id: uuidv4(),
+            CartId: cart.id,
+          }, { transaction });
+        }));
+      }
+      cart = await Cart.findOne({
+        where: {
+          UserId,
+        },
+        include: {
+          model: FoodItemInCart,
+          as: 'foodItems',
+        },
+        transaction,
+      });
     });
     const token = generateJwt(user, '24h');
     return res.json({ token, cart });

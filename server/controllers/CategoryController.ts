@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import FoodItemInMenu from '../db/models/FoodItemInMenu';
 import Category from '../db/models/Category';
 import BaseController from './BaseController';
+import { sequelize } from '../db';
 
 class CategoryController extends BaseController<Category> {
   constructor() {
@@ -54,23 +55,29 @@ class CategoryController extends BaseController<Category> {
   async delete(req: Request, res: Response) {
     const { id: deletedId } = req.params;
     const items = await FoodItemInMenu.findAndCountAll({ where: { CategoryId: deletedId } });
-    if (items.count > 0) {
-      const uncategorized = await Category.findOne({ where: { name: 'Uncategorized' } });
-      await Promise.all(items.rows.map(async (item) => {
-        await item.update(
-          {
-            CategoryId: uncategorized.id,
-          },
-          {
-            where: {
-              CategoryId: deletedId,
+    await sequelize.transaction(async (transaction) => {
+      if (items.count > 0) {
+        const uncategorized = await Category.findOne({ where: { name: 'Uncategorized' }, transaction });
+        await Promise.all(items.rows.map(async (item) => {
+          await item.update(
+            {
+              CategoryId: uncategorized.id,
             },
-          },
-        );
-      }));
-    }
-    const options = { individualHooks: true, where: { id: deletedId } };
-    this.execDestroy(req, res, options);
+            {
+              where: {
+                CategoryId: deletedId,
+              },
+              transaction,
+            },
+          );
+        }));
+      }
+      const options = {
+        individualHooks: true,
+        transaction,
+      };
+      await this.execDestroy(req, res, options);
+    });
   }
 }
 

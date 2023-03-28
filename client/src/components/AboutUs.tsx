@@ -22,14 +22,14 @@ function ExploreOurFoods() {
         </h2>
         <ul>
           {demoFoodItems.map((foodItem: IFoodItem, i) => (
-            <ShownInView timeout={800 * (i + 1)}>
-              <li key={foodItem.name}>
+            <li key={foodItem.name}>
+              <ShownInView timeout={800 * (i + 1)}>
                 <FoodItem
                   foodItem={foodItem}
                   demo
                 />
-              </li>
-            </ShownInView>
+              </ShownInView>
+            </li>
           ))}
         </ul>
       </ShownInView>
@@ -71,15 +71,15 @@ function MissionStatement() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et purus a odio finibus bibendum in sit amet leo. Mauris feugiat erat tellus.
               </p>
               <ul>
-                <li>
+                <li key="bp-1">
                   <FontAwesomeIcon icon={faWheatAlt} />
                   Etiam sed dolor ac diam volutpat.
                 </li>
-                <li>
+                <li key="bp-2">
                   <FontAwesomeIcon icon={faWheatAlt} />
                   Erat volutpat aliquet imperdiet.
                 </li>
-                <li>
+                <li key="bp-3">
                   <FontAwesomeIcon icon={faWheatAlt} />
                   purus a odio finibus bibendum.
                 </li>

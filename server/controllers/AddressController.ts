@@ -1,19 +1,21 @@
 import { NextFunction, Request, Response } from 'express';
+import { Transaction } from 'sequelize';
+import { sequelize } from '../db';
 import AddressInAddressBook from '../db/models/AddressInAddressBook';
 import ApiError from '../error/ApiError';
 import BaseController from './BaseController';
 
-const unsetPreviousDefault = async (res: Response) => {
-  const { id: UserId } = res.locals.user;
-  const previousDefault = await AddressInAddressBook.findOne({ where: { UserId, isDefault: true } });
-  if (previousDefault) {
-    await previousDefault.update({ isDefault: false });
-  }
-};
-
 class AddressController extends BaseController<AddressInAddressBook> {
   constructor() {
     super(AddressInAddressBook);
+  }
+
+  async unsetPreviousDefault(res: Response, transaction: Transaction) {
+    const { id: UserId } = res.locals.user;
+    const previousDefault = await AddressInAddressBook.findOne({ where: { UserId, isDefault: true } });
+    if (previousDefault) {
+      await AddressInAddressBook.update({ isDefault: false }, { where: { id: previousDefault.id }, transaction });
+    }
   }
 
   get(req: Request, res: Response) {
@@ -26,7 +28,7 @@ class AddressController extends BaseController<AddressInAddressBook> {
     this.execFindAndCountAll(req, res, options);
   }
 
-  create(req: Request, res: Response, next: NextFunction) {
+  async create(req: Request, res: Response, next: NextFunction) {
     const {
       firstName,
       lastName,
@@ -40,18 +42,23 @@ class AddressController extends BaseController<AddressInAddressBook> {
     if (!firstName || !lastName || !addressLineOne || !addressLineTwo || !city || !state || !zip) {
       return next(ApiError.internal('Incomplete form'));
     }
-    if (isDefault) {
-      unsetPreviousDefault(res);
-    }
-    return this.execCreate(req, res);
+    await sequelize.transaction(async (transaction) => {
+      if (isDefault) {
+        await this.unsetPreviousDefault(res, transaction);
+      }
+      await this.execCreate(req, res, { transaction });
+    });
+    return res.status(204).end();
   }
 
-  edit(req: Request, res: Response) {
+  async edit(req: Request, res: Response) {
     const willSetNewDefault = req.body.isDefault;
-    if (willSetNewDefault) {
-      unsetPreviousDefault(res);
-    }
-    this.execUpdate(req, res);
+    await sequelize.transaction(async (transaction) => {
+      if (willSetNewDefault) {
+        await this.unsetPreviousDefault(res, transaction);
+      }
+      return this.execUpdate(req, res, { transaction });
+    });
   }
 
   delete(req: Request, res: Response) {

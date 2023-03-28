@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Sequelize } from 'sequelize';
+import { Db } from '../types/types';
 import sequelize from './connection';
 
 const basename = path.basename(__filename);
@@ -28,4 +29,6 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export default db;
+export { sequelize };
+
+export default db as Db;
