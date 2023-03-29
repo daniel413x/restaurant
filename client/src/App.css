@@ -179,7 +179,7 @@ textarea {
 @keyframes shown-in-view-anim-one {
   0% {
     opacity: 0;
-    transform: translate(-22%, -22%) rotate(-5deg);
+    transform: translate(-11%, -11%) rotate(-5deg);
   }
   100% {
     opacity: 1;
@@ -190,7 +190,7 @@ textarea {
 @keyframes shown-in-view-anim-two {
   0% {
     opacity: 0;
-    transform: translate(22%, -22%) rotate(-10deg);
+    transform: translate(11%, -11%) rotate(-10deg);
   }
   100% {
     opacity: 1;
@@ -201,7 +201,7 @@ textarea {
 @keyframes shown-in-view-anim-three {
   0% {
     opacity: 0;
-    transform: translateX(-22%);
+    transform: translateX(-11%);
   }
   100% {
     opacity: 1;
@@ -602,7 +602,7 @@ input.form-control:focus {
   width: 100%;
   max-width: 424px;
   position: relative;
-  animation: fg-card-appears 1.5s ease-out 1; 
+  animation: fg-card-appears 2.75s ease-out 1; 
 }
 
 @media (max-width: 768px) {
@@ -670,7 +670,7 @@ input.form-control:focus {
   transition: var(--bootstrap-transition);
 }
 
-#icon-pitch {
+#stats {
   pointer-events: none;
   color: #fff;
   display: grid;
@@ -678,7 +678,7 @@ input.form-control:focus {
   grid-template-columns: 15vw 15vw 15vw 15vw;
   justify-content: center;
   background-color: var(--secondary-red);
-  padding: 3rem 3rem 2rem;
+  padding: 2.5rem 2.5rem 2.25rem;
   max-width: 100%;
   overflow-x: hidden; /* <- solved this component not fitting to width */
   text-align: center;
@@ -686,37 +686,45 @@ input.form-control:focus {
 }
 
 @media (max-width: 768px) {
-  #icon-pitch {
+  #stats {
     grid-template-columns: 18vw 18vw 18vw 18vw;
   }
 }
 
 @media (max-width: 650px) {
-  #icon-pitch {
+  #stats {
     align-items: center;
     grid-template-columns: max-content max-content;
     justify-content: center;
   }
 
-  #icon-pitch div {
+  #stats div {
     margin-bottom: .45rem;
   }
 }
 
 @media (max-width: 480px) {
-  #icon-pitch {
+  #stats {
     grid-template-columns: 1fr;
   }
 }
 
-#icon-pitch .svg-inline--fa {
-  height: 3rem;
+#stats .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem;
 }
 
-#icon-pitch h6 {
-  font-size: .9rem;
+#stats .stat .legend {
+  font-size: 0.9rem;
   font-weight: bold;
-  letter-spacing: 3px;
+  letter-spacing: 2.5px;
+}
+
+#stats .stat .figure {
+  font-size: 2.75rem;
+  font-weight: bold;
 }
 
 #about-us {
@@ -1282,12 +1290,12 @@ input.form-control:focus {
     transform: scale(1);
   }
   100% {
-    transform: scale(1.16);
+    transform: scale(1.14);
   }
 }
 
 .food-item-li button:focus, .food-item-li button:hover {
-  transform: scale(1.1);
+  transform: scale(1.065);
   animation: focus-scale 0.1s linear 1;
 }
 

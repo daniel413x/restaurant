@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
-import IconPitch from '../components/IconPitch';
+import Stats from '../components/Stats';
 import AboutUs from '../components/AboutUs';
 import Testimonials from '../components/Testimonials';
 import FAQ from '../components/FAQ';
@@ -11,7 +11,7 @@ function FrontPage() {
   return (
     <div>
       <Header />
-      <IconPitch />
+      <Stats />
       <AboutUs />
       <Testimonials />
       <FAQ />
