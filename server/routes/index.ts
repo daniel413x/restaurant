@@ -6,6 +6,7 @@ import foodItemInMenuRouter from './foodItemInMenuRouter';
 import foodItemInCartRouter from './foodItemInCartRouter';
 import cartRouter from './cartRouter';
 import orderRouter from './orderRouter';
+import utilRouter from './utilRouter';
 import optionsRouter from './optionsRouter';
 import testingRouter from './testingRouter';
 
@@ -19,6 +20,7 @@ router.use('/fooditemincart', foodItemInCartRouter);
 router.use('/cart', cartRouter);
 router.use('/order', orderRouter);
 router.use('/options', optionsRouter);
+router.use('/util', utilRouter);
 router.use('/testing', testingRouter);
 
 export default router;
