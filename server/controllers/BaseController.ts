@@ -44,7 +44,6 @@ export default abstract class BaseController<M extends Model> {
       ...options,
     };
     const data = await this.model.findOne(params);
-    console.log(data);
     return res.json(data);
   }
 

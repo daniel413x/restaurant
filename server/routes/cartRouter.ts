@@ -1,13 +1,13 @@
 import Router from 'express';
 import CartController from '../controllers/CartController';
 import checkRoleMiddleware from '../middleware/checkRoleMiddleware';
-import { REGISTERED } from '../utils/consts';
+import { GUEST, REGISTERED } from '../utils/consts';
 
 const router = Router();
 
 router.get(
   '/',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [GUEST, REGISTERED] }),
   (req, res) => CartController.get(req, res),
 );
 

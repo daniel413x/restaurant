@@ -11,22 +11,22 @@ router.get(
 );
 router.get(
   '/all',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => CategoryController.getAll(req, res),
 );
 router.post(
   '/',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => CategoryController.create(req, res),
 );
 router.put(
   '/:id',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => CategoryController.edit(req, res),
 );
 router.delete(
   '/:id',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => CategoryController.delete(req, res),
 );
 

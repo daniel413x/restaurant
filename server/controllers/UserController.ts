@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import ApiError from '../error/ApiError';
 import { IUser } from '../types/types';
-import { ADMIN, REGISTERED } from '../utils/consts';
+import { ADMIN, GUEST, REGISTERED } from '../utils/consts';
 import Cart from '../db/models/Cart';
 import AddressInAddressBook from '../db/models/AddressInAddressBook';
 import User from '../db/models/User';
@@ -79,6 +79,50 @@ class UserController extends BaseController<User> {
         user.roles.push(ADMIN);
       }
       const UserId = user.id;
+      cart = await Cart.create({ UserId }, { transaction });
+      // guest accreditations
+      if (foodItems) {
+        await Promise.all(foodItems.map(async (item) => {
+          await FoodItemInCart.create({
+            ...item,
+            id: uuidv4(),
+            CartId: cart.id,
+          }, { transaction });
+        }));
+      }
+      cart = await Cart.findOne({
+        where: {
+          UserId,
+        },
+        include: {
+          model: FoodItemInCart,
+          as: 'foodItems',
+        },
+        transaction,
+      });
+    });
+    const token = generateJwt(user, '24h');
+    return res.json({ token, cart });
+  }
+
+  async registrationForGuest(req: Request, res: Response) {
+    const {
+      foodItems,
+    } = req.body;
+    const hashPassword = await bcrypt.hash(uuidv4(), 5);
+    let user: User;
+    let cart: Cart;
+    const UserId = uuidv4();
+    await sequelize.transaction(async (transaction) => {
+      user = await User.create({
+        id: UserId,
+        email: `guest-${UserId}@restaurant.com`,
+        password: hashPassword,
+        roles: [GUEST],
+      }, { transaction });
+      if (process.env.NODE_ENV !== 'production') {
+        user.roles.push(ADMIN);
+      }
       cart = await Cart.create({ UserId }, { transaction });
       // guest accreditations
       if (foodItems) {

@@ -7,22 +7,22 @@ const router = Router();
 
 router.get(
   '/:id',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res, next) => FoodItemInMenuController.getOne(req, res, next),
 );
 router.post(
   '/',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => FoodItemInMenuController.create(req, res),
 );
 router.put(
   '/:id',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => FoodItemInMenuController.edit(req, res),
 );
 router.delete(
   '/:id',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => FoodItemInMenuController.delete(req, res),
 );
 

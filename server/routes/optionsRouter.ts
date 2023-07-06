@@ -11,17 +11,17 @@ router.get(
 );
 router.post(
   '/',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => OptionsController.create(req, res),
 );
 router.put(
   '/:id',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => OptionsController.edit(req, res),
 );
 router.delete(
   '/:id',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => OptionsController.delete(req, res),
 );
 

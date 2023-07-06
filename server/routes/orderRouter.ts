@@ -8,17 +8,17 @@ const router = Router();
 
 router.get(
   '/',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => OrderController.get(req, res),
 );
 router.get(
   '/all',
-  checkRoleMiddleware(ADMIN),
+  checkRoleMiddleware({ accessRoles: [ADMIN] }),
   (req, res) => OrderController.getAllForAdmin(req, res),
 );
 router.get(
   '/activeorder',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => OrderController.getActiveOrder(req, res),
 );
 router.get(
@@ -28,7 +28,7 @@ router.get(
 );
 router.post(
   '/',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => OrderController.create(req, res),
 );
 router.post(
@@ -38,17 +38,17 @@ router.post(
 );
 router.put(
   '/:id',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => OrderController.edit(req, res),
 );
 router.put(
   '/changestatus/:id',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => OrderController.changeStatus(req, res),
 );
 router.delete(
   '/:id',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => OrderController.delete(req, res),
 );
 

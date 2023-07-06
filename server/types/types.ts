@@ -1,4 +1,4 @@
-import { Model, Sequelize } from "sequelize";
+import { Model, Sequelize } from 'sequelize';
 
 export interface ICategory {
   id: string;
@@ -106,3 +106,5 @@ export interface ICart {
   userId: string;
   foodItems?: IFoodItem[];
 }
+
+export type Roles = 'GUEST' | 'REGISTERED' | 'ADMIN';

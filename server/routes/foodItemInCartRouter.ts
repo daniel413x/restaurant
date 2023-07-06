@@ -7,17 +7,17 @@ const router = Router();
 
 router.post(
   '/',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => FoodItemInCartController.create(req, res),
 );
 router.put(
   '/:id',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => FoodItemInCartController.edit(req, res),
 );
 router.delete(
   '/:id',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => FoodItemInCartController.deleteItem(req, res),
 );
 

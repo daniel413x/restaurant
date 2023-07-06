@@ -7,22 +7,22 @@ const router = Router();
 
 router.get(
   '/',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (res, req) => AddressController.get(res, req),
 );
 router.post(
   '/',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (res, req, next) => AddressController.create(res, req, next),
 );
 router.put(
   '/:id',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (res, req) => AddressController.edit(res, req),
 );
 router.delete(
   '/:id',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (res, req) => AddressController.delete(res, req),
 );
 

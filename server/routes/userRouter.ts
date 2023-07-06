@@ -20,12 +20,16 @@ router.post(
   (req, res, next) => UserController.registration(req, res, next),
 );
 router.post(
+  '/registration/guest',
+  (req, res) => UserController.registrationForGuest(req, res),
+);
+router.post(
   '/login',
   (req, res, next) => UserController.login(req, res, next),
 );
 router.put(
   '/',
-  checkRoleMiddleware(REGISTERED),
+  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
   (req, res) => UserController.edit(req, res),
 );
 router.delete(
