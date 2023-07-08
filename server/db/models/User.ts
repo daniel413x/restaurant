@@ -8,12 +8,13 @@ import {
 } from 'sequelize';
 import { REGISTERED } from '../../utils/consts';
 import sequelize from '../connection';
+import { Roles } from '../../types/types';
 
 // eslint-disable-next-line no-use-before-define
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   id!: CreationOptional<string>;
 
-  roles!: string[];
+  roles!: Roles[];
 
   name?: CreationOptional<string>;
 

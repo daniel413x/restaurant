@@ -4,16 +4,20 @@ import {
   QueryResUserRegistration,
   ICart,
   QueryReqEditUser,
-  OrderOrCartFoodItem,
+  QueryReqUserRegistration,
+  CartFoodItem,
 } from '../types/types';
 import { $authHost, $host } from './index';
 
-export const registration = async (email: string, password: string, guestId: string, foodItems?: OrderOrCartFoodItem[]): Promise<QueryResUserRegistration> => {
+export const registration = async ({
+  email,
+  password,
+  guest,
+}: QueryReqUserRegistration): Promise<QueryResUserRegistration> => {
   const { data } = await $host.post('api/user/registration', {
     email,
     password,
-    guestId,
-    foodItems,
+    guest,
   });
   localStorage.setItem('registeredToken', data.token);
   const newUser = jwt_decode(data.token) as IUser;
@@ -21,8 +25,18 @@ export const registration = async (email: string, password: string, guestId: str
   return { newUser, newCart };
 };
 
-export const login = async (email: string, password: string): Promise<IUser> => {
-  const { data } = await $host.post('api/user/login', { email, password });
+export const registrationGuest = async (email: string, password: string): Promise<IUser> => {
+  const { data } = await $authHost.put('api/user/registration/guest', {
+    email,
+    password,
+  });
+  localStorage.setItem('registeredToken', data.token);
+  const newUser = jwt_decode(data.token) as IUser;
+  return newUser;
+};
+
+export const login = async (email: string, password: string, guestItems?: CartFoodItem[]): Promise<IUser> => {
+  const { data } = await $host.post('api/user/login', { email, password, guestItems });
   localStorage.setItem('registeredToken', data.token);
   return jwt_decode(data.token);
 };
@@ -30,12 +44,6 @@ export const login = async (email: string, password: string): Promise<IUser> => 
 export const editUser = async (obj: QueryReqEditUser | FormData): Promise<IUser> => {
   const { data } = await $authHost.put('api/user', obj);
   localStorage.setItem('registeredToken', data.token);
-  return jwt_decode(data.token);
-};
-
-export const createGuestToken = async (): Promise<{ id: string }> => {
-  const { data } = await $host.post('api/user/guesttoken');
-  localStorage.setItem('guestToken', data.token);
   return jwt_decode(data.token);
 };
 

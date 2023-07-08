@@ -8,11 +8,12 @@ import {
   shortNotification,
   red,
   longNotification,
+  GUEST,
 } from '../utils/consts';
 import SmartInput from './SmartInput';
 import LabeledCheckboxButton from './LabeledCheckboxButton';
 import Context from '../context/context';
-import { login, registration } from '../http/userAPI';
+import { registrationGuest, login, registration } from '../http/userAPI';
 import { createAddress } from '../http/addressAPI';
 import { fetchUserCart } from '../http/cartAPI';
 import { validateEmail, validatePassword } from '../utils/functions';
@@ -84,22 +85,32 @@ function AuthBox({
     }
     try {
       if (forLogin) {
-        const fetchedUser = await login(email, password);
+        const mustAccreditGuestItems = cart.foodItems.length > 0 && cart.foodItems[0]?.UserId !== user.id;
+        const fetchedUser = await login(email, password, mustAccreditGuestItems ? cart.foodItems : undefined);
         const fetchedCart = await fetchUserCart();
         user.set(fetchedUser);
         cart.set(fetchedCart);
-      } else {
-        const guestCartItems = cart.foodItems.length > 0;
-        const guestId = localStorage.getItem('guestId');
-        const { newUser, newCart } = await registration(email, password, guestId!, guestCartItems ? cart.foodItems : undefined);
-        user.set(newUser);
-        if (guestCartItems) {
-          localStorage.removeItem('guestCartItems');
+        if (mustAccreditGuestItems) {
+          // accredit items added as guest
+          const accreditedItems = cart.foodItems.map((item) => ({ ...item, UserId: user.id }));
+          cart.setItems(accreditedItems);
         }
-        cart.set(newCart);
-        let defaultAddress;
+      } else {
+        const mustFullyRegisterGuest = user.roles.indexOf(GUEST) >= 0 && cart.UserId === user.id;
+        if (mustFullyRegisterGuest) {
+          const newUser = await registrationGuest(
+            email,
+            password,
+          );
+          user.set(newUser);
+        } else {
+          // regular registration/user registered before trying to add cart items
+          const { newUser, newCart } = await registration({ email, password });
+          user.set(newUser);
+          cart.set(newCart);
+        }
         if (saveDefaultAddress) {
-          defaultAddress = await createAddress({
+          const defaultAddress = await createAddress({
             firstName,
             lastName,
             addressLineOne,
@@ -108,7 +119,7 @@ function AuthBox({
             state,
             zip,
             isDefault: true,
-            UserId: newUser.id,
+            UserId: user.id,
           });
           addresses.addAddress(defaultAddress);
         }

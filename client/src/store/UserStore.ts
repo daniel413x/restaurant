@@ -84,7 +84,7 @@ export default class UserStore implements IUser {
 
   unset() {
     this.roles = [GUEST];
-    this.id = localStorage.getItem('guestId')!;
+    this.id = 'GUEST';
     this.name = 'Guest';
     this.avatar = '';
     this.email = '';

@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import ApiError from '../error/ApiError';
 import { IUser } from '../types/types';
-import { ADMIN, GUEST, REGISTERED } from '../utils/consts';
+import { GUEST, REGISTERED } from '../utils/consts';
 import Cart from '../db/models/Cart';
 import AddressInAddressBook from '../db/models/AddressInAddressBook';
 import User from '../db/models/User';
@@ -36,16 +36,14 @@ class UserController extends BaseController<User> {
     super(User);
   }
 
-  async registration(req: Request, res: Response, next: NextFunction) {
+  private async validateForm(req: Request): Promise<void> {
     const {
       email,
       password,
-      foodItems,
-      guestId,
     } = req.body;
     const incompleteForm = !email || !password;
     if (incompleteForm) {
-      return next(ApiError.badRequest('Incomplete form'));
+      throw ApiError.badRequest('Incomplete form');
     }
     const formattedEmail = ['', ''];
     email.split('@').forEach((p: string, i: number) => {
@@ -55,41 +53,48 @@ class UserController extends BaseController<User> {
     const expectedLength = formattedEmail.length === 2;
     const validEmail = expectedLength && local && domain;
     if (!validEmail) {
-      return next(ApiError.badRequest('Invalid email format'));
+      throw ApiError.badRequest('Invalid email format');
     }
     const validPassword = /(?=^\S{6,256}$)^.+$/i.test(password);
     if (!validPassword) {
-      return next(ApiError.badRequest('Invalid password'));
+      throw ApiError.badRequest('Invalid password');
     }
     const emailTaken = await User.findOne({ where: { email } });
     if (emailTaken) {
-      return next(ApiError.conflict('Account with that email already exists'));
+      throw ApiError.conflict('Account with that email already exists');
     }
-    const hashPassword = await bcrypt.hash(password, 5);
+  }
+
+  async registration(req: Request, res: Response) {
+    const {
+      email,
+      password,
+      guest,
+    } = req.body;
+    let form: IUser;
+    if (guest) {
+      const guestId = uuidv4();
+      form = {
+        id: guestId,
+        email: `${guestId}@restaurant.com`,
+        password: await bcrypt.hash(uuidv4(), 5),
+        roles: [GUEST],
+      };
+    } else {
+      await this.validateForm(req);
+      form = {
+        id: uuidv4(),
+        email,
+        password: await bcrypt.hash(password, 5),
+        roles: [REGISTERED],
+      };
+    }
     let user: User;
     let cart: Cart;
     await sequelize.transaction(async (transaction) => {
-      user = await User.create({
-        id: guestId || uuidv4(),
-        email,
-        password: hashPassword,
-        roles: [REGISTERED],
-      }, { transaction });
-      if (process.env.NODE_ENV !== 'production') {
-        user.roles.push(ADMIN);
-      }
+      user = await User.create(form, { transaction });
       const UserId = user.id;
       cart = await Cart.create({ UserId }, { transaction });
-      // guest accreditations
-      if (foodItems) {
-        await Promise.all(foodItems.map(async (item) => {
-          await FoodItemInCart.create({
-            ...item,
-            id: uuidv4(),
-            CartId: cart.id,
-          }, { transaction });
-        }));
-      }
       cart = await Cart.findOne({
         where: {
           UserId,
@@ -105,54 +110,29 @@ class UserController extends BaseController<User> {
     return res.json({ token, cart });
   }
 
-  async registrationForGuest(req: Request, res: Response) {
+  async registrationGuest(req: Request, res: Response) {
+    // occurs for a user whose only role is "GUEST" e.g. one who was registered automatically by adding an item to the cart
+    await this.validateForm(req);
     const {
-      foodItems,
+      email,
+      password,
     } = req.body;
-    const hashPassword = await bcrypt.hash(uuidv4(), 5);
-    let user: User;
-    let cart: Cart;
-    const UserId = uuidv4();
-    await sequelize.transaction(async (transaction) => {
-      user = await User.create({
-        id: UserId,
-        email: `guest-${UserId}@restaurant.com`,
-        password: hashPassword,
-        roles: [GUEST],
-      }, { transaction });
-      if (process.env.NODE_ENV !== 'production') {
-        user.roles.push(ADMIN);
-      }
-      cart = await Cart.create({ UserId }, { transaction });
-      // guest accreditations
-      if (foodItems) {
-        await Promise.all(foodItems.map(async (item) => {
-          await FoodItemInCart.create({
-            ...item,
-            id: uuidv4(),
-            CartId: cart.id,
-          }, { transaction });
-        }));
-      }
-      cart = await Cart.findOne({
-        where: {
-          UserId,
-        },
-        include: {
-          model: FoodItemInCart,
-          as: 'foodItems',
-        },
-        transaction,
-      });
-    });
-    const token = generateJwt(user, '24h');
-    return res.json({ token, cart });
+    const hashPassword = await bcrypt.hash(password, 5);
+    const { id } = res.locals.user;
+    const updatedObj = await User.update({
+      email,
+      password: hashPassword,
+      roles: [REGISTERED],
+    }, { where: { id }, returning: true });
+    const token = generateJwt(updatedObj[1][0], '24h');
+    return res.json({ token });
   }
 
   async login(req: Request, res: Response, next: NextFunction) {
     const {
       email,
       password: reqPassword,
+      guestItems,
     } = req.body;
     const user: IUser | null = await User.findOne({
       where: {
@@ -177,6 +157,19 @@ class UserController extends BaseController<User> {
     if (!comparePassword) {
       return next(ApiError.internal('Incorrect password'));
     }
+    // guest-added item accreditations
+    if (guestItems?.length > 0) {
+      const cart = await Cart.findOne({
+        where: {
+          UserId: user.id,
+        },
+      });
+      await Promise.all(guestItems.map(async ({ id }) => {
+        await FoodItemInCart.update({
+          CartId: cart.id,
+        }, { where: { id } });
+      }));
+    }
     const token = generateJwt(user, '24h');
     return res.json({ token });
   }
@@ -184,12 +177,6 @@ class UserController extends BaseController<User> {
   async auth(req: Request, res: Response) {
     const { user } = res.locals;
     const token = generateJwt(user, '24h');
-    return res.json({ token });
-  }
-
-  async createGuestToken(req: Request, res: Response) {
-    const id = uuidv4();
-    const token = generateJwt({ id }, '365d');
     return res.json({ token });
   }
 

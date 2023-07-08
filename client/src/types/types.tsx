@@ -2,6 +2,14 @@ import { FC, ReactElement } from 'react';
 
 type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
+type Only<T, U> = {
+  [P in keyof T]: T[P];
+} & {
+  [P in keyof U]?: never;
+};
+
+export type Either<T, U> = Only<T, U> | Only<U, T>;
+
 export interface IRouterRoute {
   path: string;
   Component: FC;
@@ -45,6 +53,17 @@ export interface IUser {
 
 export type QueryReqEditUser = Partial<Omit<IUser, 'id'>> & { password?: string; };
 
+export type NormalRegistration = {
+  email: string;
+  password: string;
+};
+
+export type GuestRegistration = {
+  guest: boolean
+};
+
+export type QueryReqUserRegistration = Either<NormalRegistration, GuestRegistration>;
+
 export type QueryResUserRegistration = {
   newUser: IUser;
   newCart: ICart;
@@ -82,6 +101,8 @@ type OrderOrCartFoodItemSpecificProps = {
 
 export type OrderOrCartFoodItem = Omit<IFoodItem, 'image' | 'serves' | 'CategoryId'> & OrderOrCartFoodItemSpecificProps;
 
+export type CartFoodItem = Omit<IFoodItem, 'image' | 'serves' | 'CategoryId'> & OrderOrCartFoodItemSpecificProps & { UserId: string; };
+
 export type QueryReqMenuFoodItem = Omit<PartiallyOptional<IFoodItem, 'id'>, 'image' | 'category'> & {
   image: File;
   CategoryId: string;
@@ -89,11 +110,9 @@ export type QueryReqMenuFoodItem = Omit<PartiallyOptional<IFoodItem, 'id'>, 'ima
 
 export type QueryResMenuFoodItem = IFoodItem;
 
-export type QueryReqCartFoodItem = Omit<OrderOrCartFoodItem, 'id' | 'CategoryId'> & {
+export type QueryReqCartFoodItem = Omit<CartFoodItem, 'id'> & {
   CartId: string
 };
-
-export type QueryReqCartFoodItemForGuest = Omit<OrderOrCartFoodItem, 'id' | 'CategoryId'>;
 
 export interface ICategory {
   name: string;
@@ -150,12 +169,6 @@ export type QueryReqSubmitOrder = {
   UserId: string;
   CartId: string;
   address: string | QueryOrderAddress;
-};
-
-export type QueryReqSubmitGuestOrder = {
-  foodItems: QueryReqCartFoodItemForGuest[];
-  address: string | QueryOrderAddress;
-  guestId: string;
 };
 
 export interface ICategoriesSorter { // related to backend Options model, meant to handle categories sorting and maybe sorting of other things like front page elements

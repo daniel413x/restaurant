@@ -7,11 +7,11 @@ import FoodItemOrder from './FoodItemOrder';
 import OrderProgress from './OrderProgress';
 import TimestampedAction from './TimestampedAction';
 import { OrderOrCartFoodItem } from '../types/types';
-import { fetchActiveGuestOrder, fetchActiveOrder } from '../http/orderAPI';
+import { fetchActiveOrder } from '../http/orderAPI';
 import { actionTimestamp } from '../utils/functions';
 
 function ActiveOrder() {
-  const { user, orders } = useContext(Context);
+  const { orders } = useContext(Context);
   const [currentOrb, setCurrentOrb] = useState<number>(0);
   const [dynamicStatusSubheading, setDynamicStatusSubheading] = useState<string>('');
   const [min, setMin] = useState<number>(0);
@@ -37,12 +37,7 @@ function ActiveOrder() {
   }, [orders.activeOrder?.status]);
   useEffect(() => {
     (async () => {
-      let activeOrder;
-      if (user.isGuest) {
-        activeOrder = await fetchActiveGuestOrder();
-      } else {
-        activeOrder = await fetchActiveOrder();
-      }
+      const activeOrder = await fetchActiveOrder();
       if (activeOrder) {
         orders.setActiveOrder(activeOrder);
       }

@@ -60,83 +60,11 @@ class OrderController extends BaseController<Order> {
     this.execFindOne(req, res, options);
   }
 
-  getActiveGuestOrder(req: Request, res: Response) {
-    const { id } = res.locals.user;
-    const options = {
-      where: {
-        UserId: id,
-        activeOrder: true,
-      },
-      include: [{
-        model: FoodItemInOrder,
-        as: 'foodItems',
-      },
-      {
-        model: AddressForOrder,
-        as: 'address',
-      }],
-    };
-    this.execFindOne(req, res, options);
-  }
-
-  private generateDependantOrderProperties(arr: FoodItemInCart[]) {
-    const total = calcTotal(arr);
-    let orderMinTime = 0;
-    let orderMaxTime = 0;
-    arr.forEach((item) => {
-      const [itemMinTime, itemMaxTime] = item.time;
-      if (itemMinTime > orderMinTime) {
-        orderMinTime = itemMinTime;
-      }
-      if (itemMaxTime > orderMaxTime) {
-        orderMaxTime = itemMaxTime;
-      }
-    });
-    return {
-      time: [orderMinTime, orderMaxTime] as [number, number],
-      total,
-    };
-  }
-
   private async nullPreviousActiveOrder(obj: WhereOptions<any>, transaction: Transaction) {
     const previousActiveOrder = await Order.findOne({ where: { activeOrder: true, ...obj }, transaction });
     if (previousActiveOrder) {
       await Order.update({ activeOrder: false }, { transaction, where: { id: previousActiveOrder.id } });
     }
-  }
-
-  async guestCreate(req: Request, res: Response) {
-    const { foodItems } = req.body;
-    const { guestId } = req.body;
-    const orderProperties = this.generateDependantOrderProperties(foodItems);
-    const date = new Date().toString();
-    await sequelize.transaction(async (transaction) => {
-      await this.nullPreviousActiveOrder({ UserId: guestId }, transaction);
-      const order = await Order.create({
-        ...orderProperties,
-        date,
-        UserId: guestId,
-        status: 0,
-        actionLog: [[new Date().toString(), 'Order received']],
-        activeOrder: true,
-      }, { transaction });
-      await Promise.all(foodItems.map(async (item) => {
-        await FoodItemInOrder.create({
-          name: item.name,
-          price: item.price,
-          discount: item.discount,
-          ingredients: item.ingredients,
-          OrderId: order.id,
-          quantity: item.quantity,
-          instructions: item.instructions,
-        }, { transaction });
-      }));
-      await AddressForOrder.create({
-        ...req.body.address,
-        OrderId: order.id,
-      }, { transaction });
-      return res.json(order);
-    });
   }
 
   async create(req: Request, res: Response) {

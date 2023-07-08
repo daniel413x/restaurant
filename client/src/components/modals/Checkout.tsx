@@ -14,7 +14,7 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Context from '../../context/context';
 import SmartInput from '../SmartInput';
 import {
@@ -28,7 +28,7 @@ import {
   GUEST_ROUTE,
   ORDERS_ROUTE,
 } from '../../utils/consts';
-import { submitOrder, submitGuestOrder } from '../../http/orderAPI';
+import { submitOrder } from '../../http/orderAPI';
 import { calcItemPrice } from '../../utils/functions';
 
 interface CheckoutProps {
@@ -62,8 +62,6 @@ function Checkout({
   const [cardCVC, setCardCVC] = useState<string>('');
   const [pressedSubmit, setPressedSubmit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [confirmation, setConfirmation] = useState<boolean>(false);
-  const [orderNumber, setOrderNumber] = useState<string>('');
   const navigate = useNavigate();
   // const UserId = user.id;
   const requiredFieldsIncomplete = !email || !firstName || !lastName
@@ -100,33 +98,18 @@ function Checkout({
         state,
       };
       const CartId = cart.id;
-      let order;
-      if (user.isGuest) {
-        const {
-          foodItems,
-        } = cart;
-        order = await submitGuestOrder({
-          address,
-          foodItems,
-          guestId: user.id,
-        });
-        localStorage.removeItem('guestCartItems');
-      } else {
-        const UserId = user.id;
-        order = await submitOrder({
-          UserId,
-          CartId,
-          address,
-        });
-      }
+      const UserId = user.id;
+      await submitOrder({
+        UserId,
+        CartId,
+        address,
+      });
       // orders.addOrder(order);
       cart.clearItems();
       return navigate(
         user.isGuest ? `/${GUEST_ROUTE}/${ORDERS_ROUTE}`
           : `${ACCOUNT_ROUTE}`,
       );
-      setConfirmation(true);
-      return setOrderNumber(order.id);
     } catch (error: any) {
       return notifications.message(
         error.response.data.message,
@@ -168,210 +151,193 @@ function Checkout({
       <div className={`${loading && 'blocked'} checkout`}>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {confirmation ? 'Thank you!' : 'Checkout'}
+            Checkout
             {' '}
           </Modal.Title>
         </Modal.Header>
         <Form onSubmit={action}>
-          {confirmation
-            ? (
-              <Modal.Body className="confirmation">
-                {`A copy of your receipt will be sent to ${email}. Your order number is:`}
-                <Col className="order-number">
-                  {`Order #${orderNumber.slice(0, 7)}`}
+          <Modal.Body>
+            <div className="receipt">
+              <h5>
+                Receipt
+              </h5>
+              {checkoutItems.map((item) => (
+                <Row
+                  className="item-price-pair"
+                  key={item.id}
+                >
+                  <Col className="item">
+                    {' '}
+                    {item.name}
+                    {' '}
+                    {item.quantity > 1 && `(${item.quantity}) `}
+                  </Col>
+                  <Col className="price">
+                    $
+                    {calcItemPrice(item.price, item.discount)}
+                  </Col>
+                </Row>
+              ))}
+              —
+              <Row className="item-price-pair">
+                <Col>
+                  Total
                 </Col>
-                Click &apos;Track my order&apos; to follow your order!
-              </Modal.Body>
-            )
-            : (
-              <Modal.Body>
-                <div className="receipt">
-                  <h5>
-                    Receipt
-                  </h5>
-                  {checkoutItems.map((item) => (
-                    <Row
-                      className="item-price-pair"
-                      key={item.id}
-                    >
-                      <Col className="item">
-                        {' '}
-                        {item.name}
-                        {' '}
-                        {item.quantity > 1 && `(${item.quantity}) `}
-                      </Col>
-                      <Col className="price">
-                        $
-                        {calcItemPrice(item.price, item.discount)}
-                      </Col>
-                    </Row>
-                  ))}
-                  —
-                  <Row className="item-price-pair">
-                    <Col>
-                      Total
-                    </Col>
-                    <Col>
-                      <strong>
-                        $
-                        {cart.total}
-                      </strong>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <h5>
-                  Shipping &amp; billing
-                </h5>
-                * = required field
-                {addresses.all.length > 0 && (
-                <Dropdown>
-                  <Dropdown.Toggle>
-                    Saved addresses
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {addresses.all.map((addressObj) => (
-                      <Dropdown.Item
-                        onClick={() => selectFromSavedAddresses(addressObj)}
-                        key={addressObj.id}
-                      >
-                        {addressObj.addressLineOne}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-                )}
-                <SmartInput
-                  id="email-field"
-                  label="Email*"
-                  value={email}
-                  onChange={setEmail}
-                  pressedSubmit={pressedSubmit}
-                  setPressedSubmit={setPressedSubmit}
-                  primaryStyle
-                />
-                <div className="name-row">
-                  <SmartInput
-                    id="first-name-field"
-                    label="First name*"
-                    value={firstName}
-                    onChange={setFirstName}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                    primaryStyle
-                  />
-                  <SmartInput
-                    primaryStyle
-                    id="last-name-field"
-                    label="Last name*"
-                    value={lastName}
-                    onChange={setLastName}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                  />
-                </div>
-                <SmartInput
-                  primaryStyle
-                  id="address-line-one-field"
-                  label="Street address*"
-                  value={addressLineOne}
-                  onChange={setAddressLineOne}
-                  pressedSubmit={pressedSubmit}
-                  setPressedSubmit={setPressedSubmit}
-                />
-                <SmartInput
-                  label="Street address Line Two"
-                  id="address-line-two-field"
-                  value={addressLineTwo}
-                  onChange={setAddressLineTwo}
-                  pressedSubmit={pressedSubmit}
-                  setPressedSubmit={setPressedSubmit}
-                  optional
-                  placeholder="apt., suite"
-                  primaryStyle
-                />
-                <div className="city-row">
-                  <SmartInput
-                    label="Territory/City*"
-                    id="city-field"
-                    value={city}
-                    onChange={setCity}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                    bsWidth={6}
-                    primaryStyle
-                  />
-                  <SmartInput
-                    label="State*"
-                    id="state-field"
-                    value={state}
-                    onChange={setState}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                    primaryStyle
-                  />
-                  <SmartInput
-                    label="Zip address*"
-                    id="zip-field"
-                    value={zip}
-                    onChange={setZip}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                    primaryStyle
-                  />
-                </div>
-                <hr />
-                <h5>
-                  Payment
-                </h5>
-                <SmartInput
-                  label="Full name on card*"
-                  id="card-name-field"
-                  value={cardName}
-                  onChange={setCardName}
-                  pressedSubmit={pressedSubmit}
-                  setPressedSubmit={setPressedSubmit}
-                  primaryStyle
-                />
-                <div className="card-number-row">
-                  <SmartInput
-                    label="Card number*"
-                    id="card-number-field"
-                    value={cardNumber}
-                    onChange={setCardNumber}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                    bsWidth={6}
-                    primaryStyle
-                  />
-                  <SmartInput
-                    label="Expir.*"
-                    id="card-expiration-field"
-                    value={cardExpiration}
-                    onChange={setCardExpiration}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                    primaryStyle
-                  />
-                  <SmartInput
-                    label="CVC*"
-                    id="card-cvc-field"
-                    value={cardCVC}
-                    onChange={setCardCVC}
-                    pressedSubmit={pressedSubmit}
-                    setPressedSubmit={setPressedSubmit}
-                    primaryStyle
-                  />
-                </div>
-              </Modal.Body>
+                <Col>
+                  <strong>
+                    $
+                    {cart.total}
+                  </strong>
+                </Col>
+              </Row>
+            </div>
+            <hr />
+            <h5>
+              Shipping &amp; billing
+            </h5>
+            * = required field
+            {addresses.all.length > 0 && (
+            <Dropdown>
+              <Dropdown.Toggle>
+                Saved addresses
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {addresses.all.map((addressObj) => (
+                  <Dropdown.Item
+                    onClick={() => selectFromSavedAddresses(addressObj)}
+                    key={addressObj.id}
+                  >
+                    {addressObj.addressLineOne}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
             )}
+            <SmartInput
+              id="email-field"
+              label="Email*"
+              value={email}
+              onChange={setEmail}
+              pressedSubmit={pressedSubmit}
+              setPressedSubmit={setPressedSubmit}
+              primaryStyle
+            />
+            <div className="name-row">
+              <SmartInput
+                id="first-name-field"
+                label="First name*"
+                value={firstName}
+                onChange={setFirstName}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+                primaryStyle
+              />
+              <SmartInput
+                primaryStyle
+                id="last-name-field"
+                label="Last name*"
+                value={lastName}
+                onChange={setLastName}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+              />
+            </div>
+            <SmartInput
+              primaryStyle
+              id="address-line-one-field"
+              label="Street address*"
+              value={addressLineOne}
+              onChange={setAddressLineOne}
+              pressedSubmit={pressedSubmit}
+              setPressedSubmit={setPressedSubmit}
+            />
+            <SmartInput
+              label="Street address Line Two"
+              id="address-line-two-field"
+              value={addressLineTwo}
+              onChange={setAddressLineTwo}
+              pressedSubmit={pressedSubmit}
+              setPressedSubmit={setPressedSubmit}
+              optional
+              placeholder="apt., suite"
+              primaryStyle
+            />
+            <div className="city-row">
+              <SmartInput
+                label="Territory/City*"
+                id="city-field"
+                value={city}
+                onChange={setCity}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+                bsWidth={6}
+                primaryStyle
+              />
+              <SmartInput
+                label="State*"
+                id="state-field"
+                value={state}
+                onChange={setState}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+                primaryStyle
+              />
+              <SmartInput
+                label="Zip address*"
+                id="zip-field"
+                value={zip}
+                onChange={setZip}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+                primaryStyle
+              />
+            </div>
+            <hr />
+            <h5>
+              Payment
+            </h5>
+            <SmartInput
+              label="Full name on card*"
+              id="card-name-field"
+              value={cardName}
+              onChange={setCardName}
+              pressedSubmit={pressedSubmit}
+              setPressedSubmit={setPressedSubmit}
+              primaryStyle
+            />
+            <div className="card-number-row">
+              <SmartInput
+                label="Card number*"
+                id="card-number-field"
+                value={cardNumber}
+                onChange={setCardNumber}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+                bsWidth={6}
+                primaryStyle
+              />
+              <SmartInput
+                label="Expir.*"
+                id="card-expiration-field"
+                value={cardExpiration}
+                onChange={setCardExpiration}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+                primaryStyle
+              />
+              <SmartInput
+                label="CVC*"
+                id="card-cvc-field"
+                value={cardCVC}
+                onChange={setCardCVC}
+                pressedSubmit={pressedSubmit}
+                setPressedSubmit={setPressedSubmit}
+                primaryStyle
+              />
+            </div>
+          </Modal.Body>
           <Modal.Footer>
-            {confirmation ? (
-              <NavLink to={`/${ACCOUNT_ROUTE}`}>
-                <Button>Track my order</Button>
-              </NavLink>
-            )
-              : <Button className={`${requiredFieldsIncomplete && 'blocked'}`} type="submit" id="submit-button">Submit</Button>}
+            <Button className={`${requiredFieldsIncomplete && 'blocked'}`} type="submit" id="submit-button">Submit</Button>
           </Modal.Footer>
         </Form>
       </div>

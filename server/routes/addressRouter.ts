@@ -1,13 +1,13 @@
 import Router from 'express';
 import AddressController from '../controllers/AddressController';
 import checkRoleMiddleware from '../middleware/checkRoleMiddleware';
-import { REGISTERED } from '../utils/consts';
+import { GUEST, REGISTERED } from '../utils/consts';
 
 const router = Router();
 
 router.get(
   '/',
-  checkRoleMiddleware({ accessRoles: [REGISTERED] }),
+  checkRoleMiddleware({ accessRoles: [GUEST, REGISTERED] }),
   (res, req) => AddressController.get(res, req),
 );
 router.post(

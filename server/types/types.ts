@@ -32,9 +32,11 @@ export interface IAddressInAddressBook extends IAddress {
   isDefault?: boolean;
 }
 
+export type Roles = 'GUEST' | 'REGISTERED' | 'ADMIN';
+
 export interface IUser {
   id: string;
-  roles: string[];
+  roles: Roles[];
   name?: string;
   email: string;
   password: string;
@@ -42,22 +44,10 @@ export interface IUser {
   addresses?: IAddressInAddressBook[];
 }
 
-export interface IGuest {
-  id: string;
-}
-
 export interface IFoodItem {
   id: string;
   name: string;
   price: string;
-}
-
-export type FoodItemInGuestCart = IFoodItem & {
-  discount: string;
-  time: [number, number];
-  ingredients: string[];
-  quantity: number;
-  instructions: string;
 }
 
 export interface IFoodItemInMenu extends IFoodItem {
@@ -78,10 +68,6 @@ export interface IFoodItemInCart extends IFoodItem {
   instructions?: string;
   quantity: number;
 }
-
-export type FoodItemInOrderCreationAttributes = Omit<FoodItemInGuestCart, 'id'> & {
-  OrderId: string;
-};
 
 export interface IOrder {
   id: string;
@@ -106,5 +92,3 @@ export interface ICart {
   userId: string;
   foodItems?: IFoodItem[];
 }
-
-export type Roles = 'GUEST' | 'REGISTERED' | 'ADMIN';

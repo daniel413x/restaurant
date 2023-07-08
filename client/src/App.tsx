@@ -9,7 +9,7 @@ import AppRouter from './routers/AppRouter';
 import Notifications from './components/Notifications';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
-import { autoAuth, createGuestToken } from './http/userAPI';
+import { autoAuth } from './http/userAPI';
 import { fetchUserCart } from './http/cartAPI';
 import { fetchUserAddress } from './http/addressAPI';
 import { indexAuthedRoutes, indexPublicRoutes } from './paths/paths';
@@ -27,7 +27,6 @@ function App() {
     (async () => {
       try {
         const registeredToken = localStorage.getItem('registeredToken');
-        const guestToken = localStorage.getItem('guestToken');
         if (registeredToken) {
           const stillAuthed = await autoAuth();
           const userCart = await fetchUserCart();
@@ -41,17 +40,6 @@ function App() {
               return;
             }
           }
-        } else if (guestToken) {
-          const guestId = localStorage.getItem('guestId');
-          user.setId(guestId!);
-          const guestCartItems = localStorage.getItem('guestCartItems');
-          if (guestCartItems) {
-            cart.setItems(JSON.parse(localStorage.getItem('guestCartItems')!));
-          }
-        } else {
-          const guest = await createGuestToken();
-          user.setId(guest.id);
-          localStorage.setItem('guestId', guest.id);
         }
       } catch (error: any) {
         notifications.message(
@@ -61,7 +49,6 @@ function App() {
         );
         if (error.response.status === 401) {
           localStorage.removeItem('registeredToken');
-          localStorage.removeItem('guestToken');
         }
       } finally {
         setTimeout(() => setLoading(false), 1000);

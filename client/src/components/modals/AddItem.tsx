@@ -11,16 +11,17 @@ import {
   shortNotification,
   green,
   red,
+  GUEST,
 } from '../../utils/consts';
 import {
   IModalProps,
   IFoodItem,
   QueryReqCartFoodItem,
-  OrderOrCartFoodItem,
 } from '../../types/types';
 import FoodItemAuxiliary from '../FoodItemAuxiliary';
 import Context from '../../context/context';
 import { addFoodItem } from '../../http/foodItemInCartAPI';
+import { registration } from '../../http/userAPI';
 
 interface AddItemProps extends IModalProps {
   foodItem: IFoodItem;
@@ -36,31 +37,29 @@ function AddItem({
   const [instructions, setInstructions] = useState<string>('');
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const CartId = cart.id;
-    const baseAddedFoodItem = {
-      name: foodItem.name,
-      price: foodItem.price,
-      discount: foodItem.discount,
-      time: foodItem.time,
-      ingredients: foodItem.ingredients,
-      quantity,
-      instructions,
-    };
     try {
-      if (user.isGuest) {
-        const guestAddedItem: OrderOrCartFoodItem = {
-          ...baseAddedFoodItem,
-          id: new Date().toString(),
-        };
-        localStorage.setItem('guestCartItems', JSON.stringify([...cart.foodItems, guestAddedItem]));
-        cart.addItem(guestAddedItem);
-      } else {
-        const registeredUserAddedItem: QueryReqCartFoodItem = {
-          ...baseAddedFoodItem,
-          CartId,
-        };
-        cart.addItem(await addFoodItem(registeredUserAddedItem));
+      if (cart.id === GUEST) {
+        const {
+          newCart,
+          newUser,
+        } = await registration({
+          guest: true,
+        });
+        user.set(newUser);
+        cart.set(newCart);
       }
+      const addedFoodItem: QueryReqCartFoodItem = {
+        name: foodItem.name,
+        price: foodItem.price,
+        discount: foodItem.discount,
+        time: foodItem.time,
+        ingredients: foodItem.ingredients,
+        quantity,
+        instructions,
+        CartId: cart.id,
+        UserId: user.id,
+      };
+      cart.addItem(await addFoodItem(addedFoodItem));
       notifications.message(
         `Added to cart ${foodItem.name}`,
         green,

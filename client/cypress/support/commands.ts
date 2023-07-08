@@ -2,7 +2,7 @@
 
 import { formatForId } from './utils';
 
-export const clientUrl = 'http://localhost:3001';
+export const clientUrl = 'http://localhost:3000';
 export const serverUrl = 'http://localhost:7001';
 
 /*
@@ -53,19 +53,6 @@ Cypress.Commands.add('postLogin', (email, password) => {
     });
 });
 
-Cypress.Commands.add('createGuestItems', () => {
-  const items = [{
-    name: 'Raspberry Stuffed French Toast',
-    discount: 0.1,
-    price: 13.20,
-    time: [15, 20],
-    ingredients: ['raspberry', 'vanilla ice cream', 'maple syrup'],
-    quantity: 1,
-    instructions: '',
-  }];
-  localStorage.setItem('guestCartItems', JSON.stringify([...items]));
-});
-
 Cypress.Commands.add('enterPartialAddressForm', () => {
   cy.get('#first-name-field')
     .type('Daniel', { force: true });
@@ -110,38 +97,6 @@ Cypress.Commands.add('enterCompleteAddressForm', () => {
     .type('DC', { force: true });
   cy.get('#zip-field')
     .type('20008', { force: true });
-});
-
-Cypress.Commands.add('postCreateGuestOrder', () => {
-  const order = {
-    address: {
-      firstName: 'Daniel',
-      lastName: 'McDaniel',
-      addressLineOne: '8585 Wisconsin Avenue NW',
-      addressLineTwo: '#205',
-      city: 'Washington',
-      zip: '20008',
-      state: 'DC',
-    },
-    foodItems: [{
-      name: 'Vegetarian Burger',
-      price: 6.99,
-      discount: 0.1,
-      time: [30, 45],
-      ingredients: ['mushrooms', 'carrot', 'broccoli florets', 'onion', 'garlic cloves', 'smoked paprika', 'chili powder'],
-      quantity: 1,
-    }],
-    guestId: localStorage.getItem('guestId'),
-  };
-  return cy.request({
-    method: 'POST',
-    url: `${serverUrl}/api/order/guest/`,
-    body: order,
-    headers: {
-      Authorization: `bearer ${localStorage.getItem('guestToken')}`,
-    },
-  })
-    .then((data) => data.body.id.slice(0, 8));
 });
 
 Cypress.Commands.add('whereIsAddNewCategory', () => {

@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import {
+  CartFoodItem,
   ICart, OrderOrCartFoodItem,
 } from '../types/types';
 import { calcTotal } from '../utils/functions';
@@ -9,11 +10,11 @@ export default class CartStore implements ICart {
 
   UserId: string;
 
-  foodItems: OrderOrCartFoodItem[];
+  foodItems: CartFoodItem[];
 
   constructor() {
     this.id = 'GUEST';
-    this.UserId = 'GUEST';
+    this.UserId = '';
     this.foodItems = [];
     makeAutoObservable(this);
   }
@@ -22,7 +23,7 @@ export default class CartStore implements ICart {
     return calcTotal(this.foodItems);
   }
 
-  addItem(obj: OrderOrCartFoodItem) { // for AddItem.tsx
+  addItem(obj: CartFoodItem) { // for AddItem.tsx
     this.foodItems = [...this.foodItems, obj];
   }
 
@@ -42,14 +43,15 @@ export default class CartStore implements ICart {
   }
 
   set(obj: ICart) {
-    const { id, UserId, foodItems } = obj;
+    const { id, UserId } = obj;
+    const foodItems = obj.foodItems as CartFoodItem[];
     this.id = id;
     this.UserId = UserId;
     this.foodItems = foodItems;
     localStorage.removeItem('guestCartItems');
   }
 
-  setItems(arr: OrderOrCartFoodItem[]) {
+  setItems(arr: CartFoodItem[]) {
     this.foodItems = arr;
   }
 
@@ -58,9 +60,8 @@ export default class CartStore implements ICart {
   }
 
   unset() {
-    this.id = '-1';
-    this.UserId = '-1';
+    this.id = 'GUEST';
+    this.UserId = '';
     this.foodItems = [];
-    localStorage.removeItem('guestCartItems');
   }
 }

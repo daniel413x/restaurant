@@ -2,7 +2,8 @@ import Router from 'express';
 import UserController from '../controllers/UserController';
 import checkRoleMiddleware from '../middleware/checkRoleMiddleware';
 import authMiddleware from '../middleware/authMiddleware';
-import { REGISTERED } from '../utils/consts';
+import { GUEST, REGISTERED } from '../utils/consts';
+// import validateUserFormMiddleware from '../middleware/validateUserFormMiddleware';
 
 const router = Router();
 
@@ -12,16 +13,14 @@ router.get(
   (req, res) => UserController.auth(req, res),
 );
 router.post(
-  '/guesttoken',
-  (req, res) => UserController.createGuestToken(req, res),
-);
-router.post(
   '/registration',
-  (req, res, next) => UserController.registration(req, res, next),
+  // validateUserFormMiddleware,
+  (req, res) => UserController.registration(req, res),
 );
-router.post(
+router.put(
   '/registration/guest',
-  (req, res) => UserController.registrationForGuest(req, res),
+  checkRoleMiddleware({ accessRoles: [GUEST] }),
+  (req, res) => UserController.registrationGuest(req, res),
 );
 router.post(
   '/login',

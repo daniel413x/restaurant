@@ -161,19 +161,6 @@ describe('restaurant app', () => {
           .click({ force: true });
         cy.contains('Account with that email already exists');
       });
-      describe('there are food items in the cart', () => {
-        beforeEach(() => {
-          cy.createGuestItems();
-          cy.visit(`${clientUrl}/registration`);
-        });
-        it('accredits the added items to the newly registered user', () => {
-          cy.enterValidRegistrationForm();
-          cy.get('#submit-button')
-            .click({ force: true });
-          cy.visit(`${clientUrl}/cart`);
-          cy.contains('Raspberry Stuffed French Toast');
-        });
-      });
     });
     describe('on /login', () => {
       beforeEach(() => {
@@ -291,101 +278,6 @@ describe('restaurant app', () => {
           cy.contains('Parsley Tabbuleh');
           cy.contains('Hummus');
         });
-      });
-    });
-    describe('on /cart with items already added', () => {
-      beforeEach(() => {
-        cy.visit(`${clientUrl}/cart`);
-        cy.createGuestItems();
-        cy.visit(`${clientUrl}/cart`);
-      });
-      it('handles item deletion correctly', () => {
-        cy.get('#delete-item-button')
-          .click();
-        cy.get('#submit-button')
-          .click();
-        cy.get('body')
-          .should('not.contain.text', 'Raspberry Stuffed French Toast');
-        cy.visit(`${clientUrl}/cart`);
-        cy.get('body')
-          .should('not.contain.text', 'Raspberry Stuffed French Toast');
-      });
-      it('handles item quantities correctly', () => {
-        cy.get('#increment-item-button')
-          .click();
-        cy.get('#item-quantity-counter')
-          .should('contain.value', 2);
-        cy.get('#increment-item-button')
-          .click();
-        cy.get('#item-quantity-counter')
-          .should('contain.value', 3);
-        cy.get('#decrement-item-button')
-          .click();
-        cy.get('#item-quantity-counter')
-          .should('contain.value', 2);
-        cy.visit(`${clientUrl}/cart`);
-        cy.get('#item-quantity-counter')
-          .should('contain.value', 2);
-      });
-      describe('with checkout modal open and the form partially completed', () => {
-        beforeEach(() => {
-          cy.get('#checkout-button')
-            .click();
-          cy.get('#email-field')
-            .type('tester@restaurant.com');
-          cy.enterPartialAddressForm();
-          cy.get('#card-name-field')
-            .type('tester@restaurant.com');
-          cy.get('#card-number-field')
-            .type('tester@restaurant.com');
-          cy.get('#card-expiration-field')
-            .type('tester@restaurant.com');
-          cy.get('#card-cvc-field')
-            .type('tester@restaurant.com');
-        });
-        it('blocks form submission until all fields are complete', () => {
-          cy.get('#submit-button')
-            .should('have.class', 'blocked');
-        });
-        it('processes a complete form', () => {
-          cy.get('#zip-field')
-            .type('20008', { force: true });
-          cy.get('#submit-button')
-            .click();
-          cy.contains('Order received');
-        });
-      });
-    });
-    describe('an order has been placed', () => {
-      let idFromServer = '';
-      beforeEach(() => {
-        cy.visit(clientUrl);
-        cy.get('#header');
-        cy.postCreateGuestOrder()
-          .then((id) => {
-            idFromServer = id;
-          });
-      });
-      describe('on /guest/orders', () => {
-        beforeEach(() => {
-          cy.visit(`${clientUrl}/guest/orders`);
-        });
-        it('contains the same id as that received from the server', () => {
-          cy.get('#displayed-id')
-            .should('contain.text', idFromServer);
-        });
-        it('has a single timestamped action logged at the outset', () => {
-          cy.get('.timestamped-action')
-            .should('have.length', 1);
-        });
-      });
-      it('accredits the order to the user upon registration', () => {
-        cy.visit(`${clientUrl}/registration`);
-        cy.enterValidRegistrationForm();
-        cy.get('#submit-button')
-          .click({ force: true });
-        cy.visit(`${clientUrl}/account/orders`);
-        cy.contains('Vegetarian Burger');
       });
     });
   });
